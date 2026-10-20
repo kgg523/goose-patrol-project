@@ -1,18 +1,14 @@
 package com.charvas.main;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.charvas.entities.Entity;
 import com.badlogic.gdx.Screen;
-
 
 public class GameScreen implements Screen {
 
@@ -23,21 +19,20 @@ public class GameScreen implements Screen {
 
     private TextureAtlas atlas;
 
-    public GameScreen(final Main game) {
-        this.game = game;
+    public GameScreen(final Main inGame) {
+        game = inGame;
         atlas = new TextureAtlas(Gdx.files.internal("Atlas/game_atlas.atlas"));
         backgroundTexture = new Texture("background.png");
         gooseSprite = new Entity(atlas.findRegion("gooseFrame", 1)); // Load the goose sprite from the texture atlas
         gooseSprite.setSize(1, 1); // Set the size of the goose sprite to 1x1 units
     }
 
+    @Override
+    public void show() {
+
+    }
 
     @Override
-	public void show() {
-
-	}
-
-    @Override 
     public void render(float delta) {
         input();
         logic();
@@ -88,30 +83,27 @@ public class GameScreen implements Screen {
         game.spriteBatch.end();
     }
 
-	@Override
-	public void resize(int width, int height) {
+    @Override
+    public void resize(int width, int height) {
         game.spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
-		game.viewport.update(width, height, true);
-	}
+        game.viewport.update(width, height, true);
+    }
 
-	@Override
-	public void hide() {
-	}
+    @Override
+    public void hide() {
+    }
 
-	@Override
-	public void pause() {
-	}
+    @Override
+    public void pause() {
+    }
 
-	@Override
-	public void resume() {
-	}
-
-
+    @Override
+    public void resume() {
+    }
 
     public void dispose() {
         game.spriteBatch.dispose();
         backgroundTexture.dispose();
     }
-
 
 }

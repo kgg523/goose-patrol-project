@@ -1,16 +1,7 @@
 package com.charvas.main;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.charvas.entities.Entity;
 import com.badlogic.gdx.Game;
 
 /**
@@ -22,19 +13,18 @@ public class Main extends Game {
     public FitViewport viewport;
 
     public void create() {
-		spriteBatch = new SpriteBatch();
-		// use libGDX's default font
-		viewport = new FitViewport(8, 5);
-		
-		
-		this.setScreen(new GameScreen(this));
-	}
+        spriteBatch = new SpriteBatch();
+        // use libGDX's default font
+        viewport = new FitViewport(8, 8);
 
-	public void render() {
-		super.render(); // important!
-	}
+        this.setScreen(new GameScreen(this));
+    }
 
-	public void dispose() {
-		spriteBatch.dispose();
-	}
+    public void render() {
+        super.render(); // important!
+    }
+
+    public void dispose() {
+        spriteBatch.dispose();
+    }
 }
