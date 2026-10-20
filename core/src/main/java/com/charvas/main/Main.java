@@ -21,7 +21,7 @@ public class Main extends Game {
     }
 
     public void render() {
-        super.render(); // important!
+        super.render(); // wont work unless called as render() is overwritten in GameScreen()
     }
 
     public void dispose() {
