@@ -1,0 +1,11 @@
+game_atlas.png
+size:2048,512
+repeat:none
+1002
+bounds:804,373,64,64
+8BitGoose
+bounds:1184,467,34,35
+background
+bounds:2,2,800,500
+libgdx
+bounds:804,439,378,63

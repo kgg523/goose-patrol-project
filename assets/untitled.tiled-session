@@ -1,0 +1,44 @@
+{
+    "activeFile": "map.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "Map.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "background.tmx": {
+            "scale": 3.0859,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 114.3912634887715,
+                "y": 799.9287079944263
+            }
+        },
+        "map.tmx": {
+            "scale": 0.6184895833333333,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 480.20210526315793,
+                "y": 479.39368421052643
+            }
+        }
+    },
+    "last.imagePath": "C:/Users/aiden/Documents/ComputerScience/goose-patrol-project/assets",
+    "map.height": 30,
+    "map.lastUsedFormat": "tmx",
+    "openFiles": [
+        "map.tmx",
+        "Map.tsx"
+    ],
+    "project": "untitled.tiled-project",
+    "recentFiles": [
+        "Map.tsx",
+        "map.tmx",
+        "background.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.type": 1
+}

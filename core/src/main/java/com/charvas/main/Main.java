@@ -5,12 +5,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.charvas.entities.Entity;
 
 /**
  * {@link com.badlogic.gdx.ApplicationListener} implementation shared by all
@@ -21,25 +21,24 @@ public class Main extends ApplicationAdapter {
     private FitViewport viewport;
     private Texture backgroundTexture;
 
-    private Texture gooseTexture;
-    private Sprite gooseSprite;
+    private Entity gooseSprite;
 
-    private Vector2 touchPosition;
+    private TextureAtlas atlas;
 
     @Override
     public void create() {
+        atlas = new TextureAtlas(Gdx.files.internal("Atlas/game_atlas.atlas"));
         viewport = new FitViewport(8, 8);
         spriteBatch = new SpriteBatch();
-        gooseTexture = new Texture("8BitGoose.png");
         backgroundTexture = new Texture("background.png");
-        gooseSprite = new Sprite(gooseTexture);
+        gooseSprite = new Entity(atlas.findRegion("8BitGoose")); // Load the goose sprite from the texture atlas
         gooseSprite.setSize(1, 1); // Set the size of the goose sprite to 1x1 units
-        touchPosition = new Vector2();
 
     }
 
     @Override
     public void resize(int width, int height) {
+        spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
         viewport.update(width, height, true); // true centers the camera
     }
 
@@ -67,12 +66,6 @@ public class Main extends ApplicationAdapter {
             gooseSprite.translateY(-speed * deltaTime);
         }
 
-        if (Gdx.input.isTouched()) {
-            touchPosition.set(Gdx.input.getX(), Gdx.input.getY());
-            viewport.unproject(touchPosition);
-            gooseSprite.setCenter(touchPosition.x, touchPosition.y);
-        }
-
     }
 
     private void logic() {
@@ -94,7 +87,7 @@ public class Main extends ApplicationAdapter {
         float worldWidth = viewport.getWorldWidth();
         float worldHeight = viewport.getWorldHeight();
 
-        spriteBatch.draw(backgroundTexture, 0, 0, worldWidth, worldHeight); // Draw the background texture to fill the
+        spriteBatch.draw(backgroundTexture, 0, 0, worldWidth, worldHeight);
         gooseSprite.draw(spriteBatch); // Draw the goose sprite
 
         spriteBatch.end();
@@ -104,6 +97,5 @@ public class Main extends ApplicationAdapter {
     public void dispose() {
         spriteBatch.dispose();
         backgroundTexture.dispose();
-        gooseTexture.dispose();
     }
 }
