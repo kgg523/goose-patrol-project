@@ -58,6 +58,7 @@ public class GameScreen implements Screen {
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
             gooseSprite.translateX(-speed * deltaTime);
+            gooseSprite.setFlip(true, false); // Flip the sprite horizontally when moving left
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
             gooseSprite.translateX(speed * deltaTime);
@@ -78,6 +79,7 @@ public class GameScreen implements Screen {
 
         gooseSprite.setX(MathUtils.clamp(gooseSprite.getX(), 0, worldWidth - gooseSprite.getWidth()));
         gooseSprite.setY(MathUtils.clamp(gooseSprite.getY(), 0, worldHeight - gooseSprite.getHeight()));
+
     }
 
     private void draw() {
