@@ -3,10 +3,14 @@ package com.charvas.main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.charvas.entities.Entity;
@@ -25,6 +29,10 @@ public class GameScreen implements Screen {
 
     private float stateTime;
 
+    private TiledMap map;
+    private OrthogonalTiledMapRenderer mapRenderer;
+    private OrthographicCamera camera;
+
     public GameScreen(final Main inGame) {
         game = inGame;
         atlas = new TextureAtlas(Gdx.files.internal("Atlas/game_atlas.atlas"));
@@ -40,7 +48,11 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        TmxMapLoader mapLoader = new TmxMapLoader();
+        map = mapLoader.load("map.tmx");
 
+        mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f); // Assuming your tiles are 32x32 pixels
+        camera = new OrthographicCamera();
     }
 
     @Override
@@ -86,27 +98,32 @@ public class GameScreen implements Screen {
         // Draw game objects here
         ScreenUtils.clear(Color.BLACK);
         stateTime += Gdx.graphics.getDeltaTime();
+        // game.viewport.apply();
 
-        float worldWidth = game.viewport.getWorldWidth();
-        float worldHeight = game.viewport.getWorldHeight();
+        mapRenderer.setView(camera);
+        mapRenderer.render();
+        camera.position.set(gooseSprite.getX() + gooseSprite.getWidth() / 2,
+                gooseSprite.getY() + gooseSprite.getHeight() / 2, 0);
 
-        game.viewport.apply();
-
-        game.spriteBatch.setProjectionMatrix(game.viewport.getCamera().combined);
+        game.spriteBatch.setProjectionMatrix(camera.combined);
         game.spriteBatch.begin();
 
         TextureRegion currentFrame = gooseAnimation.getKeyFrame(stateTime, true);
-        game.spriteBatch.draw(backgroundTexture, 0, 0, worldWidth, worldHeight);
+        gooseSprite.setRegion(currentFrame); // Update the goose sprite's texture region to the current frame
         gooseSprite.draw(game.spriteBatch); // Draw the goose sprite
-        gooseSprite.setRegion(currentFrame); // Update the goose sprite's texture region to the current frame of the
 
         game.spriteBatch.end();
+
+        camera.update();
     }
 
     @Override
     public void resize(int width, int height) {
-        game.spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
-        game.viewport.update(width, height, true);
+        camera.viewportWidth = width / 64f; // Assuming your tiles are 32x32 pixels
+        camera.viewportHeight = height / 64f; // Assuming your tiles are 32x32 pixels
+        camera.update();
+        // game.spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
+        // game.viewport.update(width, height, true);
     }
 
     @Override
@@ -115,15 +132,20 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
+        game.pause();
     }
 
     @Override
     public void resume() {
+        game.resume();
     }
 
     public void dispose() {
         game.spriteBatch.dispose();
         backgroundTexture.dispose();
+        map.dispose();
+        atlas.dispose();
+        mapRenderer.dispose();
         game.dispose();
     }
 
