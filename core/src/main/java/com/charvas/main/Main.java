@@ -9,13 +9,15 @@ import com.badlogic.gdx.Game;
  * platforms.
  */
 public class Main extends Game {
+    static final int V_WIDTH = 30; // Virtual width
+    static final int V_HEIGHT = 30; // Virtual height
     public SpriteBatch spriteBatch;
     public FitViewport viewport;
 
     public void create() {
         spriteBatch = new SpriteBatch();
         // use libGDX's default font
-        viewport = new FitViewport(8, 8);
+        viewport = new FitViewport(V_WIDTH, V_HEIGHT);
 
         this.setScreen(new GameScreen(this));
     }
