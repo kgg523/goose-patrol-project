@@ -17,7 +17,7 @@ public class Main extends Game {
     public void create() {
         spriteBatch = new SpriteBatch();
         // use libGDX's default font
-        viewport = new FitViewport(V_WIDTH, V_HEIGHT);
+        //viewport = new FitViewport(V_WIDTH, V_HEIGHT);
 
         this.setScreen(new GameScreen(this));
     }
