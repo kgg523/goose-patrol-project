@@ -9,6 +9,7 @@ import com.badlogic.gdx.Game;
  * platforms.
  */
 public class Main extends Game {
+    /* Main class which serves as the entry point for the application */
     static final float V_WIDTH = 30f; // Virtual width
     static final float V_HEIGHT = 30f; // Virtual height
     public SpriteBatch spriteBatch;
@@ -21,10 +22,12 @@ public class Main extends Game {
     }
 
     public void render() {
-        super.render(); // wont work unless called as render() is overwritten in GameScreen()
+        super.render(); // wont work unless called, as render() is overwritten in GameScreen(). DO NOT
+                        // REMOVE
     }
 
     public void dispose() {
+        /* Dispose of the resources used to reduce memory usage */
         spriteBatch.dispose();
     }
 }

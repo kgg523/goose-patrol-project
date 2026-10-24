@@ -17,8 +17,14 @@ import com.charvas.entities.Entity;
 import com.badlogic.gdx.Screen;
 
 public class GameScreen implements Screen {
+    /*
+     * Game screen implementation, handles the game logic and rendering of the main
+     * game loop
+     */
 
-    final Main game;
+    final Main game; // access to the main game class for rendering and resource management
+
+    // Game assets and state variables
     private Texture backgroundTexture;
     private static final float mapScale = 128f;
     private Entity gooseSprite;
@@ -34,6 +40,7 @@ public class GameScreen implements Screen {
     private OrthographicCamera camera;
 
     public GameScreen(final Main inGame) {
+        /* Initialising game assets and state variables */
         game = inGame;
         atlas = new TextureAtlas(Gdx.files.internal("Atlas/game_atlas.atlas"));
 
@@ -48,6 +55,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        // Initialising the TiledMap and its renderer, as well as the camera
         TmxMapLoader mapLoader = new TmxMapLoader();
         map = mapLoader.load("map.tmx");
 
@@ -88,6 +96,7 @@ public class GameScreen implements Screen {
         // Update game logic here
         float worldWidth = Main.V_WIDTH;
         float worldHeight = Main.V_HEIGHT;
+        // Keep player within the bounds of the world
         gooseSprite.setX(MathUtils.clamp(gooseSprite.getX(), 0, worldWidth - gooseSprite.getWidth()));
         gooseSprite.setY(MathUtils.clamp(gooseSprite.getY(), 0, worldHeight - gooseSprite.getHeight()));
 
@@ -96,9 +105,16 @@ public class GameScreen implements Screen {
     private void draw() {
         // Draw game objects here
         ScreenUtils.clear(Color.BLACK);
-        stateTime += Gdx.graphics.getDeltaTime();
-        mapRenderer.setView(camera.combined, 0, 0, Main.V_WIDTH, Main.V_HEIGHT);
+
+        stateTime += Gdx.graphics.getDeltaTime(); // Update the state time for the animation
+
+        mapRenderer.setView(camera.combined, 0, 0, Main.V_WIDTH, Main.V_HEIGHT); // Set mapRenderer to use the camera
         mapRenderer.render();
+
+        /*
+         * Update the camera position to follow the goose sprite, while keeping it
+         * within the bounds of the world
+         */
         camera.position.set(gooseSprite.getX() + gooseSprite.getWidth() / 2,
                 gooseSprite.getY() + gooseSprite.getHeight() / 2, 0);
         camera.position.x = MathUtils.clamp(camera.position.x, camera.viewportWidth / 2,
@@ -120,10 +136,13 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        //Forcefully sets scaling at 1920x1080 causing stretching when expanding window size
-        //  but avoids increased viewing range
+        /*
+         * Forcefully sets min scaling at 1920x1080 causing stretching when expanding
+         * window size above 1920x1080, but prevents the camera from zooming out too far
+         * and showing the black background
+         */
         camera.viewportWidth = Math.min(width, 1920) / mapScale; // Assuming your tiles are 32x32 pixels
-        camera.viewportHeight = Math.min(height,1080) / mapScale; // Assuming your tiles are 32x32 pixels
+        camera.viewportHeight = Math.min(height, 1080) / mapScale; // Assuming your tiles are 32x32 pixels
         camera.update();
     }
 
@@ -142,6 +161,7 @@ public class GameScreen implements Screen {
     }
 
     public void dispose() {
+        /* Dispose of the resources used to reduce memory usage */
         game.spriteBatch.dispose();
         backgroundTexture.dispose();
         map.dispose();
