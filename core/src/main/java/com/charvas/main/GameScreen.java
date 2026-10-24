@@ -21,7 +21,6 @@ public class GameScreen implements Screen {
     final Main game;
     private Texture backgroundTexture;
     private static final float mapScale = 128f;
-
     private Entity gooseSprite;
 
     private Animation<TextureRegion> gooseAnimation;
@@ -87,8 +86,8 @@ public class GameScreen implements Screen {
 
     private void logic() {
         // Update game logic here
-        float worldWidth = 30f;
-        float worldHeight = 30f;
+        float worldWidth = game.V_WIDTH;
+        float worldHeight = game.V_HEIGHT;
         gooseSprite.setX(MathUtils.clamp(gooseSprite.getX(), 0, worldWidth - gooseSprite.getWidth()));
         gooseSprite.setY(MathUtils.clamp(gooseSprite.getY(), 0, worldHeight - gooseSprite.getHeight()));
 
@@ -103,9 +102,9 @@ public class GameScreen implements Screen {
         camera.position.set(gooseSprite.getX() + gooseSprite.getWidth() / 2,
                 gooseSprite.getY() + gooseSprite.getHeight() / 2, 0);
         camera.position.x = MathUtils.clamp(camera.position.x, camera.viewportWidth / 2,
-                30f - camera.viewportWidth / 2);
+                game.V_WIDTH - camera.viewportWidth / 2);
         camera.position.y = MathUtils.clamp(camera.position.y, camera.viewportHeight / 2,
-                30f - camera.viewportHeight / 2);
+                game.V_HEIGHT - camera.viewportHeight / 2);
 
         game.spriteBatch.setProjectionMatrix(camera.combined);
         game.spriteBatch.begin();
@@ -123,8 +122,8 @@ public class GameScreen implements Screen {
     public void resize(int width, int height) {
         //Forcefully sets scaling at 1920x1080 causing stretching when expanding window size
         //  but avoids increased viewing range
-        camera.viewportWidth = 1920 / mapScale; // Assuming your tiles are 32x32 pixels
-        camera.viewportHeight = 1080 / mapScale; // Assuming your tiles are 32x32 pixels
+        camera.viewportWidth = Math.min(width, 1920) / mapScale; // Assuming your tiles are 32x32 pixels
+        camera.viewportHeight = Math.min(height,1080) / mapScale; // Assuming your tiles are 32x32 pixels
         camera.update();
     }
 

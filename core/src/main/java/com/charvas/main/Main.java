@@ -9,8 +9,8 @@ import com.badlogic.gdx.Game;
  * platforms.
  */
 public class Main extends Game {
-    static final int V_WIDTH = 30; // Virtual width
-    static final int V_HEIGHT = 30; // Virtual height
+    final int V_WIDTH = 30; // Virtual width
+    final int V_HEIGHT = 30; // Virtual height
     public SpriteBatch spriteBatch;
     public FitViewport viewport;
 
