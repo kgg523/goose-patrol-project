@@ -20,6 +20,7 @@ public class GameScreen implements Screen {
 
     final Main game;
     private Texture backgroundTexture;
+    private static final float mapScale = 128f;
 
     private Entity gooseSprite;
 
@@ -98,12 +99,15 @@ public class GameScreen implements Screen {
         // Draw game objects here
         ScreenUtils.clear(Color.BLACK);
         stateTime += Gdx.graphics.getDeltaTime();
-        // game.viewport.apply();
 
         mapRenderer.setView(camera);
         mapRenderer.render();
         camera.position.set(gooseSprite.getX() + gooseSprite.getWidth() / 2,
                 gooseSprite.getY() + gooseSprite.getHeight() / 2, 0);
+        camera.position.x = MathUtils.clamp(camera.position.x, camera.viewportWidth / 2,
+                game.viewport.getWorldWidth() - camera.viewportWidth / 2);
+        camera.position.y = MathUtils.clamp(camera.position.y, camera.viewportHeight / 2,
+                game.viewport.getWorldHeight() - camera.viewportHeight / 2);
 
         game.spriteBatch.setProjectionMatrix(camera.combined);
         game.spriteBatch.begin();
@@ -119,11 +123,9 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        camera.viewportWidth = width / 64f; // Assuming your tiles are 32x32 pixels
-        camera.viewportHeight = height / 64f; // Assuming your tiles are 32x32 pixels
+        camera.viewportWidth = width / mapScale; // Assuming your tiles are 32x32 pixels
+        camera.viewportHeight = height / mapScale; // Assuming your tiles are 32x32 pixels
         camera.update();
-        // game.spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
-        // game.viewport.update(width, height, true);
     }
 
     @Override
