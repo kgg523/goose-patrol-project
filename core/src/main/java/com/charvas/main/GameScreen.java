@@ -13,6 +13,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.charvas.entities.AnimatedEntity;
 import com.charvas.entities.Entity;
 import com.badlogic.gdx.Screen;
 
@@ -27,9 +28,7 @@ public class GameScreen implements Screen {
     // Game assets and state variables
     private Texture backgroundTexture;
     private static final float mapScale = 128f;
-    private Entity gooseSprite;
-
-    private Animation<TextureRegion> gooseAnimation;
+    private AnimatedEntity gooseSprite;
 
     private TextureAtlas atlas;
 
@@ -46,10 +45,10 @@ public class GameScreen implements Screen {
 
         backgroundTexture = new Texture("background.png");
 
-        gooseAnimation = new Animation<TextureRegion>(0.1f, atlas.findRegions("gooseFrame"), Animation.PlayMode.LOOP);
         stateTime = 0f;
 
-        gooseSprite = new Entity(atlas.findRegion("gooseFrame", 2)); // Load the goose sprite from the texture atlas
+        gooseSprite = new AnimatedEntity(atlas.findRegions("gooseFrame")); // Load the goose sprite from the texture
+                                                                           // atlas
         gooseSprite.setSize(1, 1); // Set the size of the goose sprite to 1x1 units
     }
 
@@ -125,8 +124,7 @@ public class GameScreen implements Screen {
         game.spriteBatch.setProjectionMatrix(camera.combined);
         game.spriteBatch.begin();
 
-        TextureRegion currentFrame = gooseAnimation.getKeyFrame(stateTime, true);
-        gooseSprite.setRegion(currentFrame); // Update the goose sprite's texture region to the current frame
+        gooseSprite.updateAnimation(stateTime); // Update the goose sprite's animation based on the state time
         gooseSprite.draw(game.spriteBatch); // Draw the goose sprite
 
         game.spriteBatch.end();
