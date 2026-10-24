@@ -86,8 +86,8 @@ public class GameScreen implements Screen {
 
     private void logic() {
         // Update game logic here
-        float worldWidth = game.V_WIDTH;
-        float worldHeight = game.V_HEIGHT;
+        float worldWidth = Main.V_WIDTH;
+        float worldHeight = Main.V_HEIGHT;
         gooseSprite.setX(MathUtils.clamp(gooseSprite.getX(), 0, worldWidth - gooseSprite.getWidth()));
         gooseSprite.setY(MathUtils.clamp(gooseSprite.getY(), 0, worldHeight - gooseSprite.getHeight()));
 
@@ -97,14 +97,14 @@ public class GameScreen implements Screen {
         // Draw game objects here
         ScreenUtils.clear(Color.BLACK);
         stateTime += Gdx.graphics.getDeltaTime();
-        mapRenderer.setView(camera);
+        mapRenderer.setView(camera.combined, 0, 0, Main.V_WIDTH, Main.V_HEIGHT);
         mapRenderer.render();
         camera.position.set(gooseSprite.getX() + gooseSprite.getWidth() / 2,
                 gooseSprite.getY() + gooseSprite.getHeight() / 2, 0);
         camera.position.x = MathUtils.clamp(camera.position.x, camera.viewportWidth / 2,
-                game.V_WIDTH - camera.viewportWidth / 2);
+                Main.V_WIDTH - camera.viewportWidth / 2);
         camera.position.y = MathUtils.clamp(camera.position.y, camera.viewportHeight / 2,
-                game.V_HEIGHT - camera.viewportHeight / 2);
+                Main.V_HEIGHT - camera.viewportHeight / 2);
 
         game.spriteBatch.setProjectionMatrix(camera.combined);
         game.spriteBatch.begin();
