@@ -5,16 +5,13 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.charvas.entities.AnimatedEntity;
-import com.charvas.entities.Entity;
 import com.badlogic.gdx.Screen;
 
 public class GameScreen implements Screen {
@@ -33,6 +30,7 @@ public class GameScreen implements Screen {
     private TextureAtlas atlas;
 
     private float stateTime;
+    private boolean isPaused = false; // Flag to pause the game
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
@@ -48,7 +46,7 @@ public class GameScreen implements Screen {
         stateTime = 0f;
 
         gooseSprite = new AnimatedEntity(atlas.findRegions("gooseFrame")); // Load the goose sprite from the texture
-                                                                           // atlas
+        // atlas
         gooseSprite.setSize(1, 1); // Set the size of the goose sprite to 1x1 units
     }
 
@@ -64,8 +62,16 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        input();
-        logic();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            isPaused = !isPaused;
+        }
+        if (!isPaused) {
+            logic();
+            input();
+        }
+        if (isPaused) {
+
+        }
         draw();
 
     }
