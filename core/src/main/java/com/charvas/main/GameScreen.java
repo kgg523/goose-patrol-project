@@ -68,6 +68,7 @@ public class GameScreen implements Screen {
         if (!isPaused) {
             logic();
             input();
+            updateAnimation(delta);
         }
         if (isPaused) {
 
@@ -111,8 +112,6 @@ public class GameScreen implements Screen {
         // Draw game objects here
         ScreenUtils.clear(Color.BLACK);
 
-        stateTime += Gdx.graphics.getDeltaTime(); // Update the state time for the animation
-
         mapRenderer.setView(camera.combined, 0, 0, Main.V_WIDTH, Main.V_HEIGHT); // Set mapRenderer to use the camera
         mapRenderer.render();
 
@@ -130,12 +129,17 @@ public class GameScreen implements Screen {
         game.spriteBatch.setProjectionMatrix(camera.combined);
         game.spriteBatch.begin();
 
-        gooseSprite.updateAnimation(stateTime); // Update the goose sprite's animation based on the state time
         gooseSprite.draw(game.spriteBatch); // Draw the goose sprite
 
         game.spriteBatch.end();
 
         camera.update();
+    }
+
+    private void updateAnimation(float deltaTime) {
+        /* Update the animation state time and the goose sprite's animation */
+        stateTime += deltaTime;
+        gooseSprite.updateAnimation(stateTime);
     }
 
     @Override
