@@ -36,11 +36,12 @@ public class GameScreen implements Screen {
     private OrthogonalTiledMapRenderer mapRenderer;
     private OrthographicCamera camera;
 
+    private GUI gui;
+
     public GameScreen(final Main inGame) {
         /* Initialising game assets and state variables */
         game = inGame;
         atlas = new TextureAtlas(Gdx.files.internal("Atlas/game_atlas.atlas"));
-
         backgroundTexture = new Texture("background.png");
 
         stateTime = 0f;
@@ -58,6 +59,7 @@ public class GameScreen implements Screen {
 
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f); // Assuming your tiles are 32x32 pixels
         camera = new OrthographicCamera();
+        gui = new GUI(game.viewport);
     }
 
     @Override
@@ -133,6 +135,7 @@ public class GameScreen implements Screen {
 
         game.spriteBatch.end();
 
+        gui.render();
         camera.update();
     }
 
