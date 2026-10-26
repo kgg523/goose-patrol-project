@@ -73,8 +73,9 @@ public class Player extends AnimatedEntity {
         // Keep player within the bounds of the world
         float worldWidth = Main.V_WIDTH;
         float worldHeight = Main.V_HEIGHT;
+        float offsetX = this.getWidth() * 0.25f; // Offset to allow the player image to be correct
 
-        this.setX(MathUtils.clamp(this.getX(), 0, worldWidth - this.getWidth()));
+        this.setX(MathUtils.clamp(this.getX(), -offsetX, worldWidth - this.getWidth() + offsetX));
         this.setY(MathUtils.clamp(this.getY(), 0, worldHeight - this.getHeight()));
     }
 

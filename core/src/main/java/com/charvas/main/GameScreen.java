@@ -66,8 +66,8 @@ public class GameScreen implements Screen {
         }
         if (!isPaused) {
             logic();
+            updateAnimation(delta); // Update animation first so input can use the updated animation state
             input();
-            updateAnimation(delta);
         }
         if (isPaused) {
 
