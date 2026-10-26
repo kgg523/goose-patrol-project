@@ -34,7 +34,7 @@ prettyPrint=false
 legacyOutput=false
 
 scaleFactors=[{suffix:"",factor:1,resampling:bicubic}]
-inputFiles=[{path:../1002.png,type:Input,regionName:null},{path:../background.png,type:Input,regionName:null},{path:../libgdx.png,type:Input,regionName:null},{path:../Goose/Walking/gooseFrame_1.png,type:Input,regionName:null},{path:../Goose/Walking/gooseFrame_2.png,type:Input,regionName:null},{path:../Goose/Walking/gooseFrame_3.png,type:Input,regionName:null},{path:../Goose/Walking/gooseFrame_4.png,type:Input,regionName:null}]
+inputFiles=[{path:../1002.png,type:Input,regionName:null},{path:../Goose/Walking/gooseFrame_1.png,type:Input,regionName:null},{path:../Goose/Walking/gooseFrame_2.png,type:Input,regionName:null},{path:../Goose/Walking/gooseFrame_3.png,type:Input,regionName:null},{path:../Goose/Walking/gooseFrame_4.png,type:Input,regionName:null},{path:../Player/Running,type:Input,dirFilePrefix:null,recursive:false,flattenPaths:false},{path:../Player/Idle,type:Input,dirFilePrefix:null,recursive:false,flattenPaths:false}]
 keepInputFileExtensions=false
 
 
