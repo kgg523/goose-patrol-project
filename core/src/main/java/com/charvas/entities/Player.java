@@ -12,18 +12,22 @@ import com.charvas.main.Main;
 public class Player extends AnimatedEntity {
     /* Player class representing the player character in the game */
 
-    private Animation<TextureRegion> animation;
-    public float speed = 3f; // Player movement speed
+    private Animation<TextureRegion> movingAnimation;
+    private Animation<TextureRegion> idleAnimation;
+    private TextureRegion currentFrame;
+    private boolean isMoving = true; // Flag to check if the player is moving
+    private float speed = 3f; // Player movement speed
 
     public Player() {
         super();
     }
 
-    public Player(Array<AtlasRegion> region) {
+    public Player(Array<AtlasRegion> movingRegion, Array<AtlasRegion> idleRegion) {
         // Sets the animation and initializes the entity with the first frame
         // This should be the main contructor used to create a Player object
-        animation = new Animation<TextureRegion>(0.1f, region, Animation.PlayMode.LOOP);
-        super(region); // Initialize the entity with the first frame of the animation
+        movingAnimation = new Animation<TextureRegion>(0.1f, movingRegion, Animation.PlayMode.LOOP);
+        idleAnimation = new Animation<TextureRegion>(0.1f, idleRegion, Animation.PlayMode.LOOP);
+        super(movingRegion); // Initialize the entity with the first frame of the animation
     }
 
     public void input() {
@@ -44,14 +48,25 @@ public class Player extends AnimatedEntity {
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S)) {
             this.translateY(-speed * deltaTime);
         }
+
+        // Check if the player is moving based on input
+        isMoving = Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)
+                || Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)
+                || Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)
+                || Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S);
     }
 
     @Override
     public void updateAnimation(float stateTime) {
         /* Logic to update the animation frames based on time */
 
-        TextureRegion currentFrame = animation.getKeyFrame(stateTime, true);
-        this.setRegion(currentFrame); // Update the goose sprite's texture region to the current frame
+        if (isMoving) {
+            currentFrame = movingAnimation.getKeyFrame(stateTime, true);
+            this.setRegion(currentFrame); // Update the goose sprite's texture region to the current frame
+        } else {
+            currentFrame = idleAnimation.getKeyFrame(stateTime, false);
+            this.setRegion(currentFrame); // Update the goose sprite's texture region to the current frame
+        }
     }
 
     public void handleBorders() {
@@ -67,7 +82,7 @@ public class Player extends AnimatedEntity {
         this.speed = speed;
     }
 
-    public void checkColision(Entity otherEntity) {
+    public void checkCollision(Entity otherEntity) {
         // Check for collision with another entity
         if (this.getBoundingRectangle().overlaps(otherEntity.getBoundingRectangle())) {
             // Handle collision logic here

@@ -45,7 +45,9 @@ public class GameScreen implements Screen {
 
         stateTime = 0f;
 
-        gooseSprite = new Player(atlas.findRegions("gooseFrame")); // Load the goose sprite from the texture
+        gooseSprite = new Player(atlas.findRegions("gooseFrame"), atlas.findRegions("gooseFrame")); // Load the goose
+                                                                                                    // sprite from the
+                                                                                                    // texture
         // atlas
         gooseSprite.setSize(1, 1); // Set the size of the goose sprite to 1x1 units
     }
