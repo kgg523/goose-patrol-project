@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Entity extends Sprite {
+    /* Entity class for representing game objects */
 
     public Entity() {
     }
