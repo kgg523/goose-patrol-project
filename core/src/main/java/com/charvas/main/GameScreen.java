@@ -26,6 +26,7 @@ public class GameScreen implements Screen {
     private Texture backgroundTexture;
     private static final float mapScale = 128f;
     private Player player;
+    private Player enemy;
 
     private TextureAtlas atlas;
 
@@ -47,6 +48,9 @@ public class GameScreen implements Screen {
 
         player = new Player(atlas.findRegions("playerRunning"), atlas.findRegions("playerIdle"));
         player.setSize(1, 1); // Set the size of the goose sprite to 1x1 units
+        player.setPosition(1, 1);
+        enemy = new Player(atlas.findRegions("playerRunning"), atlas.findRegions("playerIdle"));
+        enemy.setSize(1, 1); // Set the size of the goose sprite to 1x1 units
     }
 
     @Override
@@ -85,6 +89,10 @@ public class GameScreen implements Screen {
     private void logic() {
         // Update game logic here
         player.handleBorders();
+        System.out.println(player.checkCollision(enemy));
+        if (player.getHealth() <= 0) {
+            Gdx.app.exit();
+        }
 
     }
 
@@ -110,6 +118,7 @@ public class GameScreen implements Screen {
         game.spriteBatch.begin();
 
         player.draw(game.spriteBatch); // Draw the goose sprite
+        enemy.draw(game.spriteBatch);
 
         game.spriteBatch.end();
 

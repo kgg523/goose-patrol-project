@@ -18,6 +18,8 @@ public class Player extends AnimatedEntity {
     private boolean isMoving = true; // Flag to check if the player is moving
     private boolean flipImage = false;
     private float speed = 2.5f; // Player movement speed
+    private float invincible = 0; // invincibility frames
+    private float health = 10;
 
     public Player() {
         super();
@@ -86,17 +88,37 @@ public class Player extends AnimatedEntity {
 
         this.setX(MathUtils.clamp(this.getX(), -offsetX, worldWidth - this.getWidth() + offsetX));
         this.setY(MathUtils.clamp(this.getY(), 0, worldHeight - this.getHeight()));
+
     }
 
     public void setSpeed(float speed) {
         this.speed = speed;
     }
 
-    public void checkCollision(Entity otherEntity) {
+    public Entity checkCollision(Entity otherEntity) {
         // Check for collision with another entity
+
+        // update invinibility frames
+        invincible -= 1;
+
+        if (invincible > 0) {
+            return null;
+        }
+
         if (this.getBoundingRectangle().overlaps(otherEntity.getBoundingRectangle())) {
             // Handle collision logic here
-            System.out.println("Collision detected with " + otherEntity);
+            invincible = 10;
+            health -= 1;
+            return (Entity) otherEntity;
         }
+        return null;
+    }
+
+    public void setHealth(float newHealth) {
+        health = newHealth;
+    }
+
+    public float getHealth() {
+        return health;
     }
 }
