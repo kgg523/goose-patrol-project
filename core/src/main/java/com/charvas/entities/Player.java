@@ -16,6 +16,7 @@ public class Player extends AnimatedEntity {
     private Animation<TextureRegion> idleAnimation;
     private TextureRegion currentFrame;
     private boolean isMoving = true; // Flag to check if the player is moving
+    private boolean flipImage = false;
     private float speed = 2.5f; // Player movement speed
 
     public Player() {
@@ -37,16 +38,24 @@ public class Player extends AnimatedEntity {
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
             this.translateX(-speed * deltaTime);
-            this.setFlip(true, false); // Flip the sprite horizontally when moving left
+            flipImage = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
             this.translateX(speed * deltaTime);
+            flipImage = false;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
             this.translateY(speed * deltaTime);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S)) {
             this.translateY(-speed * deltaTime);
+        }
+
+        // Flip the goose sprite based on movement direction, and stay looking that way
+        if (flipImage) {
+            this.setFlip(true, false); // Flip the goose sprite horizontally when moving left
+        } else {
+            this.setFlip(false, false); // Reset the flip when moving right
         }
 
         // Check if the player is moving based on input
