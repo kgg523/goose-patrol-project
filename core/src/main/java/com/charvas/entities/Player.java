@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.charvas.main.Main;
 
@@ -17,7 +18,6 @@ public class Player extends AnimatedEntity {
     private TextureRegion currentFrame;
     private boolean isMoving = true; // Flag to check if the player is moving
     private boolean flipImage = false;
-    private float speed = 2.5f; // Player movement speed
     private float invincible = 0; // invincibility frames
     private float health = 10;
 
@@ -31,6 +31,7 @@ public class Player extends AnimatedEntity {
         movingAnimation = new Animation<TextureRegion>(0.1f, movingRegion, Animation.PlayMode.LOOP);
         idleAnimation = new Animation<TextureRegion>(0.1f, idleRegion, Animation.PlayMode.LOOP);
         super(movingRegion); // Initialize the entity with the first frame of the animation
+        speed = 2.5f;
     }
 
     public void input() {
@@ -86,13 +87,11 @@ public class Player extends AnimatedEntity {
         float worldHeight = Main.V_HEIGHT;
         float offsetX = this.getWidth() * 0.25f; // Offset to allow the player image to be correct
 
-        this.setX(MathUtils.clamp(this.getX(), -offsetX, worldWidth - this.getWidth() + offsetX));
-        this.setY(MathUtils.clamp(this.getY(), 0, worldHeight - this.getHeight()));
+        this.setX(MathUtils.clamp(getX(), -offsetX, worldWidth - getWidth() + offsetX));
+        this.setY(MathUtils.clamp(getY(), 0, worldHeight - getHeight()));
 
-    }
-
-    public void setSpeed(float speed) {
-        this.speed = speed;
+        // update hitbox to player location
+        customHitbox.set(getX() + offsetX, getY(), 0.5f, 1.0f);
     }
 
     public Entity checkCollision(Entity otherEntity) {
@@ -105,7 +104,7 @@ public class Player extends AnimatedEntity {
             return null;
         }
 
-        if (this.getBoundingRectangle().overlaps(otherEntity.getBoundingRectangle())) {
+        if (this.customHitbox.overlaps(otherEntity.getHitbox())) {
             // Handle collision logic here
             invincible = 10;
             health -= 1;
@@ -120,5 +119,9 @@ public class Player extends AnimatedEntity {
 
     public float getHealth() {
         return health;
+    }
+
+    public void setSpeed(float newSpeed) {
+        speed = newSpeed;
     }
 }

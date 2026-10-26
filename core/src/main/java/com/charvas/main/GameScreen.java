@@ -90,9 +90,9 @@ public class GameScreen implements Screen {
         // Update game logic here
         player.handleBorders();
         System.out.println(player.checkCollision(enemy));
-        if (player.getHealth() <= 0) {
-            Gdx.app.exit();
-        }
+        // if (player.getHealth() <= 0) {
+        // Gdx.app.exit();
+        // }
 
     }
 
