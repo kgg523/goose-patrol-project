@@ -25,7 +25,7 @@ public class GameScreen implements Screen {
     // Game assets and state variables
     private Texture backgroundTexture;
     private static final float mapScale = 128f;
-    private Player gooseSprite;
+    private Player player;
 
     private TextureAtlas atlas;
 
@@ -45,11 +45,8 @@ public class GameScreen implements Screen {
 
         stateTime = 0f;
 
-        gooseSprite = new Player(atlas.findRegions("gooseFrame"), atlas.findRegions("gooseFrame")); // Load the goose
-                                                                                                    // sprite from the
-                                                                                                    // texture
-        // atlas
-        gooseSprite.setSize(1, 1); // Set the size of the goose sprite to 1x1 units
+        player = new Player(atlas.findRegions("playerRunning"), atlas.findRegions("playerIdle"));
+        player.setSize(1, 1); // Set the size of the goose sprite to 1x1 units
     }
 
     @Override
@@ -81,13 +78,13 @@ public class GameScreen implements Screen {
 
     private void input() {
         // Handle user input here
-        gooseSprite.input(); // Call the input method of the goose sprite to handle movement
+        player.input(); // Call the input method of the goose sprite to handle movement
 
     }
 
     private void logic() {
         // Update game logic here
-        gooseSprite.handleBorders();
+        player.handleBorders();
 
     }
 
@@ -102,8 +99,8 @@ public class GameScreen implements Screen {
          * Update the camera position to follow the goose sprite, while keeping it
          * within the bounds of the world
          */
-        camera.position.set(gooseSprite.getX() + gooseSprite.getWidth() / 2,
-                gooseSprite.getY() + gooseSprite.getHeight() / 2, 0);
+        camera.position.set(player.getX() + player.getWidth() / 2,
+                player.getY() + player.getHeight() / 2, 0);
         camera.position.x = MathUtils.clamp(camera.position.x, camera.viewportWidth / 2,
                 Main.V_WIDTH - camera.viewportWidth / 2);
         camera.position.y = MathUtils.clamp(camera.position.y, camera.viewportHeight / 2,
@@ -112,7 +109,7 @@ public class GameScreen implements Screen {
         game.spriteBatch.setProjectionMatrix(camera.combined);
         game.spriteBatch.begin();
 
-        gooseSprite.draw(game.spriteBatch); // Draw the goose sprite
+        player.draw(game.spriteBatch); // Draw the goose sprite
 
         game.spriteBatch.end();
 
@@ -122,7 +119,7 @@ public class GameScreen implements Screen {
     private void updateAnimation(float deltaTime) {
         /* Update the animation state time and the goose sprite's animation */
         stateTime += deltaTime;
-        gooseSprite.updateAnimation(stateTime);
+        player.updateAnimation(stateTime);
     }
 
     @Override
