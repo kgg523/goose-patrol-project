@@ -13,21 +13,24 @@ public class Player extends AnimatedEntity {
     /* Player class representing the player character in the game */
 
     private Animation<TextureRegion> animation;
+    public float speed = 3f; // Player movement speed
 
     public Player() {
         super();
     }
 
     public Player(Array<AtlasRegion> region) {
-
+        // Sets the animation and initializes the entity with the first frame
+        // This should be the main contructor used to create a Player object
         animation = new Animation<TextureRegion>(0.1f, region, Animation.PlayMode.LOOP);
         super(region); // Initialize the entity with the first frame of the animation
     }
 
     public void input() {
         /* Handle player input for movement and actions */
-        float speed = 3f;
+
         float deltaTime = Gdx.graphics.getDeltaTime(); // Keep speed consistant across different frame rates
+
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
             this.translateX(-speed * deltaTime);
             this.setFlip(true, false); // Flip the sprite horizontally when moving left
@@ -43,6 +46,7 @@ public class Player extends AnimatedEntity {
         }
     }
 
+    @Override
     public void updateAnimation(float stateTime) {
         /* Logic to update the animation frames based on time */
 
@@ -51,10 +55,23 @@ public class Player extends AnimatedEntity {
     }
 
     public void handleBorders() {
+        // Keep player within the bounds of the world
         float worldWidth = Main.V_WIDTH;
         float worldHeight = Main.V_HEIGHT;
 
         this.setX(MathUtils.clamp(this.getX(), 0, worldWidth - this.getWidth()));
         this.setY(MathUtils.clamp(this.getY(), 0, worldHeight - this.getHeight()));
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
+    public void checkColision(Entity otherEntity) {
+        // Check for collision with another entity
+        if (this.getBoundingRectangle().overlaps(otherEntity.getBoundingRectangle())) {
+            // Handle collision logic here
+            System.out.println("Collision detected with " + otherEntity);
+        }
     }
 }
