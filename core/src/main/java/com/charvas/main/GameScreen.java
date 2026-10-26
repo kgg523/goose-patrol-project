@@ -11,7 +11,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.charvas.entities.AnimatedEntity;
+import com.charvas.entities.Player;
 import com.badlogic.gdx.Screen;
 
 public class GameScreen implements Screen {
@@ -25,7 +25,7 @@ public class GameScreen implements Screen {
     // Game assets and state variables
     private Texture backgroundTexture;
     private static final float mapScale = 128f;
-    private AnimatedEntity gooseSprite;
+    private Player gooseSprite;
 
     private TextureAtlas atlas;
 
@@ -45,7 +45,9 @@ public class GameScreen implements Screen {
 
         stateTime = 0f;
 
-        gooseSprite = new AnimatedEntity(atlas.findRegions("playerRunning")); // Load the goose sprite from the texture
+        gooseSprite = new Player(atlas.findRegions("gooseFrame"), atlas.findRegions("gooseFrame")); // Load the goose
+                                                                                                    // sprite from the
+                                                                                                    // texture
         // atlas
         gooseSprite.setSize(1, 1); // Set the size of the goose sprite to 1x1 units
     }
@@ -79,32 +81,13 @@ public class GameScreen implements Screen {
 
     private void input() {
         // Handle user input here
-        float speed = 3f;
-        float deltaTime = Gdx.graphics.getDeltaTime(); // Keep speed consistant across different frame rates
-
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
-            gooseSprite.translateX(-speed * deltaTime);
-            gooseSprite.setFlip(true, false); // Flip the sprite horizontally when moving left
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
-            gooseSprite.translateX(speed * deltaTime);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
-            gooseSprite.translateY(speed * deltaTime);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S)) {
-            gooseSprite.translateY(-speed * deltaTime);
-        }
+        gooseSprite.input(); // Call the input method of the goose sprite to handle movement
 
     }
 
     private void logic() {
         // Update game logic here
-        float worldWidth = Main.V_WIDTH;
-        float worldHeight = Main.V_HEIGHT;
-        // Keep player within the bounds of the world
-        gooseSprite.setX(MathUtils.clamp(gooseSprite.getX(), 0, worldWidth - gooseSprite.getWidth()));
-        gooseSprite.setY(MathUtils.clamp(gooseSprite.getY(), 0, worldHeight - gooseSprite.getHeight()));
+        gooseSprite.handleBorders();
 
     }
 
