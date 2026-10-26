@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.charvas.main.Main;
 
@@ -26,9 +27,9 @@ public class Player extends AnimatedEntity {
     public Player(Array<AtlasRegion> movingRegion, Array<AtlasRegion> idleRegion) {
         // Sets the animation and initializes the entity with the first frame
         // This should be the main contructor used to create a Player object
+        super(movingRegion); // Initialize the entity with the first frame of the animation
         movingAnimation = new Animation<TextureRegion>(0.1f, movingRegion, Animation.PlayMode.LOOP);
         idleAnimation = new Animation<TextureRegion>(0.1f, idleRegion, Animation.PlayMode.LOOP);
-        super(movingRegion); // Initialize the entity with the first frame of the animation
     }
 
     public void input() {
@@ -36,23 +37,28 @@ public class Player extends AnimatedEntity {
 
         float deltaTime = Gdx.graphics.getDeltaTime(); // Keep speed consistant across different frame rates
 
+        Vector2 moveDirection = new Vector2(0.f, 0.f);
+
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
-            this.translateX(-speed * deltaTime);
-            flipImage = true;
+            moveDirection.add(-1.f, 0.f);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
-            this.translateX(speed * deltaTime);
-            flipImage = false;
+            moveDirection.add(1.f, 0.f);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
-            this.translateY(speed * deltaTime);
+            moveDirection.add(0.f, 1.f);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S)) {
-            this.translateY(-speed * deltaTime);
+            moveDirection.add(0.f, -1.f);
         }
 
+        moveDirection.nor();
+        moveDirection.scl(this.speed * deltaTime);
+
+        this.translate(moveDirection.x, moveDirection.y);
+
         // Flip the goose sprite based on movement direction, and stay looking that way
-        if (flipImage) {
+        if (moveDirection.x < 0) {
             this.setFlip(true, false); // Flip the goose sprite horizontally when moving left
         } else {
             this.setFlip(false, false); // Reset the flip when moving right
