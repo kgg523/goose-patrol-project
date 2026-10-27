@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Launch GoosePatrol (X11 GTK workaround)",
+      "request": "launch",
+      "mainClass": "com.charvas.main.lwjgl3.Lwjgl3Launcher",
+      "env": {
+        "GDK_BACKEND": "x11"
+      }
+    }
+  ]
+}

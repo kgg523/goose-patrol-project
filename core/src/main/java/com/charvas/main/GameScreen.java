@@ -36,18 +36,20 @@ public class GameScreen implements Screen {
     private OrthogonalTiledMapRenderer mapRenderer;
     private OrthographicCamera camera;
 
+    private GUI gui;
+    private GameTimer timer;
+
     public GameScreen(final Main inGame) {
         /* Initialising game assets and state variables */
         game = inGame;
         atlas = new TextureAtlas(Gdx.files.internal("Atlas/game_atlas.atlas"));
-
         backgroundTexture = new Texture("background.png");
 
         stateTime = 0f;
 
         player = new Player(atlas.findRegions("playerRunning"), atlas.findRegions("playerIdle"));
         player.setSize(1, 1); // Set the size of the goose sprite to 1x1 units
-        player.setPosition(1, 1);
+        player.updateAnimation();
     }
 
     @Override
@@ -58,34 +60,37 @@ public class GameScreen implements Screen {
 
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f); // Assuming your tiles are 32x32 pixels
         camera = new OrthographicCamera();
+        gui = new GUI(this);
+        timer = new GameTimer(gui);
     }
 
     @Override
     public void render(float delta) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            isPaused = !isPaused;
+            gui.togglePause();
         }
+
         if (!isPaused) {
             logic();
-            updateAnimation(delta); // Update animation first so input can use the updated animation state
+            timer.decrement(delta);
+            // Update animation first so input can use the updated animation state
             input();
-        }
-        if (isPaused) {
+        } else {
 
         }
+
         draw();
 
     }
 
     private void input() {
         // Handle user input here
-        player.input(); // Call the input method of the goose sprite to handle movement
-
+        player.handleInput(); // Call the input method of the goose sprite to handle movement
     }
 
     private void logic() {
         // Update game logic here
-        player.handleBorders();
+        player.update();
     }
 
     private void draw() {
@@ -113,13 +118,8 @@ public class GameScreen implements Screen {
 
         game.spriteBatch.end();
 
+        gui.render();
         camera.update();
-    }
-
-    private void updateAnimation(float deltaTime) {
-        /* Update the animation state time and the goose sprite's animation */
-        stateTime += deltaTime;
-        player.updateAnimation(stateTime);
     }
 
     @Override
@@ -132,6 +132,7 @@ public class GameScreen implements Screen {
         camera.viewportWidth = Math.min(width, 1920) / mapScale; // Assuming your tiles are 32x32 pixels
         camera.viewportHeight = Math.min(height, 1080) / mapScale; // Assuming your tiles are 32x32 pixels
         camera.update();
+        gui.resize(width, height);
     }
 
     @Override
@@ -156,6 +157,10 @@ public class GameScreen implements Screen {
         atlas.dispose();
         mapRenderer.dispose();
         game.dispose();
+    }
+
+    public void togglePause() {
+        isPaused = !isPaused;
     }
 
 }

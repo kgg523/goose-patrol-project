@@ -6,19 +6,20 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.charvas.main.Main;
 
-public class Player extends AnimatedEntity {
+public class Player extends Entity {
     /* Player class representing the player character in the game */
 
     private Animation<TextureRegion> movingAnimation;
     private Animation<TextureRegion> idleAnimation;
     private TextureRegion currentFrame;
-    private boolean isMoving = true; // Flag to check if the player is moving
-    private boolean flipImage = false;
-    private float invincible = 0; // invincibility frames
-    private float health = 10;
+    private boolean isMoving = false; // Flag to check if the player is moving
+    private float speed = 2.5f; // Player movement speed
+    private float invincible = 0;
+    private float health = 100;
 
     public Player() {
         super();
@@ -29,32 +30,40 @@ public class Player extends AnimatedEntity {
         // This should be the main contructor used to create a Player object
         movingAnimation = new Animation<TextureRegion>(0.1f, movingRegion, Animation.PlayMode.LOOP);
         idleAnimation = new Animation<TextureRegion>(0.1f, idleRegion, Animation.PlayMode.LOOP);
-        super(movingRegion); // Initialize the entity with the first frame of the animation
-        speed = 2.5f;
+        super(movingRegion.get(0));
+
     }
 
-    public void input() {
+    // looks at inputs and SETS state of player. position actually gets updated in
+    // Player.Update
+    @Override
+    public void handleInput() {
         /* Handle player input for movement and actions */
 
         float deltaTime = Gdx.graphics.getDeltaTime(); // Keep speed consistant across different frame rates
 
+        Vector2 moveDirection = new Vector2(0.f, 0.f);
+
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
-            this.translateX(-speed * deltaTime);
-            flipImage = true;
+            moveDirection.x += -1.f;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
-            this.translateX(speed * deltaTime);
-            flipImage = false;
+            moveDirection.x += 1.f;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
-            this.translateY(speed * deltaTime);
+            moveDirection.y += 1.f;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S)) {
-            this.translateY(-speed * deltaTime);
+            moveDirection.y += -1.f;
         }
 
+        moveDirection.nor();
+        moveDirection.scl(this.speed * deltaTime);
+
+        this.setVelocity(moveDirection);
+
         // Flip the goose sprite based on movement direction, and stay looking that way
-        if (flipImage) {
+        if (moveDirection.x < 0) {
             this.setFlip(true, false); // Flip the goose sprite horizontally when moving left
         } else {
             this.setFlip(false, false); // Reset the flip when moving right
@@ -68,14 +77,27 @@ public class Player extends AnimatedEntity {
     }
 
     @Override
-    public void updateAnimation(float stateTime) {
-        /* Logic to update the animation frames based on time */
+    public void update() {
+        super.update();
+        handleBorders();
+        updateAnimation();
+    }
 
+    @Override
+    public void onCollision(Entity otherEntity) {
+
+    }
+
+    static float stateTimeS = 0.f;
+
+    public void updateAnimation() {
+        /* Logic to update the animation frames based on time */
+        stateTimeS += Gdx.graphics.getDeltaTime();
         if (isMoving) {
-            currentFrame = movingAnimation.getKeyFrame(stateTime, true);
+            currentFrame = movingAnimation.getKeyFrame(stateTimeS, true);
             this.setRegion(currentFrame); // Update the goose sprite's texture region to the current frame
         } else {
-            currentFrame = idleAnimation.getKeyFrame(stateTime, false);
+            currentFrame = idleAnimation.getKeyFrame(stateTimeS, false);
             this.setRegion(currentFrame); // Update the goose sprite's texture region to the current frame
         }
     }
