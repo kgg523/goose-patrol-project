@@ -70,29 +70,29 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             gui.togglePause();
         }
+        
         if (!isPaused) {
             logic();
             timer.decrement(delta);
-            updateAnimation(delta); // Update animation first so input can use the updated animation state
+            // Update animation first so input can use the updated animation state
             input();
         }
-        if (isPaused) {
+        else {
 
         }
+
         draw();
 
     }
 
     private void input() {
         // Handle user input here
-        player.input(); // Call the input method of the goose sprite to handle movement
-
+        player.handleInput(); // Call the input method of the goose sprite to handle movement
     }
 
     private void logic() {
         // Update game logic here
-        player.handleBorders();
-
+        player.update();
     }
 
     private void draw() {
@@ -122,12 +122,6 @@ public class GameScreen implements Screen {
 
         gui.render();
         camera.update();
-    }
-
-    private void updateAnimation(float deltaTime) {
-        /* Update the animation state time and the goose sprite's animation */
-        stateTime += deltaTime;
-        player.updateAnimation(stateTime);
     }
 
     @Override
