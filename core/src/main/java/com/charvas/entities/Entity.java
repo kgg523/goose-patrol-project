@@ -52,52 +52,27 @@ public class Entity extends Sprite {
 
         scaledAcc.scl(deltaTimeS);
         scaledVel.add(scaledAcc);
-        if (scaledVel.len() > this.maxSpeed * deltaTimeS) {
+        if(scaledVel.len() > this.maxSpeed * deltaTimeS)
+        {
             scaledVel.setLength(this.maxSpeed * deltaTimeS);
         }
 
         this.translate(scaledVel.x, scaledVel.y);
     }
 
-    public void onCollision(Entity otherEntity) {
-    }
+    public void onCollision(Entity otherEntity) {}
 
-    public final boolean isAlive() {
-        return alive;
-    }
-
+    public final boolean isAlive() { return alive; }
     // flags to EntityManager to remove this instance from entity list
-    public final void kill() {
-        this.alive = false;
-    }
+    public final void kill() { this.alive = false; }
 
-    public final Vector2 getVelocity() {
-        return new Vector2(this.velocity);
-    }
+    public final Vector2 getVelocity() { return new Vector2(this.velocity); }
+    public final Vector2 getAcceleration() { return new Vector2(this.acceleration); }
+    public final float getMaxSpeed() { return this.maxSpeed; }
 
-    public final Vector2 getAcceleration() {
-        return new Vector2(this.acceleration);
-    }
-
-    public final float getMaxSpeed() {
-        return this.maxSpeed;
-    }
-
-    public final void setPosition(Vector2 newPosition) {
-        this.setX(newPosition.x);
-        this.setY(newPosition.y);
-    }
-
-    public final void setVelocity(Vector2 newVelocity) {
-        this.velocity.set(newVelocity);
-    }
-
-    public final void setAcceleration(Vector2 newAcceleration) {
-        this.acceleration.set(newAcceleration);
-    }
-
-    public final void setMaxSpeed(float newMaxSpeed) {
-        this.maxSpeed = newMaxSpeed;
-    }
+    public final void setPosition(Vector2 newPosition) { this.setX(newPosition.x); this.setY(newPosition.y); }
+    public final void setVelocity(Vector2 newVelocity) { this.velocity.set(newVelocity); }
+    public final void setAcceleration(Vector2 newAcceleration) { this.acceleration.set(newAcceleration); }
+    public final void setMaxSpeed(float newMaxSpeed) { this.maxSpeed = newMaxSpeed; }
 
 }
