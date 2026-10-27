@@ -16,6 +16,7 @@ public class Main extends Game {
     public FitViewport viewport;
 
     public void create() {
+        // Starts the game elements
         spriteBatch = new SpriteBatch();
 
         this.setScreen(new GameScreen(this));

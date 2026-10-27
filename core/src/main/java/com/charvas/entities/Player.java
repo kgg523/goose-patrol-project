@@ -57,6 +57,7 @@ public class Player extends Entity {
             moveDirection.y += -1.f;
         }
 
+        // normalise speed vector
         moveDirection.nor();
         moveDirection.scl(this.speed * deltaTime);
 
@@ -76,21 +77,20 @@ public class Player extends Entity {
                 || Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S);
     }
 
-    @Override 
-    public void update()
-    {
+    @Override
+    public void update() {
         super.update();
         handleBorders();
         updateAnimation();
     }
 
     @Override
-    public void onCollision(Entity otherEntity)
-    {
+    public void onCollision(Entity otherEntity) {
 
     }
 
     static float stateTimeS = 0.f;
+
     public void updateAnimation() {
         /* Logic to update the animation frames based on time */
         stateTimeS += Gdx.graphics.getDeltaTime();

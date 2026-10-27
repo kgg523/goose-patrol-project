@@ -27,10 +27,11 @@ public class GameScreen implements Screen {
     private static final float mapScale = 128f;
     private Player player;
 
-    private TextureAtlas atlas;
+    private TextureAtlas atlas; // Load textures for entity's all at once
 
     private boolean isPaused = true; // Flag to pause the game
 
+    // map and cameras to view the map
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
     private OrthographicCamera camera;
@@ -44,6 +45,7 @@ public class GameScreen implements Screen {
         atlas = new TextureAtlas(Gdx.files.internal("Atlas/game_atlas.atlas"));
         backgroundTexture = new Texture("background.png");
 
+        // Initialise the player
         player = new Player(atlas.findRegions("playerRunning"), atlas.findRegions("playerIdle"));
         player.setSize(1, 1); // Set the size of the goose sprite to 1x1 units
         player.updateAnimation();
@@ -63,6 +65,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        // Render gui and game elements
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             gui.togglePause();
         }
