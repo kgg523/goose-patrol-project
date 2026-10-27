@@ -12,4 +12,25 @@ public class EntityManager {
     {
         entityList.add(newEntity);
     }
+
+    public final void removeEntity(Entity )
+
+    public final ArrayList<Entity> getEntities()
+    {
+        return entityList;
+    }
+
+
+
+    public final void update()
+    {
+        for (Entity entity : entityList) {
+            entity.update();
+        }
+    }
+
+    public static boolean checkCollision(Entity ent1, Entity ent2)
+    {
+        
+    }
 }
