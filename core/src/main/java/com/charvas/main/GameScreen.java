@@ -36,11 +36,12 @@ public class GameScreen implements Screen {
     private OrthogonalTiledMapRenderer mapRenderer;
     private OrthographicCamera camera;
 
+    private GUI gui;
+
     public GameScreen(final Main inGame) {
         /* Initialising game assets and state variables */
         game = inGame;
         atlas = new TextureAtlas(Gdx.files.internal("Atlas/game_atlas.atlas"));
-
         backgroundTexture = new Texture("background.png");
 
         stateTime = 0f;
@@ -57,12 +58,13 @@ public class GameScreen implements Screen {
 
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f); // Assuming your tiles are 32x32 pixels
         camera = new OrthographicCamera();
+        gui = new GUI(this);
     }
 
     @Override
     public void render(float delta) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            isPaused = !isPaused;
+            gui.togglePause();
         }
         
         if (!isPaused) {
@@ -112,6 +114,7 @@ public class GameScreen implements Screen {
 
         game.spriteBatch.end();
 
+        gui.render();
         camera.update();
     }
 
@@ -125,6 +128,7 @@ public class GameScreen implements Screen {
         camera.viewportWidth = Math.min(width, 1920) / mapScale; // Assuming your tiles are 32x32 pixels
         camera.viewportHeight = Math.min(height, 1080) / mapScale; // Assuming your tiles are 32x32 pixels
         camera.update();
+        gui.resize(width, height);
     }
 
     @Override
@@ -133,7 +137,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
-        game.pause();
+        //game.pause();
+        isPaused = !isPaused;
     }
 
     @Override
