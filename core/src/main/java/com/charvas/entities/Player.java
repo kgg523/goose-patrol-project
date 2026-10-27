@@ -10,14 +10,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.charvas.main.Main;
 
-public class Player extends AnimatedEntity {
+public class Player extends Entity {
     /* Player class representing the player character in the game */
 
     private Animation<TextureRegion> movingAnimation;
     private Animation<TextureRegion> idleAnimation;
     private TextureRegion currentFrame;
     private boolean isMoving = true; // Flag to check if the player is moving
-    private boolean flipImage = false;
     private float speed = 2.5f; // Player movement speed
 
     public Player() {
@@ -27,12 +26,14 @@ public class Player extends AnimatedEntity {
     public Player(Array<AtlasRegion> movingRegion, Array<AtlasRegion> idleRegion) {
         // Sets the animation and initializes the entity with the first frame
         // This should be the main contructor used to create a Player object
-        super(movingRegion); // Initialize the entity with the first frame of the animation
         movingAnimation = new Animation<TextureRegion>(0.1f, movingRegion, Animation.PlayMode.LOOP);
         idleAnimation = new Animation<TextureRegion>(0.1f, idleRegion, Animation.PlayMode.LOOP);
     }
 
-    public void input() {
+    // looks at inputs and SETS state of player. position actually gets updated in Player.Update
+    @Override   
+    public void handleInput()
+    {
         /* Handle player input for movement and actions */
 
         float deltaTime = Gdx.graphics.getDeltaTime(); // Keep speed consistant across different frame rates
@@ -40,22 +41,22 @@ public class Player extends AnimatedEntity {
         Vector2 moveDirection = new Vector2(0.f, 0.f);
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
-            moveDirection.add(-1.f, 0.f);
+            moveDirection.x += -1.f;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
-            moveDirection.add(1.f, 0.f);
+            moveDirection.x += 1.f;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
-            moveDirection.add(0.f, 1.f);
+            moveDirection.y += 1.f;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S)) {
-            moveDirection.add(0.f, -1.f);
+            moveDirection.y += -1.f;
         }
 
         moveDirection.nor();
         moveDirection.scl(this.speed * deltaTime);
 
-        this.translate(moveDirection.x, moveDirection.y);
+        this.setVelocity(moveDirection);
 
         // Flip the goose sprite based on movement direction, and stay looking that way
         if (moveDirection.x < 0) {
@@ -71,15 +72,29 @@ public class Player extends AnimatedEntity {
                 || Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S);
     }
 
-    @Override
-    public void updateAnimation(float stateTime) {
-        /* Logic to update the animation frames based on time */
+    @Override 
+    public void update()
+    {
+        super.update();
+        handleBorders();
+        updateAnimation();
+    }
 
+    @Override
+    public void onCollision(Entity otherEntity)
+    {
+
+    }
+
+    static float stateTimeS = 0.f;
+    public void updateAnimation() {
+        /* Logic to update the animation frames based on time */
+        stateTimeS += Gdx.graphics.getDeltaTime();
         if (isMoving) {
-            currentFrame = movingAnimation.getKeyFrame(stateTime, true);
+            currentFrame = movingAnimation.getKeyFrame(stateTimeS, true);
             this.setRegion(currentFrame); // Update the goose sprite's texture region to the current frame
         } else {
-            currentFrame = idleAnimation.getKeyFrame(stateTime, false);
+            currentFrame = idleAnimation.getKeyFrame(stateTimeS, false);
             this.setRegion(currentFrame); // Update the goose sprite's texture region to the current frame
         }
     }
