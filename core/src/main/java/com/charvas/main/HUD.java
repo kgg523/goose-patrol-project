@@ -56,7 +56,7 @@ public class HUD {
         pauseLabel = new Label("PAUSED", pauseLabelStyle);
         pauseLabel.setFontScale(6f);
         pauseLabel.setPosition(790, 960);
-        pauseLabel.setVisible(false);
+        pauseLabel.setVisible(true);
         stage.addActor(pauseLabel);
 
 

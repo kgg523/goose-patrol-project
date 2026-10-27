@@ -63,7 +63,7 @@ public class Player extends Entity {
 
         this.setVelocity(moveDirection);
 
-        // Flip the goose sprite based on movement direction, and stay looking that way
+        // Flip the player sprite based on movement direction, and stay looking that way
         if (moveDirection.x < 0) {
             this.setFlip(true, false); // Flip the goose sprite horizontally when moving left
         } else {
@@ -96,10 +96,10 @@ public class Player extends Entity {
         stateTimeS += Gdx.graphics.getDeltaTime();
         if (isMoving) {
             currentFrame = movingAnimation.getKeyFrame(stateTimeS, true);
-            this.setRegion(currentFrame); // Update the goose sprite's texture region to the current frame
+            this.setRegion(currentFrame); // Update the player sprite's texture region to the current frame
         } else {
             currentFrame = idleAnimation.getKeyFrame(stateTimeS, false);
-            this.setRegion(currentFrame); // Update the goose sprite's texture region to the current frame
+            this.setRegion(currentFrame); // Update the player sprite's texture region to the current frame
         }
     }
 
