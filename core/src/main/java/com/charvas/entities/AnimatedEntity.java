@@ -21,7 +21,7 @@ public class AnimatedEntity extends Entity {
          * frame
          */
         animation = new Animation<TextureRegion>(0.1f, region, Animation.PlayMode.LOOP);
-        super(region.get(0)); // Initialize the entity with the first frame of the animation
+        //super(region.get(0)); // Initialize the entity with the first frame of the animation
     }
 
     public AnimatedEntity(Texture texture) {
