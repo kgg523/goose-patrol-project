@@ -24,6 +24,9 @@
                 "x": 480.20210526315793,
                 "y": 479.39368421052643
             }
+        },
+        "map.tsx": {
+            "scaleInDock": 1
         }
     },
     "last.imagePath": "C:/Users/aiden/Documents/ComputerScience/goose-patrol-project/assets",

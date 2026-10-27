@@ -18,6 +18,8 @@ public class Player extends Entity {
     private TextureRegion currentFrame;
     private boolean isMoving = false; // Flag to check if the player is moving
     private float speed = 2.5f; // Player movement speed
+    private float invincible = 0;
+    private float health = 100;
 
     public Player() {
         super();
@@ -28,12 +30,14 @@ public class Player extends Entity {
         // This should be the main contructor used to create a Player object
         movingAnimation = new Animation<TextureRegion>(0.1f, movingRegion, Animation.PlayMode.LOOP);
         idleAnimation = new Animation<TextureRegion>(0.1f, idleRegion, Animation.PlayMode.LOOP);
+        super(movingRegion.get(0));
+
     }
 
-    // looks at inputs and SETS state of player. position actually gets updated in Player.Update
-    @Override   
-    public void handleInput()
-    {
+    // looks at inputs and SETS state of player. position actually gets updated in
+    // Player.Update
+    @Override
+    public void handleInput() {
         /* Handle player input for movement and actions */
 
         float deltaTime = Gdx.graphics.getDeltaTime(); // Keep speed consistant across different frame rates
@@ -105,19 +109,41 @@ public class Player extends Entity {
         float worldHeight = Main.V_HEIGHT;
         float offsetX = this.getWidth() * 0.25f; // Offset to allow the player image to be correct
 
-        this.setX(MathUtils.clamp(this.getX(), -offsetX, worldWidth - this.getWidth() + offsetX));
-        this.setY(MathUtils.clamp(this.getY(), 0, worldHeight - this.getHeight()));
+        this.setX(MathUtils.clamp(getX(), -offsetX, worldWidth - getWidth() + offsetX));
+        this.setY(MathUtils.clamp(getY(), 0, worldHeight - getHeight()));
+
+        // update hitbox to player location
+        customHitbox.set(getX() + offsetX, getY(), 0.5f, 1.0f);
     }
 
-    public void setSpeed(float speed) {
-        this.speed = speed;
-    }
-
-    public void checkCollision(Entity otherEntity) {
+    public Entity checkCollision(Entity otherEntity) {
         // Check for collision with another entity
-        if (this.getBoundingRectangle().overlaps(otherEntity.getBoundingRectangle())) {
-            // Handle collision logic here
-            System.out.println("Collision detected with " + otherEntity);
+
+        // update invinibility frames
+        invincible -= 1;
+
+        if (invincible > 0) {
+            return null;
         }
+
+        if (this.customHitbox.overlaps(otherEntity.getHitbox())) {
+            // Handle collision logic here
+            invincible = 10;
+            health -= 1;
+            return (Entity) otherEntity;
+        }
+        return null;
+    }
+
+    public void setHealth(float newHealth) {
+        health = newHealth;
+    }
+
+    public float getHealth() {
+        return health;
+    }
+
+    public void setSpeed(float newSpeed) {
+        speed = newSpeed;
     }
 }

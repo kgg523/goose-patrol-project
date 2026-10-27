@@ -4,10 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Entity extends Sprite {
     /* Entity class for representing game objects */
+
+    public Rectangle customHitbox;
 
     private Vector2 velocity = new Vector2();
     private Vector2 acceleration = new Vector2();
@@ -21,17 +24,25 @@ public class Entity extends Sprite {
 
     public Entity(TextureRegion region) {
         super(region);
+        customHitbox = new Rectangle(-100, -100, 1, 1);
     }
 
     public Entity(Texture texture) {
         super(texture);
+        customHitbox = new Rectangle(-100, -100, 1, 1);
     }
 
     public Entity(Texture texture, int srcWidth, int srcHeight) {
         super(texture, srcWidth, srcHeight);
+        customHitbox = new Rectangle(-100, -100, srcWidth, srcHeight);
     }
 
-    public void handleInput() {}
+    public Rectangle getHitbox() {
+        return customHitbox;
+    }
+
+    public void handleInput() {
+    }
 
     public void update() {
         float deltaTimeS = Gdx.graphics.getDeltaTime();
