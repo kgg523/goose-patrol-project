@@ -16,7 +16,7 @@ public class Player extends Entity {
     private Animation<TextureRegion> movingAnimation;
     private Animation<TextureRegion> idleAnimation;
     private TextureRegion currentFrame;
-    private boolean isMoving = true; // Flag to check if the player is moving
+    private boolean isMoving = false; // Flag to check if the player is moving
     private float speed = 2.5f; // Player movement speed
 
     public Player() {
