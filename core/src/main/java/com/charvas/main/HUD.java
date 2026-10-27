@@ -17,6 +17,7 @@ public class HUD {
     private GUI gui;
     private Stage stage;
     private Button pauseButton;
+    private Label pauseLabel;
     private Label timerLabel;
     
 
@@ -40,6 +41,7 @@ public class HUD {
         pauseButton.setPosition(20, 1020);
         pauseButton.setHeight(50);
         pauseButton.setWidth(50);
+        pauseButton.setChecked(true);
         pauseButton.addListener(new ClickListener() {
             @Override 
             public void clicked (InputEvent event, float x, float y) {
@@ -48,6 +50,14 @@ public class HUD {
             }
         });
         stage.addActor(pauseButton);
+
+        LabelStyle pauseLabelStyle  = new LabelStyle();
+        pauseLabelStyle.font = new BitmapFont();
+        pauseLabel = new Label("PAUSED", pauseLabelStyle);
+        pauseLabel.setFontScale(6f);
+        pauseLabel.setPosition(790, 960);
+        pauseLabel.setVisible(false);
+        stage.addActor(pauseLabel);
 
 
 
@@ -72,6 +82,7 @@ public class HUD {
 
     public void pause() {
         pauseButton.setChecked(!pauseButton.isChecked());
+        pauseLabel.setVisible(pauseButton.isChecked());
     }
 
     public void setTimerString(String str) {

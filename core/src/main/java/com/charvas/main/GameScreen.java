@@ -30,13 +30,14 @@ public class GameScreen implements Screen {
     private TextureAtlas atlas;
 
     private float stateTime;
-    private boolean isPaused = false; // Flag to pause the game
+    private boolean isPaused = true; // Flag to pause the game
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
     private OrthographicCamera camera;
 
     private GUI gui;
+    private GameTimer timer;
 
     public GameScreen(final Main inGame) {
         /* Initialising game assets and state variables */
@@ -46,8 +47,10 @@ public class GameScreen implements Screen {
 
         stateTime = 0f;
 
+
         player = new Player(atlas.findRegions("playerRunning"), atlas.findRegions("playerIdle"));
         player.setSize(1, 1); // Set the size of the goose sprite to 1x1 units
+        player.updateAnimation(stateTime);
     }
 
     @Override
@@ -59,6 +62,7 @@ public class GameScreen implements Screen {
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f); // Assuming your tiles are 32x32 pixels
         camera = new OrthographicCamera();
         gui = new GUI(this);
+        timer = new GameTimer(gui);
     }
 
     @Override
@@ -68,6 +72,7 @@ public class GameScreen implements Screen {
         }
         if (!isPaused) {
             logic();
+            timer.decrement(delta);
             updateAnimation(delta); // Update animation first so input can use the updated animation state
             input();
         }
@@ -144,8 +149,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
-        //game.pause();
-        isPaused = !isPaused;
+        game.pause();
     }
 
     @Override
@@ -161,6 +165,10 @@ public class GameScreen implements Screen {
         atlas.dispose();
         mapRenderer.dispose();
         game.dispose();
+    }
+
+    public void togglePause() {
+        isPaused = !isPaused;
     }
 
 }

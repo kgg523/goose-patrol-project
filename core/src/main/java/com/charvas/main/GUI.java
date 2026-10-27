@@ -73,7 +73,7 @@ public class GUI {
 //        METHOD FOR INTERACTING WITH PAUSE BUTTON
     public void togglePause() {
         hud.pause();
-        game.pause();
+        game.togglePause();
     }
 
 
