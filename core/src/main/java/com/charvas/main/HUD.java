@@ -66,10 +66,6 @@ public class HUD {
         stage.addActor(timerLabel);
     }
 
-
-    
-
-
     public void pause() {
         pauseButton.setChecked(!pauseButton.isChecked());
     }
