@@ -50,7 +50,7 @@ public class GameScreen implements Screen {
 
         player = new Player(atlas.findRegions("playerRunning"), atlas.findRegions("playerIdle"));
         player.setSize(1, 1); // Set the size of the goose sprite to 1x1 units
-        player.updateAnimation(stateTime);
+        player.updateAnimation();
     }
 
     @Override
