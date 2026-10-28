@@ -29,9 +29,9 @@ public class Player extends Entity {
     public Player(Array<AtlasRegion> movingRegion, Array<AtlasRegion> idleRegion) {
         // Sets the animation and initializes the entity with the first frame
         // This should be the main contructor used to create a Player object
+        super(movingRegion.get(0));
         movingAnimation = new Animation<TextureRegion>(0.1f, movingRegion, Animation.PlayMode.LOOP);
         idleAnimation = new Animation<TextureRegion>(0.1f, idleRegion, Animation.PlayMode.LOOP);
-        super(movingRegion.get(0));
 
     }
 
