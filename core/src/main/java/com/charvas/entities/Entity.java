@@ -4,10 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.charvas.main.Main;
 
-public class Entity extends Sprite {
+public abstract class Entity extends Sprite {
     /* Entity class for representing game objects */
 
     public Rectangle customHitbox; // Hitbox for collision
@@ -18,6 +20,11 @@ public class Entity extends Sprite {
     private float maxSpeed = 2.5f;
 
     private boolean alive = true;
+
+
+    /****************/
+    /* CONSTRUCTORS */
+    /****************/
 
     public Entity() {
     }
@@ -37,20 +44,35 @@ public class Entity extends Sprite {
         customHitbox = new Rectangle(-100, -100, srcWidth, srcHeight);
     }
 
-    public Rectangle getHitbox() {
-        return customHitbox;
+    /***********/
+    /* HELPERS */
+    /***********/
+    // sets the players position 
+    public final void handleBorders() {
+        // Keep player within the bounds of the world
+        float worldWidth = Main.V_WIDTH;
+        float worldHeight = Main.V_HEIGHT;
+        float offsetX = this.getWidth() * 0.25f; // Offset to allow the player image to be correct
+
+        this.setX(MathUtils.clamp(getX(), -offsetX, worldWidth - getWidth() + offsetX));
+        this.setY(MathUtils.clamp(getY(), 0, worldHeight - getHeight()));
+
+        // update hitbox to player location
+        customHitbox.set(getX() + offsetX, getY(), 0.5f, 1.0f);
     }
 
-    public void handleInput() {
-    }
-
+    /************/
+    /* OVERIDES */
+    /************/
+    public void handleInput() {}
+    
     public void update() {
         // update entity values each frame
         float deltaTimeS = Gdx.graphics.getDeltaTime();
 
         Vector2 scaledAcc = new Vector2(this.acceleration);
         Vector2 scaledVel = new Vector2(this.velocity);
-
+        
         scaledAcc.scl(deltaTimeS);
         scaledVel.add(scaledAcc);
         if (scaledVel.len() > this.maxSpeed * deltaTimeS) {
@@ -60,16 +82,14 @@ public class Entity extends Sprite {
         this.translate(scaledVel.x, scaledVel.y);
     }
 
-    public void onCollision(Entity otherEntity) {
-    }
+    public void onCollision(Entity otherEntity) {}
 
-    public final boolean isAlive() {
-        return alive;
-    }
 
-    // flags to EntityManager to remove this instance from entity list
-    public final void kill() {
-        this.alive = false;
+    /***********/
+    /* GETTERS */
+    /***********/
+    public final Vector2 getPosition() {
+        return new Vector2(getX(), getY());
     }
 
     public final Vector2 getVelocity() {
@@ -83,6 +103,18 @@ public class Entity extends Sprite {
     public final float getMaxSpeed() {
         return this.maxSpeed;
     }
+
+    public final Rectangle getHitbox() {
+        return new Rectangle(customHitbox);
+    }
+
+    public final boolean isAlive() {
+        return alive;
+    }
+
+    /***********/
+    /* SETTERS */
+    /***********/
 
     public final void setPosition(Vector2 newPosition) {
         this.setX(newPosition.x);
@@ -101,4 +133,12 @@ public class Entity extends Sprite {
         this.maxSpeed = newMaxSpeed;
     }
 
+    public final void setHitbox(Rectangle newHitbox) {
+        customHitbox = newHitbox;
+    }
+
+    // flags to EntityManager to remove this instance from entity list
+    public final void kill() {
+        this.alive = false;
+    }
 }

@@ -11,6 +11,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.charvas.entities.EntityManager;
 import com.charvas.entities.Player;
 import com.badlogic.gdx.Screen;
 
@@ -25,7 +26,9 @@ public class GameScreen implements Screen {
     // Game assets and state variables
     private Texture backgroundTexture;
     private static final float mapScale = 128f;
-    private Player player;
+
+    private EntityManager entManager = null;
+    private Player playerRef = null;
 
     private TextureAtlas atlas; // Load textures for entity's all at once
 
@@ -45,10 +48,14 @@ public class GameScreen implements Screen {
         atlas = new TextureAtlas(Gdx.files.internal("Atlas/game_atlas.atlas"));
         backgroundTexture = new Texture("background.png");
 
+        entManager = new EntityManager();
+
         // Initialise the player
-        player = new Player(atlas.findRegions("playerRunning"), atlas.findRegions("playerIdle"));
-        player.setSize(1, 1); // Set the size of the goose sprite to 1x1 units
-        player.updateAnimation();
+        playerRef = new Player(atlas.findRegions("playerRunning"), atlas.findRegions("playerIdle"));
+        playerRef.setSize(1, 1); // Set the size of the goose sprite to 1x1 units
+        playerRef.updateAnimation();
+
+        entManager.addEntity(playerRef);
     }
 
     @Override
@@ -75,8 +82,6 @@ public class GameScreen implements Screen {
             timer.decrement(delta);
             // Update animation first so input can use the updated animation state
             input();
-        } else {
-
         }
 
         draw();
@@ -85,12 +90,12 @@ public class GameScreen implements Screen {
 
     private void input() {
         // Handle user input here
-        player.handleInput(); // Call the input method of the goose sprite to handle movement
+        playerRef.handleInput();
     }
 
     private void logic() {
         // Update game logic here
-        player.update();
+        entManager.update();
     }
 
     private void draw() {
@@ -104,8 +109,8 @@ public class GameScreen implements Screen {
          * Update the camera position to follow the goose sprite, while keeping it
          * within the bounds of the world
          */
-        camera.position.set(player.getX() + player.getWidth() / 2,
-                player.getY() + player.getHeight() / 2, 0);
+        camera.position.set(playerRef.getX() + playerRef.getWidth() / 2,
+                playerRef.getY() + playerRef.getHeight() / 2, 0);
         camera.position.x = MathUtils.clamp(camera.position.x, camera.viewportWidth / 2,
                 Main.V_WIDTH - camera.viewportWidth / 2);
         camera.position.y = MathUtils.clamp(camera.position.y, camera.viewportHeight / 2,
@@ -114,7 +119,7 @@ public class GameScreen implements Screen {
         game.spriteBatch.setProjectionMatrix(camera.combined);
         game.spriteBatch.begin();
 
-        player.draw(game.spriteBatch); // Draw the goose sprite
+        entManager.draw(game.spriteBatch);
 
         game.spriteBatch.end();
 
