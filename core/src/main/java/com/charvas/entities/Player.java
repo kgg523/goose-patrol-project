@@ -94,13 +94,15 @@ public class Player extends Entity {
     public void updateAnimation() {
         /* Logic to update the animation frames based on time */
         stateTimeS += Gdx.graphics.getDeltaTime();
+        TextureRegion newSpriteTex = null;
+
         if (isMoving) {
-            currentFrame = movingAnimation.getKeyFrame(stateTimeS, true);
-            this.setRegion(currentFrame); // Update the player sprite's texture region to the current frame
-        } else {
-            currentFrame = idleAnimation.getKeyFrame(stateTimeS, false);
-            this.setRegion(currentFrame); // Update the player sprite's texture region to the current frame
+            newSpriteTex = movingAnimation.getKeyFrame(stateTimeS, true);
+        } 
+        else {
+            newSpriteTex = idleAnimation.getKeyFrame(stateTimeS, false);
         }
+        this.setRegion(newSpriteTex); // Update the player sprite's texture region to the current frame
     }
 
     public void setHealth(int newHealth) {
