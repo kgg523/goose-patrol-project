@@ -26,10 +26,6 @@ public class Player extends Entity {
     private int maxHealth = 100;
     private int health = maxHealth;
 
-    public Player() {
-        super();
-    }
-
     public Player(Array<AtlasRegion> movingRegion, Array<AtlasRegion> idleRegion) {
         // Sets the animation and initializes the entity with the first frame
         // This should be the main contructor used to create a Player object
@@ -108,11 +104,19 @@ public class Player extends Entity {
     }
 
     public void setHealth(int newHealth) {
-        health = newHealth;
+        health = MathUtils.clamp(newHealth, 0, maxHealth);
+    }
+
+    public void setMaxHealth(int newMaxHealth) {
+        maxHealth = newMaxHealth;
+    }
+
+    public void heal(int hp) {
+        health = MathUtils.clamp(health + hp, 0, maxHealth);
     }
 
     public void takeDamage(int damagePts) {
-        MathUtils.clamp(health - damagePts, 0, maxHealth);
+        health = MathUtils.clamp(health - damagePts, 0, maxHealth);
     }
 
     public int getHealth() {
