@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
@@ -14,15 +15,13 @@ public class Player extends Entity {
 
     private Animation<TextureRegion> movingAnimation;
     private Animation<TextureRegion> idleAnimation;
-    private TextureRegion currentFrame;
+
     private boolean isMoving = false; // Flag to check if the player is moving
-    private boolean left = false; // Flag to flip player if looking left
+    private boolean lookingLeft = false; // Flag to flip player if looking left
     
     private int iFrameCooldown = 10; // number of invincibility frames after getting hit
     private int iFrameCount = 0; // current count of invincibility frames
 
-    private float speed = 2.5f; // Player movement speed
-    
     private int maxHealth = 100;
     private int health = maxHealth;
 
@@ -36,6 +35,11 @@ public class Player extends Entity {
         
         movingAnimation = new Animation<TextureRegion>(movingSecPerFrame, movingRegion, Animation.PlayMode.LOOP);
         idleAnimation = new Animation<TextureRegion>(idleSecPerFrame, idleRegion, Animation.PlayMode.LOOP);
+
+        Rectangle customHitbox = getHitbox();
+
+        customHitbox.setWidth(1.0f);
+        customHitbox.setHeight(1.0f);
     }
 
     // looks at inputs and SETS state of player. position actually gets updated in
@@ -55,20 +59,17 @@ public class Player extends Entity {
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S)) 
             moveDirection.y -= 1.f;
         
-        // normalise speed vector
-        moveDirection.nor();
-        moveDirection.scl(this.speed);
+        moveDirection.setLength(getMaxSpeed());
 
         this.setVelocity(moveDirection);
 
         if(this.getVelocity().x < 0.f)
-            this.setFlip(true, false); // Flip the goose sprite horizontally when moving left
+            lookingLeft = true;
+        else if(this.getVelocity().x > 0.f)
+            lookingLeft = false;
 
         // Check if the player is moving based on input
-        isMoving = Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)
-                || Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)
-                || Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)
-                || Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S);
+        isMoving = getVelocity().len() > 0.f;
     }
 
     @Override
@@ -76,6 +77,13 @@ public class Player extends Entity {
         super.update();
         handleBorders();
         updateAnimation();
+
+        if(lookingLeft) {
+            this.setFlip(true, false);
+        } else {
+            this.setFlip(false, false);
+        }
+
         if(iFrameCount > 0)
             iFrameCount--;
     }
@@ -86,22 +94,19 @@ public class Player extends Entity {
             return;
 
         iFrameCount = iFrameCooldown;
-
     }
 
     static float stateTimeS = 0.f;
-
     public void updateAnimation() {
         /* Logic to update the animation frames based on time */
         stateTimeS += Gdx.graphics.getDeltaTime();
         TextureRegion newSpriteTex = null;
 
-        if (isMoving) {
+        if (isMoving)
             newSpriteTex = movingAnimation.getKeyFrame(stateTimeS, true);
-        } 
-        else {
+        else 
             newSpriteTex = idleAnimation.getKeyFrame(stateTimeS, false);
-        }
+
         this.setRegion(newSpriteTex); // Update the player sprite's texture region to the current frame
     }
 
@@ -127,9 +132,5 @@ public class Player extends Entity {
 
     public int getMaxHealth() {
         return maxHealth;
-    }
-
-    public void setSpeed(float newSpeed) {
-        speed = newSpeed;
     }
 }

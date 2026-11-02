@@ -1,17 +1,21 @@
 package com.charvas.entities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+
+
 import com.charvas.entities.EntityManager;
 import com.charvas.entities.Player;
 import com.charvas.main.Main;
-import javax.swing.JOptionPane;
 
 public class World {
 
@@ -24,6 +28,9 @@ public class World {
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
     private OrthographicCamera camera;
+    private ShapeRenderer shapeRenderer = null;
+
+    private boolean drawHitboxes = false;
 
     public World(TextureAtlas mainTextures, String mapFilePath) {
         this.mainTexturesRef = mainTextures;
@@ -34,9 +41,14 @@ public class World {
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f); // Assuming your tiles are 32x32 pixels
         camera = new OrthographicCamera();
 
+        shapeRenderer = new ShapeRenderer();
+
         entManager = new EntityManager();
 
         spawnPlayer(new Vector2(5, 5));
+
+        spawnGoose(new Vector2(7, 5));
+
         playerRef.setSize(1, 1);        
     }   
 
@@ -45,6 +57,10 @@ public class World {
     public final OrthographicCamera getCamera() { return camera; }
 
     public final void processInput() {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.H)) {
+            drawHitboxes = !drawHitboxes;
+        }
+
         playerRef.handleInput();
     }
     public final void update() {
@@ -56,6 +72,14 @@ public class World {
             throw new IllegalStateException("World is not initialised. Ensure that mainTexturesRef, entManager, camera, map, and mapRenderer are all set.");
         }
 
+        camera.position.set(playerRef.getX() + playerRef.getWidth() / 2,
+                playerRef.getY() + playerRef.getHeight() / 2, 0);
+        camera.position.x = MathUtils.clamp(camera.position.x, camera.viewportWidth / 2,
+                Main.V_WIDTH - camera.viewportWidth / 2);
+        camera.position.y = MathUtils.clamp(camera.position.y, camera.viewportHeight / 2,
+                Main.V_HEIGHT - camera.viewportHeight / 2);
+        camera.update();
+
         mapRenderer.setView(camera.combined, 0, 0, Main.V_WIDTH, Main.V_HEIGHT); // Set mapRenderer to use the camera
         mapRenderer.render();
 
@@ -66,18 +90,31 @@ public class World {
 
         pBatch.end();
 
-        camera.position.set(playerRef.getX() + playerRef.getWidth() / 2,
-                playerRef.getY() + playerRef.getHeight() / 2, 0);
-        camera.position.x = MathUtils.clamp(camera.position.x, camera.viewportWidth / 2,
-                Main.V_WIDTH - camera.viewportWidth / 2);
-        camera.position.y = MathUtils.clamp(camera.position.y, camera.viewportHeight / 2,
-                Main.V_HEIGHT - camera.viewportHeight / 2);
-        camera.update();
+
+        shapeRenderer.setAutoShapeType(true);
+        shapeRenderer.setProjectionMatrix(camera.combined);
+        shapeRenderer.setColor(1, 0, 0, 1); // Red color for hitboxes
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Point);
+        shapeRenderer.point(5.f, 5.f,0.f);
+
+        shapeRenderer.set(ShapeRenderer.ShapeType.Line);
+
+        if(drawHitboxes) {
+            entManager.drawHitboxes(shapeRenderer);
+        }
+        shapeRenderer.end();
+        shapeRenderer.setAutoShapeType(false);
 
     }
 
-    public final boolean spawnGoose(Vector2 spawnPos) {
-        return false;
+    public final void spawnGoose(Vector2 spawnPos) {
+        Goose gooseEntity = new Goose(mainTexturesRef.findRegions("gooseFrame"), mainTexturesRef.findRegion("gooseFrame"));
+    
+        gooseEntity.setPosition(spawnPos);
+        gooseEntity.setSize(0.5f, 0.5f);
+        entManager.addEntity(gooseEntity);
+
     }
 
     /**
@@ -87,15 +124,14 @@ public class World {
      * @throws IllegalStateException if mainTextures is not set
      */
     public final void spawnPlayer(Vector2 spawnPos) {
-        if(mainTexturesRef == null) {
+        if(mainTexturesRef == null)
             throw new IllegalStateException("Main textures must be set before spawning the player.");
-        }
 
         playerRef = new Player(mainTexturesRef.findRegions("playerRunning"), mainTexturesRef.findRegions("playerIdle") );
         
         playerRef.setMaxHealth(100);
         playerRef.setHealth(100);
-        playerRef.setSpeed(0.5f);
+        playerRef.setMaxSpeed(1.5f);
         playerRef.setPosition(spawnPos);
 
         entManager.addEntity(playerRef);
