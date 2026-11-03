@@ -28,7 +28,7 @@ public class EntityManager {
         for (Entity entity : entityList)
             entity.update();
 
-        checkResolveCollisions();
+        resolveCollisions();
 
         removeDeadEntities();
     }
@@ -53,11 +53,11 @@ public class EntityManager {
             entity.drawHitbox(shapeRenderer);
     }
 
-    public void checkResolveCollisions() {
-        resolveCollisions(getCollisions());
-    }
-
-    public ArrayList<SimpleEntry<Entity, Entity>> getCollisions() {
+    /**
+     * returns a list of pairs of entities that are colliding
+     * @return an array of SimpleEntry (used to represent a pair) of entities that are currently colliding
+     */
+    private ArrayList<SimpleEntry<Entity, Entity>> getCollisions() {
         ArrayList<SimpleEntry<Entity, Entity>> collisionPairs = new ArrayList<SimpleEntry<Entity, Entity>>();
 
         for (Entity ent1: entityList) {
@@ -66,26 +66,30 @@ public class EntityManager {
                     continue;
 
                 SimpleEntry<Entity, Entity> collisionPair = new SimpleEntry<Entity, Entity>(ent1, ent2);
-                if( !collisionPairs.contains(collisionPair) && 
-                    !collisionPairs.contains(new SimpleEntry<Entity, Entity>(ent2, ent1))) {
-                    collisionPairs.add(collisionPair);
-                }
+                collisionPairs.add(collisionPair);
             }
         }
         
         return collisionPairs;
     }
 
-    public static void resolveCollisions(ArrayList<SimpleEntry<Entity, Entity>> collisionPairs) {
-        if(collisionPairs == null || collisionPairs.isEmpty())
+    public void resolveCollisions() {
+        ArrayList<SimpleEntry<Entity, Entity>> collisionPairs = getCollisions();
+        if(collisionPairs.isEmpty())
             return;
 
         for (SimpleEntry<Entity, Entity> collisionPair : collisionPairs) {
             Entity ent1 = collisionPair.getKey();
             Entity ent2 = collisionPair.getValue();
 
+            // System.out.println("Collision detected between " + ent1.getClass().getSimpleName() + " and " + ent2.getClass().getSimpleName());
+
+            // call the on collision method for just ONE entity onto the other
+            // this choice is made because there will be another pair in the list
+            // where ent2 is the key and ent1 is the value (given that getCollisions() function was the argument passed)
+            // this simplifies the getCollisions function since it wont have to check if the 
+            // pair is already in the list
             ent1.onCollision(ent2);
-            ent2.onCollision(ent1);
         }
     }
 
