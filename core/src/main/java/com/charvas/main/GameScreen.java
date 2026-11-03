@@ -38,6 +38,7 @@ public class GameScreen implements Screen {
     private World world = null;
 
     private GUI gui = null;
+    private Inventory inventory;
     private GameTimer timer = null;
 
     public GameScreen(final Main inGame) {
@@ -46,6 +47,13 @@ public class GameScreen implements Screen {
         atlas = new TextureAtlas(Gdx.files.internal("Atlas/game_atlas.atlas"));
         backgroundTexture = new Texture("background.png");
 
+        gui = new GUI(this);
+        inventory = new Inventory(this, gui);
+        gui.setup(inventory);
+        timer = new GameTimer(gui);
+        inventory.addItem(new Item(this));
+
+
     }
 
     @Override
@@ -53,9 +61,6 @@ public class GameScreen implements Screen {
         world = new World(atlas, "map.tmx");
         world.getCamera().setToOrtho(false, Main.V_WIDTH, Main.V_HEIGHT);
         world.getCamera().update();
-        
-        gui = new GUI(this);
-        timer = new GameTimer(gui);
     }
 
     @Override
@@ -112,16 +117,17 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
+
     }
 
     @Override
     public void pause() {
-        game.pause();
+        //game.pause();
     }
 
     @Override
     public void resume() {
-        game.resume();
+        //game.resume();
     }
 
     public void dispose() {
@@ -134,6 +140,14 @@ public class GameScreen implements Screen {
 
     public void togglePause() {
         isPaused = !isPaused;
+    }
+
+    public GUI getGui() {
+        return gui;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
     }
 
 }
