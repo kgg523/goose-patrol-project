@@ -34,9 +34,10 @@ public class Inventory {
         if (items[index] == null) {
             return;
         }
-        items[index].use();
-        items[index] = null;
-        hud.updateItemSlot(index, null);
+        if (items[index].use()) {
+            items[index] = null;
+            hud.updateItemSlot(index, null);
+        }
     }
 
 

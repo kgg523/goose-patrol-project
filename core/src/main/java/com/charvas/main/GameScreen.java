@@ -47,11 +47,6 @@ public class GameScreen implements Screen {
         atlas = new TextureAtlas(Gdx.files.internal("Atlas/game_atlas.atlas"));
         backgroundTexture = new Texture("background.png");
 
-        gui = new GUI(this);
-        inventory = new Inventory(this, gui);
-        gui.setup(inventory);
-        timer = new GameTimer(gui);
-        inventory.addItem(new Item(this));
 
 
     }
@@ -61,6 +56,13 @@ public class GameScreen implements Screen {
         world = new World(atlas, "map.tmx");
         world.getCamera().setToOrtho(false, Main.V_WIDTH, Main.V_HEIGHT);
         world.getCamera().update();
+        
+        gui = new GUI(this);
+        inventory = new Inventory(this, gui);
+        gui.setup(inventory);
+        timer = new GameTimer(gui);
+        inventory.addItem(new Item(this));
+        inventory.addItem(new SpeedItem(this));
     }
 
     @Override
@@ -148,6 +150,10 @@ public class GameScreen implements Screen {
 
     public Inventory getInventory() {
         return inventory;
+    }
+
+    public World getWorld() {
+        return world;
     }
 
 }

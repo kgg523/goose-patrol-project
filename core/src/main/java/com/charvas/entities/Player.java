@@ -111,8 +111,12 @@ public class Player extends Entity {
         maxHealth = newMaxHealth;
     }
 
-    public void heal(int hp) {
+    public boolean heal(int hp) {
+        if (hp == maxHealth){
+            return false;
+        }
         health = MathUtils.clamp(health + hp, 0, maxHealth);
+        return true;
     }
 
     public void takeDamage(int damagePts) {

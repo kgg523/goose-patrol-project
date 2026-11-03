@@ -8,9 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
 public class Item {
-    private GameScreen game;
-    private String name;
-    private Drawable imageDrawable;
+    protected  GameScreen game;
+    protected  String name;
+    protected  Drawable imageDrawable;
 
     public Item(GameScreen game) {
         this.game = game;
@@ -24,8 +24,9 @@ public class Item {
         pixmap.dispose();
     }
 
-    public void use() {
+    public boolean use() {
         System.out.println("Item used.");
+        return true;
     }
     public String getName() {
         return name;
