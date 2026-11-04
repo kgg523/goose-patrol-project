@@ -38,8 +38,11 @@ public class Player extends Entity {
 
         Rectangle customHitbox = getHitbox();
 
-        customHitbox.setWidth(1.0f);
-        customHitbox.setHeight(1.0f);
+        customHitbox.setWidth(0.3f);
+        customHitbox.setHeight(1.f);
+
+        setHitbox(customHitbox);
+        setHitboxOffset(0.35f, 0.f);
     }
 
     // looks at inputs and SETS state of player. position actually gets updated in

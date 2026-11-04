@@ -15,6 +15,8 @@ public abstract class Entity extends Sprite {
     /* Entity class for representing game objects */
 
     private Rectangle customHitbox = new Rectangle(); // Hitbox for collision
+    private float hitboxOffsetX = 0.f; // Offset for hitbox position
+    private float hitboxOffsetY = 0.f; // Offset for hitbox position
 
     private Vector2 velocity = new Vector2(); // vector to normalise speed
     private Vector2 acceleration = new Vector2();
@@ -58,7 +60,6 @@ public abstract class Entity extends Sprite {
 
         this.setX(MathUtils.clamp(getX(), -offsetX, worldWidth - getWidth() + offsetX));
         this.setY(MathUtils.clamp(getY(), 0, worldHeight - getHeight()));
-
     }
 
     /************/
@@ -77,9 +78,13 @@ public abstract class Entity extends Sprite {
 
         Vector2 scaledVel = getVelocity().scl(deltaTimeS);
 
+        if(scaledVel.len2() == 0.f) {
+            return;
+        }
+
         this.translate(scaledVel.x, scaledVel.y);
 
-        updateHitbox();
+        updateHitbox(hitboxOffsetX, hitboxOffsetY);
     }
 
     @Override 
@@ -132,6 +137,16 @@ public abstract class Entity extends Sprite {
     public final void updateHitbox() {
         customHitbox.setX(getX());
         customHitbox.setY(getY());
+    }
+    
+    public final void updateHitbox(float offsetX, float offsetY) {
+        customHitbox.setX(getX() + offsetX);
+        customHitbox.setY(getY() + offsetY);
+    }
+
+    public final void setHitboxOffset(float offsetX, float offsetY) {
+        this.hitboxOffsetX = offsetX;
+        this.hitboxOffsetY = offsetY;
     }
 
     public final void setVelocity(Vector2 newVelocity) {
