@@ -72,7 +72,7 @@ public class Player extends Entity {
             lookingLeft = false;
 
         // Check if the player is moving based on input
-        isMoving = getVelocity().len() > 0.f;
+        isMoving = getVelocity().len2() > 0.f;
     }
 
     @Override
