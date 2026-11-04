@@ -78,7 +78,7 @@ public class World {
                 Main.V_WIDTH - camera.viewportWidth / 2);
         camera.position.y = MathUtils.clamp(camera.position.y, camera.viewportHeight / 2,
                 Main.V_HEIGHT - camera.viewportHeight / 2);
-        camera.update();
+        camera.update(); 
 
         mapRenderer.setView(camera.combined, 0, 0, Main.V_WIDTH, Main.V_HEIGHT); // Set mapRenderer to use the camera
         mapRenderer.render();
@@ -90,21 +90,15 @@ public class World {
 
         pBatch.end();
 
-
-        shapeRenderer.setAutoShapeType(true);
-        shapeRenderer.setProjectionMatrix(camera.combined);
-        shapeRenderer.setColor(1, 0, 0, 1); // Red color for hitboxes
-
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Point);
-        shapeRenderer.point(5.f, 5.f,0.f);
-
-        shapeRenderer.set(ShapeRenderer.ShapeType.Line);
-
+        // draw hitboxes if enabled
         if(drawHitboxes) {
+            shapeRenderer.setProjectionMatrix(camera.combined);
+            shapeRenderer.setColor(1, 0, 0, 1); // Red color for hitboxes
+
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             entManager.drawHitboxes(shapeRenderer);
+            shapeRenderer.end();
         }
-        shapeRenderer.end();
-        shapeRenderer.setAutoShapeType(false);
 
     }
 
