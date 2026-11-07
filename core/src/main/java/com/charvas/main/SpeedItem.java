@@ -12,7 +12,6 @@ public class SpeedItem extends Item{
 
     @Override
     public boolean use() {
-        game.getWorld().getPlayer().setSpeed(50f);
         System.out.println("Speed used");
         return true;
     }
