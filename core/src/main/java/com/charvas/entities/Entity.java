@@ -2,8 +2,10 @@ package com.charvas.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -12,12 +14,14 @@ import com.charvas.main.Main;
 public abstract class Entity extends Sprite {
     /* Entity class for representing game objects */
 
-    public Rectangle customHitbox; // Hitbox for collision
+    private Rectangle customHitbox = new Rectangle(); // Hitbox for collision
+    private float hitboxOffsetX = 0.f; // Offset for hitbox position
+    private float hitboxOffsetY = 0.f; // Offset for hitbox position
 
     private Vector2 velocity = new Vector2(); // vector to normalise speed
     private Vector2 acceleration = new Vector2();
 
-    private float maxSpeed = 2.5f;
+    private float maxSpeed = 0.f;
 
     private boolean alive = true;
 
@@ -56,9 +60,6 @@ public abstract class Entity extends Sprite {
 
         this.setX(MathUtils.clamp(getX(), -offsetX, worldWidth - getWidth() + offsetX));
         this.setY(MathUtils.clamp(getY(), 0, worldHeight - getHeight()));
-
-        // update hitbox to player location
-        customHitbox.set(getX() + offsetX, getY(), 0.5f, 1.0f);
     }
 
     /************/
@@ -70,20 +71,32 @@ public abstract class Entity extends Sprite {
         // update entity values each frame
         float deltaTimeS = Gdx.graphics.getDeltaTime();
 
-        Vector2 scaledAcc = new Vector2(this.acceleration);
-        Vector2 scaledVel = new Vector2(this.velocity);
-        
-        scaledAcc.scl(deltaTimeS);
-        scaledVel.add(scaledAcc);
-        if (scaledVel.len() > this.maxSpeed * deltaTimeS) {
-            scaledVel.setLength(this.maxSpeed * deltaTimeS);
+        setVelocity(getVelocity().add(getAcceleration()));
+        if(getVelocity().len() > getMaxSpeed()) {
+            setVelocity(getVelocity().setLength(getMaxSpeed()));
+        }
+
+        Vector2 scaledVel = getVelocity().scl(deltaTimeS);
+
+        if(scaledVel.len2() == 0.f) {
+            return;
         }
 
         this.translate(scaledVel.x, scaledVel.y);
+
+        updateHitbox(hitboxOffsetX, hitboxOffsetY);
+    }
+
+    @Override 
+    public void draw(Batch pBatch) {
+        super.draw(pBatch);
     }
 
     public void onCollision(Entity otherEntity) {}
 
+    public void drawHitbox(ShapeRenderer shapeRenderer) {
+        shapeRenderer.rect(customHitbox.x, customHitbox.y, customHitbox.width, customHitbox.height);
+    }
 
     /***********/
     /* GETTERS */
@@ -117,8 +130,23 @@ public abstract class Entity extends Sprite {
     /***********/
 
     public final void setPosition(Vector2 newPosition) {
-        this.setX(newPosition.x);
-        this.setY(newPosition.y);
+        setX(newPosition.x);
+        setY(newPosition.y);
+    }
+
+    public final void updateHitbox() {
+        customHitbox.setX(getX());
+        customHitbox.setY(getY());
+    }
+    
+    public final void updateHitbox(float offsetX, float offsetY) {
+        customHitbox.setX(getX() + offsetX);
+        customHitbox.setY(getY() + offsetY);
+    }
+
+    public final void setHitboxOffset(float offsetX, float offsetY) {
+        this.hitboxOffsetX = offsetX;
+        this.hitboxOffsetY = offsetY;
     }
 
     public final void setVelocity(Vector2 newVelocity) {
