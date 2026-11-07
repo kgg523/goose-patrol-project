@@ -54,9 +54,10 @@ public class GameScreen implements Screen {
         gui = new GUI(this);
         inventory = new Inventory(this);
         inventory.addHud(gui.getHud());
-        gui.setup(inventory);
+        gui.setup(inventory, world);
         timer = new GameTimer(gui);
         inventory.addItem(new MedKitItem(this, world.getPlayer()));
+        inventory.addItem(new PlayerHurtTestItem(this, world.getPlayer()));
     }
 
     @Override
@@ -67,8 +68,7 @@ public class GameScreen implements Screen {
         }
 
         if (!isPaused) {
-            logic();
-            timer.decrement(delta);
+            logic(delta);
             // Update animation first so input can use the updated animation state
             input();
         }
@@ -82,9 +82,10 @@ public class GameScreen implements Screen {
         world.processInput();
     }
 
-    private void logic() {
+    private void logic(float delta) {
         // Update game logic here
         world.update();
+        timer.decrement(delta);
     }
 
     private void draw() {
@@ -94,6 +95,7 @@ public class GameScreen implements Screen {
         world.draw(game.spriteBatch);
         
         gui.render();
+
     }
 
     @Override
@@ -150,4 +152,7 @@ public class GameScreen implements Screen {
         return world;
     }
 
+    public boolean getPausedState() {
+        return isPaused;
+    }
 }

@@ -8,6 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
 public class Item {
+    /* Generic Class for an Item */
+
     protected  GameScreen game;
     protected  String name;
     protected  Drawable imageDrawable;

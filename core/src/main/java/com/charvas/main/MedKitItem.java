@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.charvas.entities.Player;
 
 public class MedKitItem extends Item {
+    /* Item which heals the given player by a set 50 hp */
     private Player player;
 
     public MedKitItem(GameScreen game, Player targetPlayer){

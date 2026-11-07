@@ -16,15 +16,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.charvas.entities.World;
 
 public class HUD {
     private GameScreen game;
+    private World world;
     private GUI gui;
     private Stage stage;
     private Button pauseButton;
     private Label pauseLabel;
     private Label timerLabel;
     private Image inventoryBgImage;
+    private Image hpBarImg;
     private ItemSlot[] itemSlots = new ItemSlot[8];
     
 
@@ -35,7 +38,9 @@ public class HUD {
     
     }
 
-    public void setup(Inventory inv) {
+    public void setup(Inventory inv, World world) {
+        this.world = world;
+
         //                                 PAUSE BUTTON
 
         ButtonStyle pauseStyle = new ButtonStyle();
@@ -84,11 +89,12 @@ public class HUD {
         timerLabel = new Label("5:00", tmLabelStyle);
         timerLabel.setFontScale(5f);
         timerLabel.setPosition(887, 1020);
+        tmlabelColor.dispose();
         stage.addActor(timerLabel);
 
 
 
-        //                     INVENTORY
+        //                                 INVENTORY
         Pixmap invLabelColor = new Pixmap(700, 350, Pixmap.Format.RGB888);
         Skin skin = new Skin();
         invLabelColor.setColor(Color.DARK_GRAY);
@@ -97,6 +103,7 @@ public class HUD {
         inventoryBgImage = new Image(skin.newDrawable("bg"));
         inventoryBgImage.setSize(710,360);
         inventoryBgImage.setPosition(1210, 0);
+        invLabelColor.dispose();
         stage.addActor(inventoryBgImage);
 
         //Slots which will be used to display and interact with items in the inventory
@@ -111,6 +118,21 @@ public class HUD {
         for (ItemSlot slot : itemSlots) {
             stage.addActor(slot.getWidget());
         }
+
+
+        //                                 HEALTH BAR
+        Pixmap hpLabelColor = new Pixmap(700, 350, Pixmap.Format.RGB888);
+        hpLabelColor.setColor(Color.GREEN);
+        hpLabelColor.fill();  
+        skin.add("hpBar", new Texture(hpLabelColor));
+        hpBarImg = new Image(skin.newDrawable("hpBar"));
+        hpBarImg.setPosition(10, 10);
+        hpBarImg.setSize(750, 100);
+        Image hpBgImg = new Image(skin.newDrawable("bg"));
+        hpBgImg.setPosition(0, 0);
+        hpBgImg.setSize(770, 120);
+        stage.addActor(hpBgImg);
+        stage.addActor(hpBarImg);
     }
 
     public GUI getGui() {
@@ -128,6 +150,12 @@ public class HUD {
 
     public void updateItemSlot(int index, Drawable img) {
         itemSlots[index].setImage(img);
+    }
+
+    public void updateHpBar() {
+        float hp = world.getPlayer().getHealth();
+        float maxHealth = world.getPlayer().getMaxHealth();
+        hpBarImg.setSize(750*(hp/maxHealth), 100);
     }
 
     private class ItemSlot {

@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.charvas.entities.World;
 
 import java.text.DecimalFormat;
 
@@ -45,7 +46,7 @@ public class GUI {
 
 
         //EXAMPLE BUTTON
-
+/* 
         Button button = new Button(skin.newDrawable("white", Color.RED));
         button.setWidth(100);
         button.setHeight(100);
@@ -57,11 +58,11 @@ public class GUI {
         });
         
         stage.addActor(button);
-
+*/
     }
 
-    public void setup(Inventory inv) {
-        hud.setup(inv);
+    public void setup(Inventory inv, World world) {
+        hud.setup(inv, world);
     }
 
 
@@ -104,6 +105,8 @@ public class GUI {
     }
 
     public void render () {
+        hud.updateHpBar();
+
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
     }

@@ -13,6 +13,8 @@ public class Inventory {
     }
 
     public boolean addItem(Item item) {
+        //Adds an item into the next available slot in the inventory
+
         if (size == MAX_SIZE) {
             return false;
         }
@@ -28,7 +30,14 @@ public class Inventory {
     }
 
     public void useItem(int index) {
-        if (items[index] == null) {
+        /* Will use the item stored in the given index of the inventory array 
+            IF there exists an item in said slot and the game isn't paused
+            once used an item will be removed.
+            Note: Items retain their position in the array even when
+                other items are removed.
+            */
+
+        if (items[index] == null || game.getPausedState()) {
             return;
         }
         if (items[index].use()) {
