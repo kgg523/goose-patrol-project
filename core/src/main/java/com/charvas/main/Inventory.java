@@ -1,7 +1,5 @@
 package com.charvas.main;
 
-import com.badlogic.gdx.Game;
-
 public class Inventory {
     private GameScreen game;
     private HUD hud;
@@ -9,9 +7,8 @@ public class Inventory {
     private final int MAX_SIZE = 8;
     private int size = 0;
 
-    public Inventory(GameScreen game, GUI gui) {
+    public Inventory(GameScreen game) {
         this.game = game;
-        hud = gui.getHud();
         
     }
 
@@ -38,6 +35,10 @@ public class Inventory {
             items[index] = null;
             hud.updateItemSlot(index, null);
         }
+    }
+
+    public void addHud(HUD hud) {
+        this.hud = hud;
     }
 
 

@@ -112,7 +112,7 @@ public class Player extends Entity {
     }
 
     public boolean heal(int hp) {
-        if (hp == maxHealth){
+        if (health == maxHealth){
             return false;
         }
         health = MathUtils.clamp(health + hp, 0, maxHealth);

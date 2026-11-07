@@ -58,11 +58,11 @@ public class GameScreen implements Screen {
         world.getCamera().update();
         
         gui = new GUI(this);
-        inventory = new Inventory(this, gui);
+        inventory = new Inventory(this);
+        inventory.addHud(gui.getHud());
         gui.setup(inventory);
         timer = new GameTimer(gui);
-        inventory.addItem(new Item(this));
-        inventory.addItem(new SpeedItem(this));
+        inventory.addItem(new MedKitItem(this, world.getPlayer()));
     }
 
     @Override

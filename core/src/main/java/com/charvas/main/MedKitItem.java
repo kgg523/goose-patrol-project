@@ -1,14 +1,17 @@
 package com.charvas.main;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.charvas.entities.Player;
 
 public class MedKitItem extends Item {
     private Player player;
 
-    public MedKitItem(GameScreen game, Player player){
+    public MedKitItem(GameScreen game, Player targetPlayer){
         super(game);
-        this.player = player;
+        player = targetPlayer;
         name = "Medkit";
+        imageDrawable = new Image(new Texture("Items/medkitImg.png")).getDrawable();
     }
 
     @Override
