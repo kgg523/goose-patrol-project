@@ -32,13 +32,17 @@ public class GameScreen implements Screen {
     private World world = null;
 
     private GUI gui = null;
+    private Inventory inventory;
     private GameTimer timer = null;
 
     public GameScreen(final Main inGame) {
         /* Initialising game assets and state variables */
         game = inGame;
         atlas = new TextureAtlas(Gdx.files.internal("Atlas/game_atlas.atlas"));
-        backgroundTexture = new Texture("background.png");   
+        backgroundTexture = new Texture("background.png");
+
+
+
     }
 
     @Override
@@ -48,7 +52,11 @@ public class GameScreen implements Screen {
         world.getCamera().update();
         
         gui = new GUI(this);
+        inventory = new Inventory(this);
+        inventory.addHud(gui.getHud());
+        gui.setup(inventory);
         timer = new GameTimer(gui);
+        inventory.addItem(new MedKitItem(this, world.getPlayer()));
     }
 
     @Override
@@ -105,15 +113,17 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
+
     }
 
     @Override
     public void pause() {
+        //game.pause();
     }
 
     @Override
     public void resume() {
-        game.resume();
+        //game.resume();
     }
 
     public void dispose() {
@@ -126,6 +136,18 @@ public class GameScreen implements Screen {
 
     public void togglePause() {
         isPaused = !isPaused;
+    }
+
+    public GUI getGui() {
+        return gui;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public World getWorld() {
+        return world;
     }
 
 }

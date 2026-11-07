@@ -36,7 +36,7 @@ public class GUI {
         skin.add("white", new Texture(pixmap));
         skin.add("default", new BitmapFont());
 
-        hud = new HUD(this);
+        hud = new HUD(game, this);
 
 
 
@@ -60,6 +60,11 @@ public class GUI {
 
     }
 
+    public void setup(Inventory inv) {
+        hud.setup(inv);
+    }
+
+
 
 //        METHOD FOR INTERACTING WITH PAUSE BUTTON
     public void togglePause() {
@@ -80,6 +85,14 @@ public class GUI {
 
     public Stage getStage() {
         return stage;
+    }
+
+    public GameScreen getGame() {
+        return game;
+    }
+
+    public HUD getHud(){
+        return hud;
     }
 
     public void create () {
