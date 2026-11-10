@@ -1,8 +1,10 @@
 package com.charvas.items;
 
 import com.charvas.UI.HUD;
+import com.charvas.main.GameScreen;
 
 public class Inventory {
+    private GameScreen game;
     private HUD hud;
     private Item[] items = new Item[8]; 
     private final int MAX_SIZE = 8;

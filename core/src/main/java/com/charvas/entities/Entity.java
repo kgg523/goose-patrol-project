@@ -71,19 +71,19 @@ public abstract class Entity extends Sprite {
         // update entity values each frame
         float deltaTimeS = Gdx.graphics.getDeltaTime();
 
-        setVelocity(getVelocity().add(getAcceleration()));
+        getVelocity().add(getAcceleration());
         if(getVelocity().len() > getMaxSpeed()) {
             setVelocity(getVelocity().setLength(getMaxSpeed()));
         }
 
         Vector2 scaledVel = getVelocity().scl(deltaTimeS);
 
+        // entity not moving at all, skip translation and hitbox update
         if(scaledVel.len2() == 0.f) {
             return;
         }
 
         this.translate(scaledVel.x, scaledVel.y);
-
         updateHitbox();
     }
 

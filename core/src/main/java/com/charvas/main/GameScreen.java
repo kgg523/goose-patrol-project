@@ -44,8 +44,6 @@ public class GameScreen implements Screen {
         atlas = new TextureAtlas(Gdx.files.internal("Atlas/game_atlas.atlas"));
         backgroundTexture = new Texture("background.png");
 
-
-
     }
 
     @Override
@@ -97,7 +95,7 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(Color.BLACK);
 
         world.draw(game.spriteBatch);
-        
+
         gui.render();
 
     }
@@ -124,12 +122,12 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
-        //game.pause();
+        // game.pause();
     }
 
     @Override
     public void resume() {
-        //game.resume();
+        // game.resume();
     }
 
     public void dispose() {
