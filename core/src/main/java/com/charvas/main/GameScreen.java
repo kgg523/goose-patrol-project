@@ -9,9 +9,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.Screen;
-
+import com.charvas.UI.GUI;
+import com.charvas.UI.GameTimer;
 // GoosePatrol imports
 import com.charvas.entities.World;
+import com.charvas.items.Inventory;
+import com.charvas.items.MedKitItem;
+import com.charvas.items.PlayerHurtTestItem;
 
 public class GameScreen implements Screen {
     /*
@@ -41,8 +45,6 @@ public class GameScreen implements Screen {
         atlas = new TextureAtlas(Gdx.files.internal("Atlas/game_atlas.atlas"));
         backgroundTexture = new Texture("background.png");
 
-
-
     }
 
     @Override
@@ -50,7 +52,7 @@ public class GameScreen implements Screen {
         world = new World(atlas, "map.tmx");
         world.getCamera().setToOrtho(false, Main.V_WIDTH, Main.V_HEIGHT);
         world.getCamera().update();
-        
+
         gui = new GUI(this);
         inventory = new Inventory(this);
         inventory.addHud(gui.getHud());
@@ -93,7 +95,7 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(Color.BLACK);
 
         world.draw(game.spriteBatch);
-        
+
         gui.render();
 
     }
@@ -120,12 +122,12 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
-        //game.pause();
+        // game.pause();
     }
 
     @Override
     public void resume() {
-        //game.resume();
+        // game.resume();
     }
 
     public void dispose() {

@@ -1,4 +1,7 @@
-package com.charvas.main;
+package com.charvas.items;
+
+import com.charvas.UI.HUD;
+import com.charvas.main.GameScreen;
 
 public class Inventory {
     private GameScreen game;

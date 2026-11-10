@@ -1,4 +1,4 @@
-package com.charvas.main;
+package com.charvas.UI;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -6,6 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.charvas.entities.World;
+import com.charvas.items.Inventory;
+import com.charvas.main.GameScreen;
 
 import java.text.DecimalFormat;
 
