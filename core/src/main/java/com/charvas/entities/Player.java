@@ -9,12 +9,15 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.charvas.main.Inventory;
 
 public class Player extends Entity {
     /* Player class representing the player character in the game */
 
     private Animation<TextureRegion> movingAnimation;
     private Animation<TextureRegion> idleAnimation;
+
+    private Inventory inventory;
 
     private boolean isMoving = false; // Flag to check if the player is moving
     private boolean lookingLeft = false; // Flag to flip player if looking left
@@ -35,6 +38,8 @@ public class Player extends Entity {
         
         movingAnimation = new Animation<TextureRegion>(movingSecPerFrame, movingRegion, Animation.PlayMode.LOOP);
         idleAnimation = new Animation<TextureRegion>(idleSecPerFrame, idleRegion, Animation.PlayMode.LOOP);
+
+        inventory = new Inventory();
 
         Rectangle customHitbox = getHitbox();
 
@@ -139,5 +144,9 @@ public class Player extends Entity {
 
     public int getMaxHealth() {
         return maxHealth;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
     }
 }

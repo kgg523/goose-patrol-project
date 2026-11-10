@@ -61,8 +61,8 @@ public class GUI {
 */
     }
 
-    public void setup(Inventory inv, World world) {
-        hud.setup(inv, world);
+    public void setup(World world) {
+        hud.setup(world);
     }
 
 

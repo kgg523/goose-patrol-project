@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.charvas.entities.Player;
 
 public class MedKitItem extends Item {
-    /* Item which heals the given player by a set 50 hp */
+    /* Item which heals the given player by a set 100 hp */
     private Player player;
 
     public MedKitItem(GameScreen game, Player targetPlayer){
@@ -17,7 +17,10 @@ public class MedKitItem extends Item {
 
     @Override
     public boolean use() {
-        if (player.heal(50)) {
+        if (game.getPausedState()) {
+            return false;
+        }
+        if (player.heal(100)) {
             return true;
         }
         return false;

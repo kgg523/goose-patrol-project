@@ -32,7 +32,6 @@ public class GameScreen implements Screen {
     private World world = null;
 
     private GUI gui = null;
-    private Inventory inventory;
     private GameTimer timer = null;
 
     public GameScreen(final Main inGame) {
@@ -50,12 +49,13 @@ public class GameScreen implements Screen {
         world = new World(atlas, "map.tmx");
         world.getCamera().setToOrtho(false, Main.V_WIDTH, Main.V_HEIGHT);
         world.getCamera().update();
+        Inventory inventory = world.getPlayer().getInventory();
         
         gui = new GUI(this);
-        inventory = new Inventory(this);
         inventory.addHud(gui.getHud());
-        gui.setup(inventory, world);
+        gui.setup(world);
         timer = new GameTimer(gui);
+
         inventory.addItem(new MedKitItem(this, world.getPlayer()));
         inventory.addItem(new PlayerHurtTestItem(this, world.getPlayer()));
     }
@@ -142,10 +142,6 @@ public class GameScreen implements Screen {
 
     public GUI getGui() {
         return gui;
-    }
-
-    public Inventory getInventory() {
-        return inventory;
     }
 
     public World getWorld() {

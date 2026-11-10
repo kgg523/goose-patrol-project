@@ -38,9 +38,9 @@ public class HUD {
     
     }
 
-    public void setup(Inventory inv, World world) {
+    public void setup(World world) {
         this.world = world;
-
+        Inventory inv = world.getPlayer().getInventory();
         //                                 PAUSE BUTTON
 
         ButtonStyle pauseStyle = new ButtonStyle();
@@ -159,6 +159,7 @@ public class HUD {
     }
 
     private class ItemSlot {
+        /* A single interactable slot of the inventory */
         private Inventory inv;
         private Image slot;
         private int index;
