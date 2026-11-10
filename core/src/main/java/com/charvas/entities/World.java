@@ -106,6 +106,7 @@ public class World {
         Goose gooseEntity = new Goose(mainTexturesRef.findRegions("gooseFrame"), mainTexturesRef.findRegion("gooseFrame"));
     
         gooseEntity.setPosition(spawnPos);
+        gooseEntity.updateHitbox();
         gooseEntity.setSize(0.5f, 0.5f);
         entManager.addEntity(gooseEntity);
 

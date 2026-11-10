@@ -84,7 +84,7 @@ public abstract class Entity extends Sprite {
 
         this.translate(scaledVel.x, scaledVel.y);
 
-        updateHitbox(hitboxOffsetX, hitboxOffsetY);
+        updateHitbox();
     }
 
     @Override 
@@ -135,13 +135,8 @@ public abstract class Entity extends Sprite {
     }
 
     public final void updateHitbox() {
-        customHitbox.setX(getX());
-        customHitbox.setY(getY());
-    }
-    
-    public final void updateHitbox(float offsetX, float offsetY) {
-        customHitbox.setX(getX() + offsetX);
-        customHitbox.setY(getY() + offsetY);
+        customHitbox.setX(getX() + hitboxOffsetX);
+        customHitbox.setY(getY() + hitboxOffsetY);
     }
 
     public final void setHitboxOffset(float offsetX, float offsetY) {

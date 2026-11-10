@@ -27,9 +27,10 @@ public class Goose extends Entity {
         idleTexture = idleTex;
 
         Rectangle newHitbox = getHitbox();
-        newHitbox.setWidth(1.0f);
-        newHitbox.setHeight(1.0f);
+        newHitbox.setWidth(0.5f);
+        newHitbox.setHeight(0.5f);
         setHitbox(newHitbox);
+        updateHitbox();
 
         updateAnimation();
     }
