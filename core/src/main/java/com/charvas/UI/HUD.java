@@ -1,7 +1,5 @@
 package com.charvas.UI;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -18,10 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.charvas.entities.World;
 import com.charvas.items.Inventory;
-import com.charvas.main.GameScreen;
 
 public class HUD {
-    private GameScreen game;
     private World world;
     private GUI gui;
     private Stage stage;
@@ -33,8 +29,7 @@ public class HUD {
     private ItemSlot[] itemSlots = new ItemSlot[8];
     
 
-    public HUD(GameScreen game, GUI gui) {
-        this.game = game;
+    public HUD(GUI gui) {
         this.gui = gui;
         stage = gui.getStage();
     
@@ -162,14 +157,10 @@ public class HUD {
 
     private class ItemSlot {
         /* A single interactable slot of the inventory */
-        private Inventory inv;
         private Image slot;
-        private int index;
         private Drawable blankImg;
 
         public ItemSlot(Inventory inv, float x, float y, int index) {
-            this.inv = inv;
-            this.index = index;
             slot = new Image();
             Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGB888);
             Skin skin = new Skin();
@@ -185,6 +176,9 @@ public class HUD {
             slot.addListener(new ClickListener() {
             @Override 
             public void clicked (InputEvent event, float x, float y) {
+                if (gui.getPausedState() == true) {
+                    return;
+                }
                 inv.useItem(index);
             }
         });

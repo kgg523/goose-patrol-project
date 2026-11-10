@@ -18,9 +18,6 @@ public class MedKitItem extends Item {
 
     @Override
     public boolean use() {
-        if (game.getPausedState()) {
-            return false;
-        }
         if (player.heal(100)) {
             return true;
         }

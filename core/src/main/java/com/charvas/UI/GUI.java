@@ -1,12 +1,9 @@
 package com.charvas.UI;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.charvas.entities.World;
-import com.charvas.items.Inventory;
 import com.charvas.main.GameScreen;
 
 import java.text.DecimalFormat;
@@ -19,13 +16,12 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.MathUtils;
 
-public class GUI {
+public class GUI{
     private Stage stage;
     private Skin skin;
     private GameScreen game;
-    private Button pauseButton;
-    private Label timerLabel;
     private HUD hud;
+
 
     public GUI(GameScreen gameScr) {
         game = gameScr;
@@ -39,7 +35,7 @@ public class GUI {
         skin.add("white", new Texture(pixmap));
         skin.add("default", new BitmapFont());
 
-        hud = new HUD(game, this);
+        hud = new HUD(this);
 
 
 
@@ -115,5 +111,9 @@ public class GUI {
 
     public void dispose() {
         stage.dispose();
+    }
+
+    public boolean getPausedState() {
+        return game.getPausedState();
     }
 }

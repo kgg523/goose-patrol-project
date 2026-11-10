@@ -3,12 +3,14 @@ package com.charvas.items;
 import com.charvas.UI.HUD;
 import com.charvas.main.GameScreen;
 
-public class Inventory {
+
+public class Inventory{
     private GameScreen game;
     private HUD hud;
     private Item[] items = new Item[8]; 
     private final int MAX_SIZE = 8;
     private int size = 0;
+    private boolean pauseState;
 
     public boolean addItem(Item item) {
         //Adds an item into the next available slot in the inventory
@@ -46,6 +48,10 @@ public class Inventory {
 
     public void addHud(HUD hud) {
         this.hud = hud;
+    }
+
+    public void updatePauseState(boolean pause) {
+        pauseState = pause;
     }
 
 

@@ -14,9 +14,6 @@ public class PlayerHurtTestItem extends Item {
 
     @Override
     public boolean use() {
-        if (game.getPausedState()) {
-            return false;
-        }
         player.takeDamage(20);
         return false; //Allows using the item without it being removed
     }
