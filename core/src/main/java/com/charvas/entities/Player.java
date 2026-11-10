@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.charvas.main.Inventory;
+import com.charvas.items.Inventory;
 
 public class Player extends Entity {
     /* Player class representing the player character in the game */

@@ -1,5 +1,6 @@
-package com.charvas.main;
+package com.charvas.items;
 import com.charvas.entities.Player;
+import com.charvas.main.GameScreen;
 
 public class PlayerHurtTestItem extends Item {
         /* This is a TEST item for testing adjustability of hp bar */

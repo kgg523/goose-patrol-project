@@ -1,4 +1,4 @@
-package com.charvas.main;
+package com.charvas.UI;
 
 public class GameTimer {
     private float time;

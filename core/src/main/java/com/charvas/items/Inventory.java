@@ -1,4 +1,6 @@
-package com.charvas.main;
+package com.charvas.items;
+
+import com.charvas.UI.HUD;
 
 public class Inventory {
     private HUD hud;
