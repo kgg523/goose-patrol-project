@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
@@ -38,10 +39,22 @@ public class Goose extends Entity {
     @Override 
     public void handleInput() {}
     
+    private float time = 0.f;
     @Override 
     public void update() {
+        time += Gdx.graphics.getDeltaTime();
+        Vector2 newVelocity = new Vector2((float)Math.sin(time * 2.f), (float)Math.cos(time * 2.f));
+        
+        newVelocity.scl(0.5f);
+        setVelocity(newVelocity);
+
         super.update();
         updateAnimation();
+        
+        if(getVelocity().x < 0.f)
+            setFlip(true, false);
+        else if(getVelocity().x > 0.f)
+            setFlip(false, false);
     }
 
     @Override
