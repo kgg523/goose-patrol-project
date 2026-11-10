@@ -10,11 +10,6 @@ public class Inventory {
     private final int MAX_SIZE = 8;
     private int size = 0;
 
-    public Inventory(GameScreen game) {
-        this.game = game;
-        
-    }
-
     public boolean addItem(Item item) {
         //Adds an item into the next available slot in the inventory
 
@@ -40,7 +35,7 @@ public class Inventory {
                 other items are removed.
             */
 
-        if (items[index] == null || game.getPausedState()) {
+        if (items[index] == null) {
             return;
         }
         if (items[index].use()) {
