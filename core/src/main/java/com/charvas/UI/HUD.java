@@ -24,6 +24,7 @@ public class HUD {
     private Button pauseButton;
     private Label pauseLabel;
     private Label timerLabel;
+    private Label itemUsedCounterLabel;
     private Image inventoryBgImage;
     private Image hpBarImg;
     private ItemSlot[] itemSlots = new ItemSlot[8];
@@ -89,7 +90,14 @@ public class HUD {
         tmlabelColor.dispose();
         stage.addActor(timerLabel);
 
+        //                                 ITEM USED COUNTER
 
+        LabelStyle itemCounterLabelStyle = new LabelStyle();
+        itemCounterLabelStyle.font = new BitmapFont();
+        itemUsedCounterLabel = new Label("Items used: 0", itemCounterLabelStyle);
+        itemUsedCounterLabel.setPosition(1600, 1020);
+        itemUsedCounterLabel.setFontScale(3f);
+        stage.addActor(itemUsedCounterLabel);
 
         //                                 INVENTORY
         Pixmap invLabelColor = new Pixmap(700, 350, Pixmap.Format.RGB888);
@@ -132,18 +140,21 @@ public class HUD {
         stage.addActor(hpBarImg);
     }
 
-    public GUI getGui() {
-        return gui;
-    }
 
     public void pause() {
         pauseButton.setChecked(!pauseButton.isChecked());
         pauseLabel.setVisible(pauseButton.isChecked());
     }
 
+    public GUI getGui() {
+        return gui;
+    }
+
     public void setTimerString(String str) {
         timerLabel.setText(str);
     }
+
+    // Methods for Updating Elements of the HUD
 
     public void updateItemSlot(int index, Drawable img) {
         itemSlots[index].setImage(img);
@@ -153,6 +164,10 @@ public class HUD {
         float hp = world.getPlayer().getHealth();
         float maxHealth = world.getPlayer().getMaxHealth();
         hpBarImg.setSize(750*(hp/maxHealth), 100);
+    }
+
+    public void updateItemCounter(int count) {
+        itemUsedCounterLabel.setText("Items used: " + String.valueOf(count));
     }
 
     private class ItemSlot {

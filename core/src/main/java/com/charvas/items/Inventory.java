@@ -10,7 +10,6 @@ public class Inventory{
     private Item[] items = new Item[8]; 
     private final int MAX_SIZE = 8;
     private int size = 0;
-    private boolean pauseState;
     private int itemUsedCounter;
 
     public boolean addItem(Item item) {
@@ -43,6 +42,7 @@ public class Inventory{
         }
         if (items[index].use()) {
             itemUsedCounter++;
+            hud.updateItemCounter(itemUsedCounter);
             items[index] = null;
             hud.updateItemSlot(index, null);
         }
@@ -50,14 +50,6 @@ public class Inventory{
 
     public void addHud(HUD hud) {
         this.hud = hud;
-    }
-
-    public void updatePauseState(boolean pause) {
-        pauseState = pause;
-    }
-
-    public int getItemUsedCount() {
-        return itemUsedCounter;
     }
 
 

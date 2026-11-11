@@ -82,17 +82,6 @@ public class GUI{
         hud.setTimerString(timerString);
     }
 
-    public Stage getStage() {
-        return stage;
-    }
-
-    public GameScreen getGame() {
-        return game;
-    }
-
-    public HUD getHud(){
-        return hud;
-    }
 
     public void create () {
 
@@ -111,6 +100,21 @@ public class GUI{
 
     public void dispose() {
         stage.dispose();
+    }
+
+
+    //GETTERS
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public GameScreen getGame() {
+        return game;
+    }
+
+    public HUD getHud(){
+        return hud;
     }
 
     public boolean getPausedState() {
