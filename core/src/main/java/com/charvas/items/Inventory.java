@@ -11,6 +11,7 @@ public class Inventory{
     private final int MAX_SIZE = 8;
     private int size = 0;
     private boolean pauseState;
+    private int itemUsedCounter;
 
     public boolean addItem(Item item) {
         //Adds an item into the next available slot in the inventory
@@ -41,6 +42,7 @@ public class Inventory{
             return;
         }
         if (items[index].use()) {
+            itemUsedCounter++;
             items[index] = null;
             hud.updateItemSlot(index, null);
         }
@@ -54,6 +56,9 @@ public class Inventory{
         pauseState = pause;
     }
 
+    public int getItemUsedCount() {
+        return itemUsedCounter;
+    }
 
 
 
