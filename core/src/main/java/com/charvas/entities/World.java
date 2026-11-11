@@ -3,6 +3,7 @@ package com.charvas.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -48,6 +49,8 @@ public class World {
         spawnPlayer(new Vector2(5, 5));
 
         spawnGoose(new Vector2(7, 5));
+
+        spawnMedKit(new Vector2(5, 8));
 
         playerRef.setSize(1, 1);        
     }   
@@ -112,6 +115,16 @@ public class World {
 
         entManager.addEntity(gooseEntity);
 
+    }
+
+    public final void spawnMedKit(Vector2 spawnPos) {
+        MedKitEntity medKitEntity = new MedKitEntity(new Texture("Items/medkitImg.png"));
+
+        medKitEntity.setPosition(spawnPos);
+        medKitEntity.updateHitbox();
+        medKitEntity.setSize(0.5f, 0.5f);
+        
+        entManager.addEntity(medKitEntity);
     }
 
     /**

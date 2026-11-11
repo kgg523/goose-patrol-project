@@ -14,8 +14,7 @@ public class Item {
     protected  String name;
     protected  Drawable imageDrawable;
 
-    public Item(GameScreen game) {
-        this.game = game;
+    public Item() {
         name = "None";
         Pixmap pixmap= new Pixmap(1, 1, Pixmap.Format.RGB888);
         Skin skin = new Skin();

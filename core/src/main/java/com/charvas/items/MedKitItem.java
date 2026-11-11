@@ -9,8 +9,8 @@ public class MedKitItem extends Item {
     /* Item which heals the given player by a set 100 hp */
     private Player player;
 
-    public MedKitItem(GameScreen game, Player targetPlayer){
-        super(game);
+    public MedKitItem( Player targetPlayer){
+        super();
         player = targetPlayer;
         name = "Medkit";
         imageDrawable = new Image(new Texture("Items/medkitImg.png")).getDrawable();
