@@ -129,10 +129,9 @@ public class World {
     }
 
     public final void spawnSeedBag(Vector2 spawnPos) {
-        SeedBagEntity seedBagEntity = new SeedBagEntity(new Texture("Items/seedBagImg.png"), 5.0f);
+        SeedBagEntity seedBagEntity = new SeedBagEntity(5.0f);
 
         seedBagEntity.setPosition(spawnPos);
-        seedBagEntity.setSize(0.5f,0.5f);
         seedBagEntity.updateHitbox();
         
         entManager.addEntity(seedBagEntity);
@@ -157,6 +156,8 @@ public class World {
 
     public final void givePlayer(Item newItem)
     {
+        if(playerRef == null)
+            return;
         playerRef.getInventory().addItem(newItem);
     }
 

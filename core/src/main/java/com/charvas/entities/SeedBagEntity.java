@@ -9,17 +9,19 @@ public class SeedBagEntity extends Entity
     // time this seedbag should be alive in seconds
     float timeAliveS = 0.f;
 
-    public SeedBagEntity(Texture seedBagTex, float timeAliveS)
+    public SeedBagEntity(float timeAliveS)
     {
-        setTexture(seedBagTex);
-        
+        super(new Texture("Items/seedBagImg.png"));
+        setSize(0.5f, 0.5f);  
+
         Rectangle newHitbox = new Rectangle();
         newHitbox.x = 0.f;
         newHitbox.y = 0.f;
         newHitbox.width = 0.5f;
         newHitbox.height = 0.5f;
-        setBounds(newHitbox.x, newHitbox.y, newHitbox.width, newHitbox.height);
-    
+        
+        setHitbox(newHitbox);
+
         this.timeAliveS = timeAliveS;
     }
 
