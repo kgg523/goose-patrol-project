@@ -21,25 +21,26 @@ public class Player extends Entity {
 
     private boolean isMoving = false; // Flag to check if the player is moving
     private boolean lookingLeft = false; // Flag to flip player if looking left
-    
+
     private int iFrameCooldown = 10; // number of invincibility frames after getting hit
     private int iFrameCount = 0; // current count of invincibility frames
 
     private int maxHealth = 100;
     private int health = maxHealth;
+    private float movingSecPerFrame = 0.2f; // 5fps
+    private float idleSecPerFrame = 0.5f; // 2fps
 
-    public Player(Array<AtlasRegion> movingRegion, Array<AtlasRegion> idleRegion) {
+    public Player(Array<AtlasRegion> movingRegion, Array<AtlasRegion> idleRegion, World givenWorld) {
         // Sets the animation and initializes the entity with the first frame
         // This should be the main contructor used to create a Player object
-        super(movingRegion.get(0));
 
-        float movingSecPerFrame = 0.2f; // 5fps
-        float idleSecPerFrame = 0.5f; // 2fps
-        
+        parentWorld = givenWorld;
+
         movingAnimation = new Animation<TextureRegion>(movingSecPerFrame, movingRegion, Animation.PlayMode.LOOP);
         idleAnimation = new Animation<TextureRegion>(idleSecPerFrame, idleRegion, Animation.PlayMode.LOOP);
 
         inventory = new Inventory();
+        updateAnimation();
 
         Rectangle customHitbox = getHitbox();
 
@@ -64,16 +65,18 @@ public class Player extends Entity {
             moveDirection.x += 1.f;
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W))
             moveDirection.y += 1.f;
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S)) 
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S))
             moveDirection.y -= 1.f;
-        
-        moveDirection.setLength(getMaxSpeed());
+
+        float currSpeed = getMaxSpeed() * parentWorld.getTileSpeed(getX(), getY());
+
+        moveDirection.setLength(currSpeed);
 
         this.setVelocity(moveDirection);
 
-        if(this.getVelocity().x < 0.f)
+        if (this.getVelocity().x < 0.f)
             lookingLeft = true;
-        else if(this.getVelocity().x > 0.f)
+        else if (this.getVelocity().x > 0.f)
             lookingLeft = false;
 
         // Check if the player is moving based on input
@@ -86,33 +89,35 @@ public class Player extends Entity {
         handleBorders();
         updateAnimation();
 
-        if(lookingLeft) {
+        if (lookingLeft) {
             this.setFlip(true, false);
         } else {
             this.setFlip(false, false);
         }
 
-        if(iFrameCount > 0)
+        if (iFrameCount > 0)
             iFrameCount--;
     }
 
     @Override
     public void onCollision(Entity otherEntity) {
-        if(iFrameCount > 0)
+        if (iFrameCount > 0)
             return;
 
         iFrameCount = iFrameCooldown;
     }
 
     static float stateTimeS = 0.f;
+
     public void updateAnimation() {
         /* Logic to update the animation frames based on time */
-        stateTimeS += Gdx.graphics.getDeltaTime();
+
+        stateTimeS += Gdx.graphics.getDeltaTime() * parentWorld.getTileSpeed(getX(), getY());
         TextureRegion newSpriteTex = null;
 
         if (isMoving)
             newSpriteTex = movingAnimation.getKeyFrame(stateTimeS, true);
-        else 
+        else
             newSpriteTex = idleAnimation.getKeyFrame(stateTimeS, false);
 
         this.setRegion(newSpriteTex); // Update the player sprite's texture region to the current frame
@@ -127,7 +132,7 @@ public class Player extends Entity {
     }
 
     public boolean heal(int hp) {
-        if (health == maxHealth){
+        if (health == maxHealth) {
             return false;
         }
         health = MathUtils.clamp(health + hp, 0, maxHealth);
