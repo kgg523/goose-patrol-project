@@ -7,11 +7,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-
 
 import com.charvas.entities.EntityManager;
 import com.charvas.entities.Player;
@@ -23,11 +24,12 @@ public class World {
 
     private EntityManager entManager;
     private Player playerRef = null;
-    
+
     // map and cameras to view the map
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
     private OrthographicCamera camera;
+    private TiledMapTileLayer terrainLayer;
     private ShapeRenderer shapeRenderer = null;
 
     private boolean drawHitboxes = false;
@@ -37,6 +39,7 @@ public class World {
         // Initialising the TiledMap and its renderer, as well as the camera
         TmxMapLoader mapLoader = new TmxMapLoader();
         map = mapLoader.load(mapFilePath);
+        terrainLayer = (TiledMapTileLayer) map.getLayers().get("water");
 
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f); // Assuming your tiles are 32x32 pixels
         camera = new OrthographicCamera();
@@ -49,27 +52,37 @@ public class World {
 
         spawnGoose(new Vector2(7, 5));
 
-        playerRef.setSize(1, 1);        
-    }   
+        playerRef.setSize(1, 1);
+    }
 
-    public final Player getPlayer() { return playerRef; }
-    public final TiledMap getMap() { return map; }
-    public final OrthographicCamera getCamera() { return camera; }
+    public final Player getPlayer() {
+        return playerRef;
+    }
+
+    public final TiledMap getMap() {
+        return map;
+    }
+
+    public final OrthographicCamera getCamera() {
+        return camera;
+    }
 
     public final void processInput() {
-        if(Gdx.input.isKeyJustPressed(Input.Keys.H)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.H)) {
             drawHitboxes = !drawHitboxes;
         }
 
         playerRef.handleInput();
     }
+
     public final void update() {
         entManager.update();
     }
 
     public final void draw(SpriteBatch pBatch) {
-        if(!isInitialised()) {
-            throw new IllegalStateException("World is not initialised. Ensure that mainTexturesRef, entManager, camera, map, and mapRenderer are all set.");
+        if (!isInitialised()) {
+            throw new IllegalStateException(
+                    "World is not initialised. Ensure that mainTexturesRef, entManager, camera, map, and mapRenderer are all set.");
         }
 
         camera.position.set(playerRef.getX() + playerRef.getWidth() / 2,
@@ -78,7 +91,7 @@ public class World {
                 Main.V_WIDTH - camera.viewportWidth / 2);
         camera.position.y = MathUtils.clamp(camera.position.y, camera.viewportHeight / 2,
                 Main.V_HEIGHT - camera.viewportHeight / 2);
-        camera.update(); 
+        camera.update();
 
         mapRenderer.setView(camera.combined, 0, 0, Main.V_WIDTH, Main.V_HEIGHT); // Set mapRenderer to use the camera
         mapRenderer.render();
@@ -91,7 +104,7 @@ public class World {
         pBatch.end();
 
         // draw hitboxes if enabled
-        if(drawHitboxes) {
+        if (drawHitboxes) {
             shapeRenderer.setProjectionMatrix(camera.combined);
             shapeRenderer.setColor(1, 0, 0, 1); // Red color for hitboxes
 
@@ -103,8 +116,9 @@ public class World {
     }
 
     public final void spawnGoose(Vector2 spawnPos) {
-        Goose gooseEntity = new Goose(mainTexturesRef.findRegions("gooseFrame"), mainTexturesRef.findRegion("gooseFrame"));
-    
+        Goose gooseEntity = new Goose(mainTexturesRef.findRegions("gooseFrame"),
+                mainTexturesRef.findRegion("gooseFrame"));
+
         gooseEntity.setPosition(spawnPos);
         gooseEntity.updateHitbox();
         gooseEntity.setSize(0.5f, 0.5f);
@@ -115,17 +129,19 @@ public class World {
     }
 
     /**
-     * Creates a player entity and adds it to entitymanager. 
+     * Creates a player entity and adds it to entitymanager.
      * Should be called after mainTextures is set
+     * 
      * @param spawnPos position to spawn player at
      * @throws IllegalStateException if mainTextures is not set
      */
     public final void spawnPlayer(Vector2 spawnPos) {
-        if(mainTexturesRef == null)
+        if (mainTexturesRef == null)
             throw new IllegalStateException("Main textures must be set before spawning the player.");
 
-        playerRef = new Player(mainTexturesRef.findRegions("playerRunning"), mainTexturesRef.findRegions("playerIdle") );
-        
+        playerRef = new Player(mainTexturesRef.findRegions("playerRunning"), mainTexturesRef.findRegions("playerIdle"),
+                this);
+
         playerRef.setMaxHealth(100);
         playerRef.setHealth(100);
         playerRef.setMaxSpeed(1.5f);
@@ -135,10 +151,29 @@ public class World {
     }
 
     public final boolean isInitialised() {
-        return  mainTexturesRef != null && 
-                entManager != null && 
-                camera != null && 
-                map != null && 
-                mapRenderer != null;       
+        return mainTexturesRef != null &&
+                entManager != null &&
+                camera != null &&
+                map != null &&
+                mapRenderer != null;
+    }
+
+    public float getTileSpeed(float x, float y) {
+
+        if (terrainLayer == null) {
+            return 1.0f;
+        }
+
+        int cellX = (int) (x + 0.5f);
+        int cellY = (int) (y + 0.5f);
+
+        Cell cell = terrainLayer.getCell(cellX, cellY);
+        System.out.println(cell);
+
+        if (cell != null && cell.getTile() != null) {
+            return cell.getTile().getProperties().get("WalkSpeed", 1.0f, Float.class);
+        }
+
+        return 1.0f;
     }
 }

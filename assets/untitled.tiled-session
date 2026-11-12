@@ -9,6 +9,14 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "YorkCampus.tmx": {
+            "scale": 0.4638671875,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 640.2694736842104,
+                "y": 576.6736842105263
+            }
+        },
         "background.tmx": {
             "scale": 3.0859,
             "selectedLayer": 1,
@@ -17,19 +25,76 @@
                 "y": 799.9287079944263
             }
         },
+        "eng1 map/CampusLand.tsx": {
+            "scaleInDock": 1
+        },
+        "eng1 map/Central Hall.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
+        },
+        "eng1 map/Ian Wand Building.tsx": {
+            "scaleInDock": 1
+        },
+        "eng1 map/Ron Cooke.tsx": {
+            "scaleInDock": 1
+        },
+        "eng1 map/Trees.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
+        },
+        "eng1 map/Water.tsx": {
+            "scaleInDock": 1
+        },
+        "eng1 map/central hall.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "eng1 map/piazza.tsx": {
+            "scaleInDock": 1
+        },
         "map.tmx": {
-            "scale": 0.6184895833333333,
+            "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 184.32,
-                "y": 657.2463157894737
+                "x": 190.66666666666663,
+                "y": 813.6666666666665
             }
         },
         "map.tsx": {
-            "scaleInDock": 1
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "map/CampusLand.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "map/Central Hall.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "map/Ian Wand Building.tsx": {
+            "dynamicWrapping": false,
+            "scaleInEditor": 1
+        },
+        "map/Ron Cooke.tsx": {
+            "scaleInEditor": 1
+        },
+        "map/Trees.tsx": {
+            "scaleInEditor": 1
+        },
+        "map/Water.tsx": {
+            "dynamicWrapping": false,
+            "scaleInEditor": 1
+        },
+        "map/piazza.tsx": {
+            "dynamicWrapping": false,
+            "scaleInEditor": 1
         }
     },
-    "last.imagePath": "C:/Users/aiden/Documents/ComputerScience/goose-patrol-project/assets",
+    "last.externalTilesetPath": "C:/Users/aiden/Documents/ComputerScience/goose-patrol-project/assets/map",
+    "last.imagePath": "C:/Users/aiden/Documents/ComputerScience/goose-patrol-project/assets/map",
     "map.height": 30,
     "map.lastUsedFormat": "tmx",
     "openFiles": [
@@ -37,9 +102,19 @@
         "Map.tsx"
     ],
     "project": "untitled.tiled-project",
+    "property.type": "float",
     "recentFiles": [
-        "Map.tsx",
         "map.tmx",
+        "Map.tsx",
+        "map/Trees.tsx",
+        "map/Water.tsx",
+        "map/CampusLand.tsx",
+        "map/Ron Cooke.tsx",
+        "map/piazza.tsx",
+        "map/Ian Wand Building.tsx",
+        "map/Central Hall.tsx",
+        "map.tsx",
+        "YorkCampus.tmx",
         "background.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",

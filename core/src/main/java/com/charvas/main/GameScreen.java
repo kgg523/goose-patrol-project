@@ -49,7 +49,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        world = new World(atlas, "map.tmx");
+        world = new World(atlas, "YorkCampus.tmx");
         world.getCamera().setToOrtho(false, Main.V_WIDTH, Main.V_HEIGHT);
         world.getCamera().update();
 

@@ -6,13 +6,19 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+
 import com.charvas.main.Main;
 
 public abstract class Entity extends Sprite {
     /* Entity class for representing game objects */
+
+    World parentWorld;
 
     private Rectangle customHitbox = new Rectangle(); // Hitbox for collision
     private float hitboxOffsetX = 0.f; // Offset for hitbox position
@@ -25,33 +31,11 @@ public abstract class Entity extends Sprite {
 
     private boolean alive = true;
 
-
-    /****************/
-    /* CONSTRUCTORS */
-    /****************/
-
-    public Entity() {
-    }
-
-    public Entity(TextureRegion region) {
-        super(region);
-        customHitbox = new Rectangle(-100, -100, 1, 1);
-    }
-
-    public Entity(Texture texture) {
-        super(texture);
-        customHitbox = new Rectangle(-100, -100, 1, 1);
-    }
-
-    public Entity(Texture texture, int srcWidth, int srcHeight) {
-        super(texture, srcWidth, srcHeight);
-        customHitbox = new Rectangle(-100, -100, srcWidth, srcHeight);
-    }
-
     /***********/
     /* HELPERS */
     /***********/
-    // sets the players position 
+
+    // sets the players position
     public final void handleBorders() {
         // Keep player within the bounds of the world
         float worldWidth = Main.V_WIDTH;
@@ -65,21 +49,22 @@ public abstract class Entity extends Sprite {
     /************/
     /* OVERIDES */
     /************/
-    public void handleInput() {}
-    
+    public void handleInput() {
+    }
+
     public void update() {
         // update entity values each frame
         float deltaTimeS = Gdx.graphics.getDeltaTime();
 
         getVelocity().add(getAcceleration());
-        if(getVelocity().len() > getMaxSpeed()) {
+        if (getVelocity().len() > getMaxSpeed()) {
             setVelocity(getVelocity().setLength(getMaxSpeed()));
         }
 
         Vector2 scaledVel = getVelocity().scl(deltaTimeS);
 
         // entity not moving at all, skip translation and hitbox update
-        if(scaledVel.len2() == 0.f) {
+        if (scaledVel.len2() == 0.f) {
             return;
         }
 
@@ -87,12 +72,13 @@ public abstract class Entity extends Sprite {
         updateHitbox();
     }
 
-    @Override 
+    @Override
     public void draw(Batch pBatch) {
         super.draw(pBatch);
     }
 
-    public void onCollision(Entity otherEntity) {}
+    public void onCollision(Entity otherEntity) {
+    }
 
     public void drawHitbox(ShapeRenderer shapeRenderer) {
         shapeRenderer.rect(customHitbox.x, customHitbox.y, customHitbox.width, customHitbox.height);
