@@ -28,6 +28,8 @@ public abstract class Entity extends Sprite {
 
     private boolean alive = true;
 
+    public Entity() {}
+
     public Entity(Texture texture) {
         super(texture);
         customHitbox = new Rectangle(-100, -100, 1, 1);
