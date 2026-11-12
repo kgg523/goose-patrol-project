@@ -18,7 +18,7 @@ public class SeedBagItem extends Item {
 
     @Override
     public boolean use() {
-        world.spawnSeedBag(new Vector2(0, 0));
+        world.spawnSeedBag(world.getPlayer().getPosition());
         return true;
     }
 }

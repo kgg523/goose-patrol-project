@@ -10,7 +10,7 @@ public class Inventory{
     private Item[] items = new Item[8]; 
     private final int MAX_SIZE = 8;
     private int size = 0;
-    private int itemUsedCounter;
+    private int itemUsedCounter = 0;
 
     public boolean addItem(Item item) {
         //Adds an item into the next available slot in the inventory

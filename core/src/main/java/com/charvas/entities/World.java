@@ -128,26 +128,28 @@ public class World {
     }
 
     public final void spawnSeedBag(Vector2 spawnPos) {
-        //TO-DO
-        System.out.println("Seed bag item has been used");
+        SeedBagEntity seedBagEntity = new SeedBagEntity(new Texture("Items/seedBagImg.png"), 5.0f);
+
+        seedBagEntity.setPosition(spawnPos);
+        seedBagEntity.setSize(0.5f,0.5f);
+        seedBagEntity.updateHitbox();
+        
+        entManager.addEntity(seedBagEntity);
     }
 
     /**
      * Creates a player entity and adds it to entitymanager. 
      * Should be called after mainTextures is set
      * @param spawnPos position to spawn player at
-     * @throws IllegalStateException if mainTextures is not set
      */
     public final void spawnPlayer(Vector2 spawnPos) {
-        if(mainTexturesRef == null)
-            throw new IllegalStateException("Main textures must be set before spawning the player.");
-
         playerRef = new Player(mainTexturesRef.findRegions("playerRunning"), mainTexturesRef.findRegions("playerIdle") );
         
         playerRef.setMaxHealth(100);
         playerRef.setHealth(100);
         playerRef.setMaxSpeed(1.5f);
         playerRef.setPosition(spawnPos);
+        playerRef.updateHitbox();
 
         entManager.addEntity(playerRef);
     }
