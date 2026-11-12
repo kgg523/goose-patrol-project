@@ -127,6 +127,11 @@ public class World {
         entManager.addEntity(medKitEntity);
     }
 
+    public final void spawnSeedBag(Vector2 spawnPos) {
+        //TO-DO
+        System.out.println("Seed bag item has been used");
+    }
+
     /**
      * Creates a player entity and adds it to entitymanager. 
      * Should be called after mainTextures is set

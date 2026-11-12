@@ -16,6 +16,7 @@ import com.charvas.entities.World;
 import com.charvas.items.Inventory;
 import com.charvas.items.MedKitItem;
 import com.charvas.items.PlayerHurtTestItem;
+import com.charvas.items.SeedBagItem;
 
 public class GameScreen implements Screen {
     /*
@@ -60,6 +61,7 @@ public class GameScreen implements Screen {
 
         inventory.addItem(new MedKitItem(world.getPlayer()));
         inventory.addItem(new PlayerHurtTestItem(world.getPlayer()));
+        inventory.addItem(new SeedBagItem(world));
     }
 
     @Override
