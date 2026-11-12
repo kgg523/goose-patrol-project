@@ -4,11 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.charvas.main.Main;
 
 public abstract class Entity extends Sprite {
@@ -27,10 +28,14 @@ public abstract class Entity extends Sprite {
 
     private boolean alive = true;
 
-    // public Entity(Texture texture) {
-    //     super(texture);
-    //     customHitbox = new Rectangle(-100, -100, 1, 1);
-    // }
+    public Entity(Texture texture) {
+        super(texture);
+        customHitbox = new Rectangle(-100, -100, 1, 1);
+    }
+
+    public Entity(Array<AtlasRegion> movingRegion, Array<AtlasRegion> idleRegion) {
+        super(idleRegion.get(0));
+    }
 
     /***********/
     /* HELPERS */

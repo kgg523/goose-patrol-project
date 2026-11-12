@@ -10,7 +10,7 @@ import com.badlogic.gdx.Game;
  */
 public class Main extends Game {
     /* Main class which serves as the entry point for the application */
-    public static final float V_WIDTH = 30f; // Virtual width
+    public static final float V_WIDTH = 40f; // Virtual width
     public static final float V_HEIGHT = 30f; // Virtual height
     public SpriteBatch spriteBatch;
     public FitViewport viewport;

@@ -33,7 +33,7 @@ public class Player extends Entity {
     public Player(Array<AtlasRegion> movingRegion, Array<AtlasRegion> idleRegion, World givenWorld) {
         // Sets the animation and initializes the entity with the first frame
         // This should be the main contructor used to create a Player object
-
+        super(movingRegion, idleRegion);
         parentWorld = givenWorld;
 
         movingAnimation = new Animation<TextureRegion>(movingSecPerFrame, movingRegion, Animation.PlayMode.LOOP);

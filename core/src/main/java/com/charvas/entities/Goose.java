@@ -11,17 +11,17 @@ import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
 public class Goose extends Entity {
-    
+
     Animation<TextureRegion> movingAnimation;
     TextureRegion idleTexture;
-    
+
     float stateTimeS = 0.f;
 
     // Damage that the goose does to the player on collision
     int damage = 10;
 
-    public Goose(Array<AtlasRegion> movingAnimation, TextureRegion idleTex)
-    {
+    public Goose(Array<AtlasRegion> movingAnimation, TextureRegion idleTex) {
+        super(movingAnimation, movingAnimation);
         float movingAnimFrameTime = 0.3f;
 
         this.movingAnimation = new Animation<TextureRegion>(movingAnimFrameTime, movingAnimation, PlayMode.LOOP);
@@ -36,24 +36,26 @@ public class Goose extends Entity {
         updateAnimation();
     }
 
-    @Override 
-    public void handleInput() {}
-    
+    @Override
+    public void handleInput() {
+    }
+
     private float time = 0.f;
-    @Override 
+
+    @Override
     public void update() {
         time += Gdx.graphics.getDeltaTime();
-        Vector2 newVelocity = new Vector2((float)Math.sin(time * 2.f), (float)Math.cos(time * 2.f));
-        
+        Vector2 newVelocity = new Vector2((float) Math.sin(time * 2.f), (float) Math.cos(time * 2.f));
+
         newVelocity.scl(0.5f);
         setVelocity(newVelocity);
 
         super.update();
         updateAnimation();
-        
-        if(getVelocity().x < 0.f)
+
+        if (getVelocity().x < 0.f)
             setFlip(true, false);
-        else if(getVelocity().x > 0.f)
+        else if (getVelocity().x > 0.f)
             setFlip(false, false);
     }
 
@@ -62,10 +64,10 @@ public class Goose extends Entity {
         super.draw(pBatch);
     }
 
-    @Override 
+    @Override
     public void onCollision(Entity otherEntity) {
-        if(otherEntity instanceof Player) {
-            Player playerEntity = (Player)otherEntity;
+        if (otherEntity instanceof Player) {
+            Player playerEntity = (Player) otherEntity;
             playerEntity.takeDamage(damage);
             kill();
         }
@@ -75,10 +77,9 @@ public class Goose extends Entity {
         stateTimeS += Gdx.graphics.getDeltaTime();
 
         TextureRegion newSpriteTex = null;
-        if(this.getVelocity().len() > 0) {
+        if (this.getVelocity().len() > 0) {
             newSpriteTex = movingAnimation.getKeyFrame(stateTimeS, true);
-        }
-        else {
+        } else {
             newSpriteTex = idleTexture;
         }
 
