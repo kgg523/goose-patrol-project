@@ -59,9 +59,9 @@ public class GameScreen implements Screen {
         gui.setup(world);
         timer = new GameTimer(gui);
 
-        inventory.addItem(new MedKitItem(world.getPlayer()));
-        inventory.addItem(new PlayerHurtTestItem(world.getPlayer()));
-        inventory.addItem(new SeedBagItem(world));
+        world.givePlayer(new MedKitItem(world.getPlayer()));
+        world.givePlayer(new PlayerHurtTestItem(world.getPlayer()));
+        world.givePlayer(new SeedBagItem(world));
     }
 
     @Override

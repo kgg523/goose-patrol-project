@@ -17,6 +17,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.charvas.entities.EntityManager;
 import com.charvas.entities.Player;
 import com.charvas.main.Main;
+import com.charvas.items.Item;
 
 public class World {
 
@@ -152,6 +153,11 @@ public class World {
         playerRef.updateHitbox();
 
         entManager.addEntity(playerRef);
+    }
+
+    public final void givePlayer(Item newItem)
+    {
+        playerRef.getInventory().addItem(newItem);
     }
 
     public final boolean isInitialised() {
