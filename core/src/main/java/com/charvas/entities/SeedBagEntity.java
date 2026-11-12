@@ -9,7 +9,11 @@ public class SeedBagEntity extends Entity {
     float timeAliveS = 0.f;
 
     public SeedBagEntity(float timeAliveS) {
-        super(new Texture("Items/seedBagImg.png"));
+        //super(new Texture("Items/seedBagImg.png"));
+        setTexture(new Texture("Items/seedBagImg.png"));
+        setRegionHeight(getTexture().getHeight());
+        setRegionWidth(getTexture().getWidth());
+
         setSize(0.5f, 0.5f);
 
         Rectangle newHitbox = new Rectangle();

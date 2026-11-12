@@ -8,6 +8,9 @@ public class MedKitEntity extends Entity {
 
     public MedKitEntity(Texture texture) {
         // super(texture);
+        setTexture(texture);
+        setRegionHeight(texture.getHeight());
+        setRegionWidth(texture.getWidth());
 
         Rectangle newHitbox = getHitbox();
         newHitbox.setWidth(0.5f);

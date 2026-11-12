@@ -39,6 +39,8 @@ public class HUD {
     public void setup(World world) {
         this.world = world;
         Inventory inv = world.getPlayer().getInventory();
+
+        
         //                                 PAUSE BUTTON
 
         ButtonStyle pauseStyle = new ButtonStyle();

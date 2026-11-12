@@ -54,6 +54,8 @@ public class World {
 
         spawnGoose(new Vector2(7, 5));
 
+        spawnMedKit(new Vector2(7, 6));
+
         playerRef.setSize(1, 1);
     }
 
