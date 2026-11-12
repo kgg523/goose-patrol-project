@@ -1,5 +1,5 @@
 {
-    "activeFile": "map.tmx",
+    "activeFile": "YorkCampus.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -57,7 +57,7 @@
             "selectedLayer": 0,
             "viewCenter": {
                 "x": 190.66666666666663,
-                "y": 813.6666666666665
+                "y": 813.6666666666666
             }
         },
         "map.tsx": {
@@ -76,20 +76,25 @@
         },
         "map/Ian Wand Building.tsx": {
             "dynamicWrapping": false,
+            "scaleInDock": 1,
             "scaleInEditor": 1
         },
         "map/Ron Cooke.tsx": {
+            "scaleInDock": 1,
             "scaleInEditor": 1
         },
         "map/Trees.tsx": {
+            "scaleInDock": 1,
             "scaleInEditor": 1
         },
         "map/Water.tsx": {
             "dynamicWrapping": false,
+            "scaleInDock": 1,
             "scaleInEditor": 1
         },
         "map/piazza.tsx": {
             "dynamicWrapping": false,
+            "scaleInDock": 1,
             "scaleInEditor": 1
         }
     },
@@ -98,14 +103,14 @@
     "map.height": 30,
     "map.lastUsedFormat": "tmx",
     "openFiles": [
-        "map.tmx",
-        "Map.tsx"
+        "YorkCampus.tmx"
     ],
     "project": "untitled.tiled-project",
     "property.type": "float",
     "recentFiles": [
-        "map.tmx",
+        "YorkCampus.tmx",
         "Map.tsx",
+        "map.tmx",
         "map/Trees.tsx",
         "map/Water.tsx",
         "map/CampusLand.tsx",
@@ -114,7 +119,6 @@
         "map/Ian Wand Building.tsx",
         "map/Central Hall.tsx",
         "map.tsx",
-        "YorkCampus.tmx",
         "background.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",

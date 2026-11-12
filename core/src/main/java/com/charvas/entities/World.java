@@ -15,8 +15,6 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
-import com.charvas.entities.EntityManager;
-import com.charvas.entities.Player;
 import com.charvas.main.Main;
 import com.charvas.items.Item;
 
@@ -138,7 +136,7 @@ public class World {
         medKitEntity.setPosition(spawnPos);
         medKitEntity.updateHitbox();
         medKitEntity.setSize(0.5f, 0.5f);
-        
+
         entManager.addEntity(medKitEntity);
     }
 
@@ -147,7 +145,7 @@ public class World {
 
         seedBagEntity.setPosition(spawnPos);
         seedBagEntity.updateHitbox();
-        
+
         entManager.addEntity(seedBagEntity);
     }
 
@@ -173,9 +171,8 @@ public class World {
         entManager.addEntity(playerRef);
     }
 
-    public final void givePlayer(Item newItem)
-    {
-        if(playerRef == null)
+    public final void givePlayer(Item newItem) {
+        if (playerRef == null)
             return;
         playerRef.getInventory().addItem(newItem);
     }
@@ -198,7 +195,6 @@ public class World {
         int cellY = (int) (y + 0.5f);
 
         Cell cell = terrainLayer.getCell(cellX, cellY);
-        System.out.println(cell);
 
         if (cell != null && cell.getTile() != null) {
             return cell.getTile().getProperties().get("WalkSpeed", 1.0f, Float.class);
