@@ -89,6 +89,7 @@ public class GameScreen implements Screen {
     private void logic(float delta) {
         // Update game logic here
         world.update();
+        gui.update();
         timer.decrement(delta);
     }
 

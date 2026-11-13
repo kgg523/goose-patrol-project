@@ -106,7 +106,7 @@
         "YorkCampus.tmx"
     ],
     "project": "untitled.tiled-project",
-    "property.type": "float",
+    "property.type": "bool",
     "recentFiles": [
         "YorkCampus.tmx",
         "Map.tsx",

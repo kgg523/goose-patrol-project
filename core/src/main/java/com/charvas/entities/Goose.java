@@ -19,14 +19,17 @@ public class Goose extends Entity {
 
     // Damage that the goose does to the player on collision
     int damage = 10;
+    float waterSpeed = 1.1f; // speed in water
 
-    public Goose(Array<AtlasRegion> movingAnimation, TextureRegion idleTex) {
+    public Goose(Array<AtlasRegion> movingAnimation, TextureRegion idleTex, World givenWorld) {
         super(movingAnimation, movingAnimation);
-        float movingAnimFrameTime = 0.3f;
+        parentWorld = givenWorld;
+        float movingAnimFrameTime = 0.3f; // animation speed for moving
 
         this.movingAnimation = new Animation<TextureRegion>(movingAnimFrameTime, movingAnimation, PlayMode.LOOP);
-        idleTexture = idleTex;
+        idleTexture = idleTex; // idle texture
 
+        // setup hitboc for goose
         Rectangle newHitbox = getHitbox();
         newHitbox.setWidth(0.5f);
         newHitbox.setHeight(0.5f);
@@ -38,18 +41,23 @@ public class Goose extends Entity {
 
     @Override
     public void handleInput() {
+        // handles the movement of the goose
+        time += Gdx.graphics.getDeltaTime();
+        Vector2 newVelocity = new Vector2((float) Math.sin(time * 2.f), (float) Math.cos(time * 2.f));
+
+        if (parentWorld.getTileSpeed(getX(), getY())) {
+            newVelocity.scl(0.5f * waterSpeed);
+        } else {
+            newVelocity.scl(0.5f);
+        }
+        setVelocity(newVelocity);
     }
 
     private float time = 0.f;
 
     @Override
     public void update() {
-        time += Gdx.graphics.getDeltaTime();
-        Vector2 newVelocity = new Vector2((float) Math.sin(time * 2.f), (float) Math.cos(time * 2.f));
-
-        newVelocity.scl(0.5f);
-        setVelocity(newVelocity);
-
+        // update the goose
         super.update();
         updateAnimation();
 
@@ -66,6 +74,7 @@ public class Goose extends Entity {
 
     @Override
     public void onCollision(Entity otherEntity) {
+        // handles collisions, mainly with the player
         if (otherEntity instanceof Player) {
             Player playerEntity = (Player) otherEntity;
             playerEntity.takeDamage(damage);
@@ -74,7 +83,12 @@ public class Goose extends Entity {
     }
 
     public void updateAnimation() {
-        stateTimeS += Gdx.graphics.getDeltaTime();
+        // update the animation
+        if (parentWorld.getTileSpeed(getX(), getY())) { // update animation speed in water
+            stateTimeS += Gdx.graphics.getDeltaTime() * waterSpeed;
+        } else {
+            stateTimeS += Gdx.graphics.getDeltaTime();
+        }
 
         TextureRegion newSpriteTex = null;
         if (this.getVelocity().len() > 0) {

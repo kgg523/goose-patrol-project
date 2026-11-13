@@ -1,7 +1,6 @@
 package com.charvas.items;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.charvas.entities.World;
 
@@ -18,6 +17,7 @@ public class SeedBagItem extends Item {
 
     @Override
     public boolean use() {
+        //Triggers the spawning of a SeedBag entity in World.
         world.spawnSeedBag(world.getPlayer().getPosition());
         return true;
     }

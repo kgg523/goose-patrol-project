@@ -28,6 +28,10 @@ public abstract class Entity extends Sprite {
 
     private boolean alive = true;
 
+    /****************/
+    /* CONSTRUCTORS */
+    /****************/
+
     public Entity() {}
 
     public Entity(Texture texture) {
@@ -43,7 +47,7 @@ public abstract class Entity extends Sprite {
     /* HELPERS */
     /***********/
 
-    // sets the players position
+    // sets the entities position on border
     public final void handleBorders() {
         // Keep player within the bounds of the world
         float worldWidth = Main.V_WIDTH;

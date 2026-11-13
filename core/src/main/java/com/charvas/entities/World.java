@@ -19,6 +19,7 @@ import com.charvas.main.Main;
 import com.charvas.items.Item;
 
 public class World {
+    private int hiddenEventCounter = 0;
 
     private TextureAtlas mainTexturesRef = null;
 
@@ -41,20 +42,30 @@ public class World {
         map = mapLoader.load(mapFilePath);
         terrainLayer = (TiledMapTileLayer) map.getLayers().get("water");
 
+        // renderers for the map and entities
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f); // Assuming your tiles are 32x32 pixels
         camera = new OrthographicCamera();
 
         shapeRenderer = new ShapeRenderer();
 
         entManager = new EntityManager();
+        spawnEntities();
+
+    }
+
+    public final void spawnEntities() {
+        // handles all entity spawns
+
+        initialiseRCH(new Vector2(15, 7));
 
         spawnPlayer(new Vector2(5, 5));
+        playerRef.setSize(1, 1);
 
-        spawnGoose(new Vector2(7, 5));
+        for (int i = 0; i <= 20; i++) {
+            spawnGoose(new Vector2((int) (Math.random() * 40), (int) (Math.random() * 30)));
+        }
 
         spawnMedKit(new Vector2(7, 6));
-
-        playerRef.setSize(1, 1);
     }
 
     public final Player getPlayer() {
@@ -117,9 +128,25 @@ public class World {
 
     }
 
+    public final void initialiseRCH(Vector2 spawnPos) {
+        RCHPoopEventZone rch = new RCHPoopEventZone(this);
+        rch.setPosition(spawnPos);
+        rch.updateHitbox();
+        rch.setSize(6f, 7f);
+
+        entManager.addEntity(rch);
+    }
+
+    public final void spawnPoop(Vector2 spawnPos) {
+        RCHPoopEntity rchPoop = new RCHPoopEntity(new Texture("Items/goosePoopImg.png"), this);
+        rchPoop.setPosition(spawnPos);
+
+        entManager.addEntity(rchPoop);
+    }
+
     public final void spawnGoose(Vector2 spawnPos) {
         Goose gooseEntity = new Goose(mainTexturesRef.findRegions("gooseFrame"),
-                mainTexturesRef.findRegion("gooseFrame"));
+                mainTexturesRef.findRegion("gooseFrame"), this);
 
         gooseEntity.setPosition(spawnPos);
         gooseEntity.updateHitbox();
@@ -185,21 +212,31 @@ public class World {
                 mapRenderer != null;
     }
 
-    public float getTileSpeed(float x, float y) {
+    public void incrementEventCounter() {
+        hiddenEventCounter++;
+    }
+
+    public int getEventCount() {
+        return hiddenEventCounter;
+    }
+
+    public boolean getTileSpeed(float x, float y) {
 
         if (terrainLayer == null) {
-            return 1.0f;
+            return false;
         }
 
+        // adds 0.5f to get the center of the player
         int cellX = (int) (x + 0.5f);
         int cellY = (int) (y + 0.5f);
 
-        Cell cell = terrainLayer.getCell(cellX, cellY);
+        Cell cell = terrainLayer.getCell(cellX, cellY); // based on tile position
 
         if (cell != null && cell.getTile() != null) {
-            return cell.getTile().getProperties().get("WalkSpeed", 1.0f, Float.class);
+            // returns true if the cell is a water tile
+            return cell.getTile().getProperties().get("IsWater", false, Boolean.class);
         }
 
-        return 1.0f;
+        return false;
     }
 }

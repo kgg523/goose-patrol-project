@@ -25,6 +25,7 @@ public class HUD {
     private Label pauseLabel;
     private Label timerLabel;
     private Label itemUsedCounterLabel;
+    private Label eventCounterLabel;
     private Image inventoryBgImage;
     private Image hpBarImg;
     private ItemSlot[] itemSlots = new ItemSlot[8];
@@ -94,12 +95,19 @@ public class HUD {
 
         //                                 ITEM USED COUNTER
 
-        LabelStyle itemCounterLabelStyle = new LabelStyle();
-        itemCounterLabelStyle.font = new BitmapFont();
-        itemUsedCounterLabel = new Label("Items used: 0", itemCounterLabelStyle);
+        LabelStyle CounterLabelStyle = new LabelStyle();
+        CounterLabelStyle.font = new BitmapFont();
+        itemUsedCounterLabel = new Label("Items used: 0", CounterLabelStyle);
         itemUsedCounterLabel.setPosition(1600, 1020);
         itemUsedCounterLabel.setFontScale(3f);
         stage.addActor(itemUsedCounterLabel);
+
+        //                                  EVENTS COUNTER
+
+        eventCounterLabel = new Label("Events Triggered: 0", CounterLabelStyle);
+        eventCounterLabel.setPosition(1500, 920);
+        eventCounterLabel.setFontScale(3f);
+        stage.addActor(eventCounterLabel);
 
         //                                 INVENTORY
         Pixmap invLabelColor = new Pixmap(700, 350, Pixmap.Format.RGB888);
@@ -171,6 +179,12 @@ public class HUD {
     public void updateItemCounter(int count) {
         itemUsedCounterLabel.setText("Items used: " + String.valueOf(count));
     }
+
+    public void updateEventCounter(int count) {
+        eventCounterLabel.setText("Events triggered: "+ String.valueOf(count));
+    }
+
+
 
     private class ItemSlot {
         /* A single interactable slot of the inventory */

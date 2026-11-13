@@ -3,10 +3,9 @@ package com.charvas.items;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.charvas.entities.Player;
-import com.charvas.main.GameScreen;
 
 public class MedKitItem extends Item {
-    /* Item which heals the given player by a set 100 hp */
+    /* Item which heals the given player by a set 100 hp. */
     private Player player;
 
     public MedKitItem( Player targetPlayer){
@@ -18,6 +17,9 @@ public class MedKitItem extends Item {
 
     @Override
     public boolean use() {
+        /*Returns true (Used Successfully) if player is healed 
+            else false to indicate fail.
+        */
         if (player.heal(100)) {
             return true;
         }

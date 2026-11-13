@@ -14,6 +14,7 @@ import com.charvas.items.Inventory;
 public class Player extends Entity {
     /* Player class representing the player character in the game */
 
+    // textures for idle and moving animations
     private Animation<TextureRegion> movingAnimation;
     private Animation<TextureRegion> idleAnimation;
 
@@ -22,11 +23,15 @@ public class Player extends Entity {
     private boolean isMoving = false; // Flag to check if the player is moving
     private boolean lookingLeft = false; // Flag to flip player if looking left
 
-    private int iFrameCooldown = 10; // number of invincibility frames after getting hit
-    private int iFrameCount = 0; // current count of invincibility frames
+    private boolean hasTouchedWaterBefore = false;
 
+    private float iFrameCooldown = 1f; // number of invincibility frames after getting hit
+    private float iFrameCount = 0f; // current count of invincibility frames
+
+    // initial values for the player
     private int maxHealth = 100;
     private int health = maxHealth;
+    private float waterSpeed = 0.75f;
     private float movingSecPerFrame = 0.2f; // 5fps
     private float idleSecPerFrame = 0.5f; // 2fps
 
@@ -68,11 +73,19 @@ public class Player extends Entity {
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S))
             moveDirection.y -= 1.f;
 
-        float currSpeed = getMaxSpeed() * parentWorld.getTileSpeed(getX(), getY());
+        float currSpeed = getMaxSpeed();
+        if (parentWorld.getTileSpeed(getX(), getY())) { // change speed if in water
+            if (!hasTouchedWaterBefore) {
+                // Triggers hidden event the first time player enters water.
+                parentWorld.incrementEventCounter();
+                hasTouchedWaterBefore = true;
+            }
+            currSpeed *= waterSpeed;
+        }
 
-        moveDirection.setLength(currSpeed);
+        moveDirection.setLength(currSpeed); // normalise the vector length
 
-        this.setVelocity(moveDirection);
+        this.setVelocity(moveDirection); // set the speed to the velocity
 
         if (this.getVelocity().x < 0.f)
             lookingLeft = true;
@@ -85,6 +98,7 @@ public class Player extends Entity {
 
     @Override
     public void update() {
+        // update player
         super.update();
         handleBorders();
         updateAnimation();
@@ -96,24 +110,26 @@ public class Player extends Entity {
         }
 
         if (iFrameCount > 0)
-            iFrameCount--;
+            iFrameCount -= Gdx.graphics.getDeltaTime();
     }
 
     @Override
     public void onCollision(Entity otherEntity) {
         if (iFrameCount > 0)
             return;
-
-        iFrameCount = iFrameCooldown;
     }
 
-    static float stateTimeS = 0.f;
+    static float stateTimeS = 0.f; // statetime in seconds
 
     public void updateAnimation() {
         /* Logic to update the animation frames based on time */
 
-        stateTimeS += Gdx.graphics.getDeltaTime() * parentWorld.getTileSpeed(getX(), getY());
-        TextureRegion newSpriteTex = null;
+        if (parentWorld.getTileSpeed(getX(), getY())) { // change statetime update based on if in water
+            stateTimeS += Gdx.graphics.getDeltaTime() * waterSpeed;
+        } else {
+            stateTimeS += Gdx.graphics.getDeltaTime();
+        }
+        TextureRegion newSpriteTex = null; // temp variable for animation frames
 
         if (isMoving)
             newSpriteTex = movingAnimation.getKeyFrame(stateTimeS, true);
@@ -132,6 +148,7 @@ public class Player extends Entity {
     }
 
     public boolean heal(int hp) {
+        // returns true if healed and false if max health
         if (health == maxHealth) {
             return false;
         }
@@ -140,7 +157,11 @@ public class Player extends Entity {
     }
 
     public void takeDamage(int damagePts) {
-        health = MathUtils.clamp(health - damagePts, 0, maxHealth);
+        // take damage if not taken damage in the last iFrameCooldown ticks
+        if (iFrameCount <= 0) {
+            health = MathUtils.clamp(health - damagePts, 0, maxHealth);
+            iFrameCount = iFrameCooldown;
+        }
     }
 
     public int getHealth() {
