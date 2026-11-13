@@ -61,7 +61,7 @@ public class Player extends Entity {
     @Override
     public void handleInput() {
         /* Handle player input for movement and actions */
-    
+
         Vector2 moveDirection = new Vector2(0.f, 0.f);
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A))
@@ -76,7 +76,7 @@ public class Player extends Entity {
         float currSpeed = getMaxSpeed();
         if (parentWorld.getTileSpeed(getX(), getY())) { // change speed if in water
             if (!hasTouchedWaterBefore) {
-                //Triggers hidden event the first time player enters water.
+                // Triggers hidden event the first time player enters water.
                 parentWorld.incrementEventCounter();
                 hasTouchedWaterBefore = true;
             }
@@ -117,8 +117,6 @@ public class Player extends Entity {
     public void onCollision(Entity otherEntity) {
         if (iFrameCount > 0)
             return;
-
-        iFrameCount = iFrameCooldown;
     }
 
     static float stateTimeS = 0.f; // statetime in seconds
