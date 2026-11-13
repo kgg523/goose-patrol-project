@@ -61,7 +61,9 @@ public class World {
         spawnPlayer(new Vector2(5, 5));
         playerRef.setSize(1, 1);
 
-        spawnGoose(new Vector2(7, 5));
+        for (int i = 0; i <= 20; i++) {
+            spawnGoose(new Vector2((int) (Math.random() * 40), (int) (Math.random() * 30)));
+        }
 
         spawnMedKit(new Vector2(7, 6));
     }
