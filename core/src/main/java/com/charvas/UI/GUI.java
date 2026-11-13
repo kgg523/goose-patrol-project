@@ -102,6 +102,10 @@ public class GUI{
         stage.dispose();
     }
 
+    public void update() {
+        hud.updateEventCounter(game.getWorld().getEventCount());
+    }
+
 
     //GETTERS
 

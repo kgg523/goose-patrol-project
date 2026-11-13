@@ -59,7 +59,7 @@ public class Player extends Entity {
     @Override
     public void handleInput() {
         /* Handle player input for movement and actions */
-
+    
         Vector2 moveDirection = new Vector2(0.f, 0.f);
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A))

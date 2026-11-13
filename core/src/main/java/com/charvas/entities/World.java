@@ -19,6 +19,7 @@ import com.charvas.main.Main;
 import com.charvas.items.Item;
 
 public class World {
+    private int hiddenEventCounter = 0;
 
     private TextureAtlas mainTexturesRef = null;
 
@@ -54,13 +55,15 @@ public class World {
 
     public final void spawnEntities() {
         // handles all entity spawns
+
+        initialiseRCH(new Vector2(15, 7));
+
         spawnPlayer(new Vector2(5, 5));
         playerRef.setSize(1, 1);
 
         spawnGoose(new Vector2(7, 5));
 
         spawnMedKit(new Vector2(7, 6));
-
     }
 
     public final Player getPlayer() {
@@ -121,6 +124,22 @@ public class World {
             shapeRenderer.end();
         }
 
+    }
+
+    public final void initialiseRCH(Vector2 spawnPos) {
+        RCHPoopEventZone rch = new RCHPoopEventZone(this);
+        rch.setPosition(spawnPos);
+        rch.updateHitbox();
+        rch.setSize(6f, 7f);
+
+        entManager.addEntity(rch);
+    }
+
+    public final void spawnPoop(Vector2 spawnPos) {
+        RCHPoopEntity rchPoop = new RCHPoopEntity(new Texture("Items/goosePoopImg.png"), this);
+        rchPoop.setPosition(spawnPos);
+
+        entManager.addEntity(rchPoop);
     }
 
     public final void spawnGoose(Vector2 spawnPos) {
@@ -189,6 +208,14 @@ public class World {
                 camera != null &&
                 map != null &&
                 mapRenderer != null;
+    }
+
+    public void incrementEventCounter() {
+        hiddenEventCounter++;
+    }
+
+    public int getEventCount() {
+        return hiddenEventCounter;
     }
 
     public boolean getTileSpeed(float x, float y) {
