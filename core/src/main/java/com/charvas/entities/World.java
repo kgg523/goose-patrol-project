@@ -220,7 +220,7 @@ public class World {
         return hiddenEventCounter;
     }
 
-    public boolean getTileSpeed(float x, float y) {
+    public boolean isTileWater(float x, float y) {
 
         if (terrainLayer == null) {
             return false;

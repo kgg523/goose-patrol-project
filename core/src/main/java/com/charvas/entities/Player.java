@@ -74,7 +74,7 @@ public class Player extends Entity {
             moveDirection.y -= 1.f;
 
         float currSpeed = getMaxSpeed();
-        if (parentWorld.getTileSpeed(getX(), getY())) { // change speed if in water
+        if (parentWorld.isTileWater(getX(), getY())) { // change speed if in water
             if (!hasTouchedWaterBefore) {
                 // Triggers hidden event the first time player enters water.
                 parentWorld.incrementEventCounter();
@@ -124,7 +124,7 @@ public class Player extends Entity {
     public void updateAnimation() {
         /* Logic to update the animation frames based on time */
 
-        if (parentWorld.getTileSpeed(getX(), getY())) { // change statetime update based on if in water
+        if (parentWorld.isTileWater(getX(), getY())) { // change statetime update based on if in water
             stateTimeS += Gdx.graphics.getDeltaTime() * waterSpeed;
         } else {
             stateTimeS += Gdx.graphics.getDeltaTime();
