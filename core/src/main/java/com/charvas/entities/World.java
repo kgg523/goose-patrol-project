@@ -185,10 +185,10 @@ public class World {
                 mapRenderer != null;
     }
 
-    public float getTileSpeed(float x, float y) {
+    public boolean getTileSpeed(float x, float y) {
 
         if (terrainLayer == null) {
-            return 1.0f;
+            return false;
         }
 
         int cellX = (int) (x + 0.5f);
@@ -197,9 +197,9 @@ public class World {
         Cell cell = terrainLayer.getCell(cellX, cellY);
 
         if (cell != null && cell.getTile() != null) {
-            return cell.getTile().getProperties().get("WalkSpeed", 1.0f, Float.class);
+            return cell.getTile().getProperties().get("IsWater", false, Boolean.class);
         }
 
-        return 1.0f;
+        return false;
     }
 }

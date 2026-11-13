@@ -38,17 +38,17 @@ public class Goose extends Entity {
 
     @Override
     public void handleInput() {
+        time += Gdx.graphics.getDeltaTime();
+        Vector2 newVelocity = new Vector2((float) Math.sin(time * 2.f), (float) Math.cos(time * 2.f));
+    
+        newVelocity.scl(0.5f);
+        setVelocity(newVelocity);
     }
 
     private float time = 0.f;
 
     @Override
     public void update() {
-        time += Gdx.graphics.getDeltaTime();
-        Vector2 newVelocity = new Vector2((float) Math.sin(time * 2.f), (float) Math.cos(time * 2.f));
-
-        newVelocity.scl(0.5f);
-        setVelocity(newVelocity);
 
         super.update();
         updateAnimation();

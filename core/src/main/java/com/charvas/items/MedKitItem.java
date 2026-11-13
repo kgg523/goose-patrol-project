@@ -3,7 +3,6 @@ package com.charvas.items;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.charvas.entities.Player;
-import com.charvas.main.GameScreen;
 
 public class MedKitItem extends Item {
     /* Item which heals the given player by a set 100 hp */
