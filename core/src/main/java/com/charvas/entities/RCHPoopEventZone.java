@@ -30,7 +30,6 @@ public class RCHPoopEventZone extends Entity{
             float chanceOfActivation = 0.005f;
             if  (canActivate && Math.random() < chanceOfActivation){
                 parentWorld.incrementEventCounter();
-                System.out.println("Event triggered");
                 parentWorld.spawnPoop(parentWorld.getPlayer().getPosition());
                 player.takeDamage(10);
                 canActivate = false;

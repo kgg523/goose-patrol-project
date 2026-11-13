@@ -23,6 +23,8 @@ public class Player extends Entity {
     private boolean isMoving = false; // Flag to check if the player is moving
     private boolean lookingLeft = false; // Flag to flip player if looking left
 
+    private boolean hasTouchedWaterBefore = false;
+
     private float iFrameCooldown = 1f; // number of invincibility frames after getting hit
     private float iFrameCount = 0f; // current count of invincibility frames
 
@@ -73,6 +75,11 @@ public class Player extends Entity {
 
         float currSpeed = getMaxSpeed();
         if (parentWorld.getTileSpeed(getX(), getY())) { // change speed if in water
+            if (!hasTouchedWaterBefore) {
+                //Triggers hidden event the first time player enters water.
+                parentWorld.incrementEventCounter();
+                hasTouchedWaterBefore = true;
+            }
             currSpeed *= waterSpeed;
         }
 

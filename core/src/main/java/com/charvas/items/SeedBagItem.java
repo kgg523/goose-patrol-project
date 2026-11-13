@@ -17,6 +17,7 @@ public class SeedBagItem extends Item {
 
     @Override
     public boolean use() {
+        //Triggers the spawning of a SeedBag entity in World.
         world.spawnSeedBag(world.getPlayer().getPosition());
         return true;
     }

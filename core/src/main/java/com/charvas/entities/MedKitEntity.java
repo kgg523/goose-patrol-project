@@ -19,6 +19,7 @@ public class MedKitEntity extends Entity {
 
     @Override
     public void onCollision(Entity otherEntity) {
+        //Adds a MedKitItem object to the Inventory then destroys itself
         if (otherEntity instanceof Player) {
             Player playerEntity = (Player) otherEntity;
             playerEntity.getInventory().addItem(new MedKitItem(playerEntity));

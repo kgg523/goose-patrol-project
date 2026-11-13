@@ -11,7 +11,7 @@ public class Inventory{
     private int itemUsedCounter = 0;
 
     public boolean addItem(Item item) {
-        //Adds an item into the next available slot in the inventory
+        //Adds an item into the next available slot in the inventory.
 
         if (size == MAX_SIZE) {
             return false;
@@ -28,17 +28,21 @@ public class Inventory{
     }
 
     public void useItem(int index) {
-        /* Will use the item stored in the given index of the inventory array 
+        /* Uses the item stored in the given index of the inventory array 
             IF there exists an item in said slot and the game isn't paused
             once used an item will be removed.
-            Note: Items retain their position in the array even when
+            
+            Items retain their position in the array even when
                 other items are removed.
-            */
+        */
 
         if (items[index] == null) {
             return;
         }
         if (items[index].use()) {
+            /*Items return a boolean for if they were successfully used
+                Items are only removed if they were successful.
+            */
             itemUsedCounter++;
             hud.updateItemCounter(itemUsedCounter);
             items[index] = null;
