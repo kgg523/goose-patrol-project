@@ -119,7 +119,7 @@ public class World {
 
     public final void spawnGoose(Vector2 spawnPos) {
         Goose gooseEntity = new Goose(mainTexturesRef.findRegions("gooseFrame"),
-                mainTexturesRef.findRegion("gooseFrame"));
+                mainTexturesRef.findRegion("gooseFrame"), this);
 
         gooseEntity.setPosition(spawnPos);
         gooseEntity.updateHitbox();

@@ -23,8 +23,8 @@ public class Player extends Entity {
     private boolean isMoving = false; // Flag to check if the player is moving
     private boolean lookingLeft = false; // Flag to flip player if looking left
 
-    private int iFrameCooldown = 10; // number of invincibility frames after getting hit
-    private int iFrameCount = 0; // current count of invincibility frames
+    private float iFrameCooldown = 1f; // number of invincibility frames after getting hit
+    private float iFrameCount = 0f; // current count of invincibility frames
 
     // initial values for the player
     private int maxHealth = 100;
@@ -91,7 +91,7 @@ public class Player extends Entity {
 
     @Override
     public void update() {
-        // update player 
+        // update player
         super.update();
         handleBorders();
         updateAnimation();
@@ -103,7 +103,7 @@ public class Player extends Entity {
         }
 
         if (iFrameCount > 0)
-            iFrameCount--;
+            iFrameCount -= Gdx.graphics.getDeltaTime();
     }
 
     @Override
@@ -157,7 +157,6 @@ public class Player extends Entity {
             health = MathUtils.clamp(health - damagePts, 0, maxHealth);
             iFrameCount = iFrameCooldown;
         }
-        iFrameCount -= 1;
     }
 
     public int getHealth() {

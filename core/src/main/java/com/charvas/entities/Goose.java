@@ -19,9 +19,11 @@ public class Goose extends Entity {
 
     // Damage that the goose does to the player on collision
     int damage = 10;
+    float waterSpeed = 1.1f; // speed in water
 
-    public Goose(Array<AtlasRegion> movingAnimation, TextureRegion idleTex) {
+    public Goose(Array<AtlasRegion> movingAnimation, TextureRegion idleTex, World givenWorld) {
         super(movingAnimation, movingAnimation);
+        parentWorld = givenWorld;
         float movingAnimFrameTime = 0.3f;
 
         this.movingAnimation = new Animation<TextureRegion>(movingAnimFrameTime, movingAnimation, PlayMode.LOOP);
@@ -40,8 +42,12 @@ public class Goose extends Entity {
     public void handleInput() {
         time += Gdx.graphics.getDeltaTime();
         Vector2 newVelocity = new Vector2((float) Math.sin(time * 2.f), (float) Math.cos(time * 2.f));
-    
-        newVelocity.scl(0.5f);
+
+        if (parentWorld.getTileSpeed(getX(), getY())) {
+            newVelocity.scl(0.5f * waterSpeed);
+        } else {
+            newVelocity.scl(0.5f);
+        }
         setVelocity(newVelocity);
     }
 
