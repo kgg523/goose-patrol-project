@@ -41,20 +41,26 @@ public class World {
         map = mapLoader.load(mapFilePath);
         terrainLayer = (TiledMapTileLayer) map.getLayers().get("water");
 
+        // renderers for the map and entities
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f); // Assuming your tiles are 32x32 pixels
         camera = new OrthographicCamera();
 
         shapeRenderer = new ShapeRenderer();
 
         entManager = new EntityManager();
+        spawnEntities();
 
+    }
+
+    public final void spawnEntities() {
+        // handles all entity spawns
         spawnPlayer(new Vector2(5, 5));
+        playerRef.setSize(1, 1);
 
         spawnGoose(new Vector2(7, 5));
 
         spawnMedKit(new Vector2(7, 6));
 
-        playerRef.setSize(1, 1);
     }
 
     public final Player getPlayer() {
@@ -191,12 +197,14 @@ public class World {
             return false;
         }
 
+        // adds 0.5f to get the center of the player
         int cellX = (int) (x + 0.5f);
         int cellY = (int) (y + 0.5f);
 
-        Cell cell = terrainLayer.getCell(cellX, cellY);
+        Cell cell = terrainLayer.getCell(cellX, cellY); // based on tile position
 
         if (cell != null && cell.getTile() != null) {
+            // returns true if the cell is a water tile
             return cell.getTile().getProperties().get("IsWater", false, Boolean.class);
         }
 

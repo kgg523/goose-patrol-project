@@ -28,6 +28,10 @@ public abstract class Entity extends Sprite {
 
     private boolean alive = true;
 
+    /****************/
+    /* CONSTRUCTORS */
+    /****************/
+
     public Entity(Texture texture) {
         super(texture);
         customHitbox = new Rectangle(-100, -100, 1, 1);
@@ -41,7 +45,7 @@ public abstract class Entity extends Sprite {
     /* HELPERS */
     /***********/
 
-    // sets the players position
+    // sets the entities position on border
     public final void handleBorders() {
         // Keep player within the bounds of the world
         float worldWidth = Main.V_WIDTH;
