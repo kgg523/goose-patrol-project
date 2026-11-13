@@ -8,7 +8,9 @@ public class SeedBagEntity extends Entity {
     // time this seedbag should be alive in seconds
     float timeAliveS = 0.f;
 
-    public SeedBagEntity(float timeAliveS) {
+    public SeedBagEntity(World pWorld, float timeAliveS) {
+        super(pWorld);
+        
         setTexture(new Texture("Items/seedBagImg.png"));
         setRegion(0, 0, getTexture().getWidth(), getTexture().getHeight());
 

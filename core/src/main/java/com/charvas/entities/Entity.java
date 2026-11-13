@@ -15,7 +15,7 @@ import com.charvas.main.Main;
 public abstract class Entity extends Sprite {
     /* Entity class for representing game objects */
 
-    World parentWorld;
+    private final World parentWorld;
 
     private Rectangle customHitbox = new Rectangle(); // Hitbox for collision
     private float hitboxOffsetX = 0.f; // Offset for hitbox position
@@ -28,15 +28,17 @@ public abstract class Entity extends Sprite {
 
     private boolean alive = true;
 
-    public Entity() {}
+    public Entity(World pWorld) { parentWorld = pWorld; }
 
-    public Entity(Texture texture) {
+    public Entity(World pWorld, Texture texture) {
         super(texture);
+        parentWorld = pWorld;
         customHitbox = new Rectangle(-100, -100, 1, 1);
     }
 
-    public Entity(Array<AtlasRegion> movingRegion, Array<AtlasRegion> idleRegion) {
+    public Entity(World pWorld, Array<AtlasRegion> movingRegion, Array<AtlasRegion> idleRegion) {
         super(idleRegion.get(0));
+        parentWorld = pWorld;
     }
 
     /***********/
@@ -117,6 +119,10 @@ public abstract class Entity extends Sprite {
 
     public final boolean isAlive() {
         return alive;
+    }
+
+    public final World getWorld() { 
+        return parentWorld; 
     }
 
     /***********/

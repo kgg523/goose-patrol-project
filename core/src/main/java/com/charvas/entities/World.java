@@ -131,7 +131,7 @@ public class World {
     }
 
     public final void spawnMedKit(Vector2 spawnPos) {
-        MedKitEntity medKitEntity = new MedKitEntity(new Texture("Items/medkitImg.png"));
+        MedKitEntity medKitEntity = new MedKitEntity(this, new Texture("Items/medkitImg.png"));
 
         medKitEntity.setPosition(spawnPos);
         medKitEntity.updateHitbox();
@@ -141,7 +141,7 @@ public class World {
     }
 
     public final void spawnSeedBag(Vector2 spawnPos) {
-        SeedBagEntity seedBagEntity = new SeedBagEntity(5.0f);
+        SeedBagEntity seedBagEntity = new SeedBagEntity(this, 5.0f);
 
         seedBagEntity.setPosition(spawnPos);
         seedBagEntity.updateHitbox();
@@ -159,8 +159,7 @@ public class World {
         if (mainTexturesRef == null)
             throw new IllegalStateException("Main textures must be set before spawning the player.");
 
-        playerRef = new Player(mainTexturesRef.findRegions("playerRunning"), mainTexturesRef.findRegions("playerIdle"),
-                this);
+        playerRef = new Player(this, mainTexturesRef.findRegions("playerRunning"), mainTexturesRef.findRegions("playerIdle"));
 
         playerRef.setMaxHealth(100);
         playerRef.setHealth(100);

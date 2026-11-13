@@ -6,8 +6,8 @@ import com.charvas.items.MedKitItem;
 
 public class MedKitEntity extends Entity {
 
-    public MedKitEntity(Texture texture) {
-        super(texture);
+    public MedKitEntity(World pWorld, Texture texture) {
+        super(pWorld, texture);
 
         Rectangle newHitbox = getHitbox();
         newHitbox.setWidth(0.5f);

@@ -30,11 +30,10 @@ public class Player extends Entity {
     private float movingSecPerFrame = 0.2f; // 5fps
     private float idleSecPerFrame = 0.5f; // 2fps
 
-    public Player(Array<AtlasRegion> movingRegion, Array<AtlasRegion> idleRegion, World givenWorld) {
+    public Player(World pWorld, Array<AtlasRegion> movingRegion, Array<AtlasRegion> idleRegion) {
         // Sets the animation and initializes the entity with the first frame
         // This should be the main contructor used to create a Player object
-        super(movingRegion, idleRegion);
-        parentWorld = givenWorld;
+        super(pWorld, movingRegion, idleRegion);
 
         movingAnimation = new Animation<TextureRegion>(movingSecPerFrame, movingRegion, Animation.PlayMode.LOOP);
         idleAnimation = new Animation<TextureRegion>(idleSecPerFrame, idleRegion, Animation.PlayMode.LOOP);
@@ -68,7 +67,7 @@ public class Player extends Entity {
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S))
             moveDirection.y -= 1.f;
 
-        float currSpeed = getMaxSpeed() * parentWorld.getTileSpeed(getX(), getY());
+        float currSpeed = getMaxSpeed() * getWorld().getTileSpeed(getX(), getY());
 
         moveDirection.setLength(currSpeed);
 
@@ -112,7 +111,7 @@ public class Player extends Entity {
     public void updateAnimation() {
         /* Logic to update the animation frames based on time */
 
-        stateTimeS += Gdx.graphics.getDeltaTime() * parentWorld.getTileSpeed(getX(), getY());
+        stateTimeS += Gdx.graphics.getDeltaTime() * getWorld().getTileSpeed(getX(), getY());
         TextureRegion newSpriteTex = null;
 
         if (isMoving)
