@@ -152,6 +152,7 @@ public class World {
         gooseEntity.updateHitbox();
         gooseEntity.setSize(0.5f, 0.5f);
         gooseEntity.setMaxSpeed(0.5f);
+        gooseEntity.target = playerRef;
 
         entManager.addEntity(gooseEntity);
 

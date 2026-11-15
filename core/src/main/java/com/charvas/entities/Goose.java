@@ -1,6 +1,8 @@
 package com.charvas.entities;
 
 import com.badlogic.gdx.utils.Array;
+
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -20,6 +22,7 @@ public class Goose extends Entity {
     // Damage that the goose does to the player on collision
     int damage = 10;
     float waterSpeed = 1.1f; // speed multiplier in water
+    Entity target;
 
     public Goose(Array<AtlasRegion> movingAnimation, TextureRegion idleTex, World givenWorld) {
         super(movingAnimation, movingAnimation);
@@ -43,7 +46,9 @@ public class Goose extends Entity {
     public void handleInput() {
         // handles the movement of the goose
         time += Gdx.graphics.getDeltaTime();
-        Vector2 newVelocity = new Vector2((float) Math.sin(time * 2.f), (float) Math.cos(time * 2.f));
+        // Vector2 newVelocity = new Vector2((float) Math.sin(time * 2.f), (float)
+        // Math.cos(time * 2.f));
+        Vector2 newVelocity = new Vector2(target.getX() - getX(), target.getY() - getY());
 
         if (parentWorld.isTileWater(getX(), getY())) {
             newVelocity.scl(0.5f * waterSpeed);
@@ -60,6 +65,7 @@ public class Goose extends Entity {
         // update the goose
         super.update();
         updateAnimation();
+        handleInput();
 
         if (getVelocity().x < 0.f)
             setFlip(true, false);
