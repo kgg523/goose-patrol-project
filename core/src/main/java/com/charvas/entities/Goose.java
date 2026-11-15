@@ -2,7 +2,6 @@ package com.charvas.entities;
 
 import com.badlogic.gdx.utils.Array;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -48,7 +47,22 @@ public class Goose extends Entity {
         time += Gdx.graphics.getDeltaTime();
         // Vector2 newVelocity = new Vector2((float) Math.sin(time * 2.f), (float)
         // Math.cos(time * 2.f));
-        Vector2 newVelocity = new Vector2(target.getX() - getX(), target.getY() - getY());
+        Vector2 newVelocity;
+        found: { // create a loop container to break if SeedBag is found
+            for (Entity entity : parentWorld.entManager.getEntities()) { // loop through entities to find SeedBag
+                if (entity instanceof SeedBagEntity) {
+                    newVelocity = new Vector2(entity.getX() - getX(), entity.getY() - getY()); // set direction to
+                                                                                               // SeedBag
+                    if (newVelocity.len() > 3) { // skip if not in seed bag range
+                        continue;
+                    }
+                    break found;
+                }
+
+            }
+            newVelocity = new Vector2(target.getX() - getX(), target.getY() - getY()); // set direction to player if no
+                                                                                       // SeedBag
+        }
 
         if (parentWorld.isTileWater(getX(), getY())) {
             newVelocity.scl(0.5f * waterSpeed);

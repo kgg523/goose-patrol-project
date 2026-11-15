@@ -23,7 +23,7 @@ public class World {
 
     private TextureAtlas mainTexturesRef = null;
 
-    private EntityManager entManager;
+    EntityManager entManager;
     private Player playerRef = null;
 
     // map and cameras to view the map
