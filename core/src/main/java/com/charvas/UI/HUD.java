@@ -156,19 +156,10 @@ public class HUD {
         pauseLabel.setVisible(pauseButton.isChecked());
     }
 
-    public GUI getGui() {
-        return gui;
-    }
 
-    public void setTimerString(String str) {
-        timerLabel.setText(str);
-    }
+    
 
     // Methods for Updating Elements of the HUD
-
-    public void updateItemSlot(int index, Drawable img) {
-        itemSlots[index].setImage(img);
-    }
 
     public void updateHpBar() {
         float hp = world.getPlayer().getHealth();
@@ -176,15 +167,37 @@ public class HUD {
         hpBarImg.setSize(750*(hp/maxHealth), 100);
     }
 
-    public void updateItemCounter(int count) {
+    /***********/
+    /* GETTERS */
+    /***********/
+
+    public GUI getGui() {
+        return gui;
+    }
+
+
+    /***********/
+    /* SETTERS */
+    /***********/
+
+    public void setItemCounter(int count) {
         itemUsedCounterLabel.setText("Items used: " + String.valueOf(count));
     }
 
-    public void updateEventCounter(int count) {
+    public void setEventCounter(int count) {
         eventCounterLabel.setText("Events triggered: "+ String.valueOf(count));
     }
+    
+    public void setItemSlotImg(int index, Drawable img) {
+        itemSlots[index].setImage(img);
+    }
+    public void setTimerString(String str) {
+        timerLabel.setText(str);
+    }
 
-
+    /****************/
+    /* HELPER CLASS */
+    /****************/
 
     private class ItemSlot {
         /* A single interactable slot of the inventory */

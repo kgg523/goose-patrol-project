@@ -20,7 +20,7 @@ public class Inventory{
         for (int i = 0; i < MAX_SIZE; i++) {
             if (items[i] == null) {
                 items[i] = item;
-                hud.updateItemSlot(i, item.getDrawable());
+                hud.setItemSlotImg(i, item.getDrawable());
                 return true;
             }
         }
@@ -44,9 +44,9 @@ public class Inventory{
                 Items are only removed if they were successful.
             */
             itemUsedCounter++;
-            hud.updateItemCounter(itemUsedCounter);
+            hud.setItemCounter(itemUsedCounter);
             items[index] = null;
-            hud.updateItemSlot(index, null);
+            hud.setItemSlotImg(index, null);
         }
     }
 

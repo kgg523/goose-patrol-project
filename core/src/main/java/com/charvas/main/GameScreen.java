@@ -49,16 +49,20 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        //World is instantiated
         world = new World(atlas, "YorkCampus.tmx");
         world.getCamera().setToOrtho(false, Main.V_WIDTH, Main.V_HEIGHT);
         world.getCamera().update();
         Inventory inventory = world.getPlayer().getInventory();
         
+        //GUI elements are instantiated
         gui = new GUI(this);
         inventory.addHud(gui.getHud());
         gui.setup(world);
         timer = new GameTimer(gui);
 
+
+        //Starting items are given to the player
         world.givePlayer(new MedKitItem(world.getPlayer()));
         world.givePlayer(new PlayerHurtTestItem(world.getPlayer()));
         world.givePlayer(new SeedBagItem(world));
@@ -90,7 +94,9 @@ public class GameScreen implements Screen {
         // Update game logic here
         world.update();
         gui.update();
-        timer.decrement(delta);
+        if  (timer.decrement(delta)) {
+            endGame();
+        }
     }
 
     private void draw() {
@@ -144,6 +150,17 @@ public class GameScreen implements Screen {
     public void togglePause() {
         isPaused = !isPaused;
     }
+
+    public void endGame() {
+        //TO-DO
+
+        //Current just completely restarts the game.
+        game.setScreen(new GameScreen(game));
+    }
+
+    /***********/
+    /* GETTERS */
+    /***********/
 
     public GUI getGui() {
         return gui;

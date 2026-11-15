@@ -99,6 +99,7 @@ public abstract class Entity extends Sprite {
     /***********/
     /* GETTERS */
     /***********/
+    
     public final Vector2 getPosition() {
         return new Vector2(getX(), getY());
     }

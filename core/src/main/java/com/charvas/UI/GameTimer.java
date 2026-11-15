@@ -6,7 +6,7 @@ public class GameTimer {
     private GUI gui;
 
     public GameTimer(GUI gGUI) {
-        time = 300f;
+        time = 300f; // 5 minutes;
         gui = gGUI;
     }
 

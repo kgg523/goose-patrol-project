@@ -36,33 +36,11 @@ public class GUI{
         skin.add("default", new BitmapFont());
 
         hud = new HUD(this);
-
-
-
-
-
-
-
-        //EXAMPLE BUTTON
-/* 
-        Button button = new Button(skin.newDrawable("white", Color.RED));
-        button.setWidth(100);
-        button.setHeight(100);
-        button.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
-                System.out.println(event + " " + actor);
-                System.out.println("Clicked! Is checked: " + button.isChecked());
-            }
-        });
-        
-        stage.addActor(button);
-*/
     }
 
     public void setup(World world) {
         hud.setup(world);
     }
-
 
 
 //        METHOD FOR INTERACTING WITH PAUSE BUTTON
@@ -103,11 +81,13 @@ public class GUI{
     }
 
     public void update() {
-        hud.updateEventCounter(game.getWorld().getEventCount());
+        hud.setEventCounter(game.getWorld().getEventCount());
     }
 
 
-    //GETTERS
+    /***********/
+    /* GETTERS */
+    /***********/
 
     public Stage getStage() {
         return stage;
