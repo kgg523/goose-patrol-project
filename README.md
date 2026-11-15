@@ -31,3 +31,5 @@ Useful Gradle tasks and flags:
 
 Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
 For example, `core:clean` removes `build` folder only from the `core` project.
+
+For the project, a free tool called [Tiled](https://www.mapeditor.org/) was used to create and produce the map used. The images used were created in house by Ching Lau, and the animations were created by Alonso Puente. The images for the items were created by Alex Cheung. No licences were needed as all software used was free and open source.
